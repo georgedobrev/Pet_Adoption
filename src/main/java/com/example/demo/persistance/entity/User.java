@@ -1,6 +1,6 @@
-package com.example.demo.Models;
+package com.example.demo.persistance.entity;
 
-import com.example.demo.Models.Enums.RoleEnum;
+import com.example.demo.persistance.entity.enums.RoleEnum;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 public class User {

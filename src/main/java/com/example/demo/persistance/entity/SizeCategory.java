@@ -1,4 +1,4 @@
-package com.example.demo.Models;
+package com.example.demo.persistance.entity;
 
 public class SizeCategory {
     private int sizeCategoryID;
