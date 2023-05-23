@@ -1,11 +1,10 @@
-package Models;
+package com.example.demo.Models;
 
-import Models.Enums.RoleEnum;
+import com.example.demo.Models.Enums.RoleEnum;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-
 public class User {
-    private int userID;
+    private Integer userID;
     private String userFirstName;
     private String userLastName;
     private String userEmail;
@@ -94,18 +93,5 @@ public class User {
         this.userRefreshToken = userRefreshToken;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "userID=" + userID +
-                ", userFirstName='" + userFirstName + '\'' +
-                ", userLastName='" + userLastName + '\'' +
-                ", userEmail='" + userEmail + '\'' +
-                ", userPassword='" + userPassword + '\'' +
-                ", userAccessToken='" + userAccessToken + '\'' +
-                ", userRefreshToken='" + userRefreshToken + '\'' +
-                ", roles=" + roles +
-                '}';
-    }
 }
 

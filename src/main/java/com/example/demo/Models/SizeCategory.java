@@ -1,4 +1,4 @@
-package Models;
+package com.example.demo.Models;
 
 public class SizeCategory {
     private int sizeCategoryID;
@@ -31,11 +31,4 @@ public class SizeCategory {
         this.categoryDescription = categoryDescription;
     }
 
-    @Override
-    public String toString() {
-        return "SizeCategory{" +
-                "sizeCategoryID=" + sizeCategoryID +
-                ", categoryDescription='" + categoryDescription + '\'' +
-                '}';
-    }
 }

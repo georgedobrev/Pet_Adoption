@@ -1,9 +1,11 @@
-package Models;
+package com.example.demo.Models;
 
-import Models.Enums.AnimalSexEnum;
-import Models.Enums.SizeCategoryEnum;
+import com.example.demo.Models.Enums.AnimalSexEnum;
+import com.example.demo.Models.Enums.SizeCategoryEnum;
+import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+
 
 public class Animals {
     private int animalID;
@@ -106,18 +108,4 @@ private SizeCategoryEnum size;
         this.gender = gender;
     }
 
-    @Override
-    public String toString() {
-        return "Animals{" +
-                "animalID=" + animalID +
-                ", animalShelterID=" + animalShelterID +
-                ", animalPhoto='" + animalPhoto + '\'' +
-                ", animalName='" + animalName + '\'' +
-                ", gender=" + gender +
-                ", animalAge=" + animalAge +
-                ", animalSizeCategoryID=" + animalSizeCategoryID +
-                ", animalCharacteristics='" + animalCharacteristics + '\'' +
-                ", size=" + size +
-                '}';
-    }
 }

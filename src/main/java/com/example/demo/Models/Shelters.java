@@ -1,4 +1,4 @@
-package Models;
+package com.example.demo.Models;
 
 public class Shelters {
     private int shelterID;
@@ -70,15 +70,4 @@ public class Shelters {
         this.shelterEmail = shelterEmail;
     }
 
-    @Override
-    public String toString() {
-        return "Shelters{" +
-                "shelterID=" + shelterID +
-                ", shelterName='" + shelterName + '\'' +
-                ", shelterCity='" + shelterCity + '\'' +
-                ", shelterAddress='" + shelterAddress + '\'' +
-                ", shelterPhone='" + shelterPhone + '\'' +
-                ", shelterEmail='" + shelterEmail + '\'' +
-                '}';
-    }
 }
