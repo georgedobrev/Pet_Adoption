@@ -13,6 +13,7 @@ public class User {
     @Column(name = "user_id")
     @NotNull
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userID;
     @Column(name = "user_first_name")
     @NotNull

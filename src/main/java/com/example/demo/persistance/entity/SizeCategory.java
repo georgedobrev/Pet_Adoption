@@ -8,6 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@Entity
 public class SizeCategory {
     @Column(name = "size_category")
     @Id
