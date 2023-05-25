@@ -13,11 +13,12 @@ import javax.validation.constraints.NotNull;
 @Table(name = "animal")
 public class Animals {
     @Column(name = "animal_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private int animalID;
-    @Column(name = "shelter_id")
-    @NotNull
-    private int animalShelterID;
+    @JoinColumn(name = "shelter_id")
+    @ManyToOne
+  private Shelters shelter;
     @Column(name = "animal_photo")
     private String animalPhoto;
     @Column(name = "animal_name")
@@ -32,15 +33,16 @@ public class Animals {
     @Column(name = "animal_age")
     private int animalAge;
 
-    @Column(name = "size_category_id")
+    @JoinColumn(name = "size_category_id")
     @NotNull
-    private int animalSizeCategoryID;
+    @ManyToOne
+    private SizeCategory sizeCategory;
 
     @Column(name = "animal_characteristics")
   private String animalCharacteristics;
 
-    @Enumerated(EnumType.STRING)
-    private SizeCategoryEnum size;
+   // @Enumerated(EnumType.STRING)
+   // private SizeCategoryEnum size;
     public Animals() {
     }
 

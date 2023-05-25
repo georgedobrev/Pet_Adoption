@@ -1,34 +1,27 @@
 package com.example.demo.persistance.entity;
 
+import com.example.demo.persistance.entity.enums.SizeCategoryEnum;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class SizeCategory {
+    @Column(name = "size_category")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int sizeCategoryID;
-  public  enum categoryName{
-        Small, Medium, Large
-    }
+    @Column(name = "category_name")
+    @Enumerated (EnumType.STRING)
+    private SizeCategoryEnum category;
+    @Column(name = "category_description")
     private String categoryDescription;
 
     public SizeCategory() {
     }
 
-    public SizeCategory(int sizeCategoryID, String categoryDescription) {
-        this.sizeCategoryID = sizeCategoryID;
-        this.categoryDescription = categoryDescription;
-    }
 
-    public int getSizeCategoryID() {
-        return sizeCategoryID;
-    }
-
-    public void setSizeCategoryID(int sizeCategoryID) {
-        this.sizeCategoryID = sizeCategoryID;
-    }
-
-    public String getCategoryDescription() {
-        return categoryDescription;
-    }
-
-    public void setCategoryDescription(String categoryDescription) {
-        this.categoryDescription = categoryDescription;
-    }
 
 }
