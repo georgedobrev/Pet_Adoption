@@ -14,14 +14,13 @@ public class SizeCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int sizeCategoryID;
     @Column(name = "category_name")
-    @Enumerated (EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     private SizeCategoryEnum category;
     @Column(name = "category_description")
     private String categoryDescription;
 
     public SizeCategory() {
     }
-
 
 
 }

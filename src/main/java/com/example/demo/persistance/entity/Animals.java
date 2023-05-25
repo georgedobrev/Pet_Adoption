@@ -5,6 +5,7 @@ import com.example.demo.persistance.entity.enums.SizeCategoryEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
 import javax.validation.constraints.NotNull;
 
 @Getter
@@ -18,7 +19,7 @@ public class Animals {
     private int animalID;
     @JoinColumn(name = "shelter_id")
     @ManyToOne
-  private Shelters shelter;
+    private Shelters shelter;
     @Column(name = "animal_photo")
     private String animalPhoto;
     @Column(name = "animal_name")
@@ -39,10 +40,10 @@ public class Animals {
     private SizeCategory sizeCategory;
 
     @Column(name = "animal_characteristics")
-  private String animalCharacteristics;
+    private String animalCharacteristics;
 
-   // @Enumerated(EnumType.STRING)
-   // private SizeCategoryEnum size;
+    // @Enumerated(EnumType.STRING)
+    // private SizeCategoryEnum size;
     public Animals() {
     }
 
