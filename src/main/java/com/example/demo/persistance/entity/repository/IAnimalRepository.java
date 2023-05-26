@@ -1,8 +1,8 @@
 package com.example.demo.persistance.entity.repository;
 
-import com.example.demo.persistance.entity.Animals;
+import com.example.demo.persistance.entity.AnimalsEntity;
 
 public interface IAnimalRepository {
 
-    Animals addDog(Animals dog);
+    AnimalsEntity addDog(AnimalsEntity dog);
 }

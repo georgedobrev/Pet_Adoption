@@ -1,8 +1,6 @@
 package controller;
 
-import com.example.demo.persistance.entity.Animals;
-import com.example.demo.persistance.entity.enums.AnimalSexEnum;
-import com.example.demo.persistance.entity.enums.SizeCategoryEnum;
+import com.example.demo.persistance.entity.AnimalsEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import service.DogService;
 
 @RestController
-@RequestMapping("/dogs")
+@RequestMapping("/api/dogs")
 public class DogController {
     DogService dog;
     private final DogService dogService;
@@ -21,8 +19,8 @@ public class DogController {
     }
 
     @PostMapping
-    public ResponseEntity<Animals> addDog(@RequestBody Animals dog) {
-        Animals addedDog = dogService.addDog(dog);
+    public ResponseEntity<AnimalsEntity> addDog(@RequestBody AnimalsEntity dog) {
+        AnimalsEntity addedDog = dogService.addDog(dog);
         return ResponseEntity.status(HttpStatus.CREATED).body(addedDog);
     }
 }

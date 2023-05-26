@@ -10,12 +10,12 @@ import javax.validation.constraints.NotNull;
 @Setter
 @Entity
 @Table(name = "shelters")
-public class Shelters {
+public class SheltersEntity {
 
     @Column(name = "shelter_id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int shelterID;
+    private long shelterID;
 
     @Column(name = "shelter_name")
     @NotNull
@@ -29,13 +29,14 @@ public class Shelters {
     @NotNull
     private String shelterAddress;
 
-    @Column(name = "shelter_phone")
-    private String shelterPhone;
+    @JoinColumn(name = "shelter_phone_id")
+    @ManyToOne
+    private ShelterPhoneEntity shelterPhone;
 
-    @Column(name = "shelter_email")
+    @Column(name = "shelter_email", unique = true)
     private String shelterEmail;
 
-    public Shelters() {
+    public SheltersEntity() {
     }
 
 }

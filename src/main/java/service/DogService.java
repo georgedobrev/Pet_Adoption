@@ -1,6 +1,6 @@
 package service;
 
-import com.example.demo.persistance.entity.Animals;
+import com.example.demo.persistance.entity.AnimalsEntity;
 import com.example.demo.persistance.entity.repository.IAnimalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ public class DogService {
         this.animalRepository = animalRepository;
     }
 
-    public Animals addDog(Animals dog) {
+    public AnimalsEntity addDog(AnimalsEntity dog) {
         return animalRepository.addDog(dog);
     }
 }

@@ -1,7 +1,6 @@
 package com.example.demo.persistance.entity;
 
 import com.example.demo.persistance.entity.enums.AnimalSexEnum;
-import com.example.demo.persistance.entity.enums.SizeCategoryEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,16 +11,21 @@ import javax.validation.constraints.NotNull;
 @Setter
 @Entity
 @Table(name = "animal")
-public class Animals {
+public class AnimalsEntity {
+
     @Column(name = "animal_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private int animalID;
+    private long animalID;
+
     @JoinColumn(name = "shelter_id")
     @ManyToOne
-    private Shelters shelter;
-    @Column(name = "animal_photo")
-    private String animalPhoto;
+    private SheltersEntity shelter;
+
+    @ManyToOne
+    @JoinColumn(name = "animal_photo_id")
+    private AnimalPhotoEntity animalPhoto;
+
     @Column(name = "animal_name")
     @NotNull
     private String animalName;
@@ -37,14 +41,14 @@ public class Animals {
     @JoinColumn(name = "size_category_id")
     @NotNull
     @ManyToOne
-    private SizeCategory sizeCategory;
+    private SizeCategoryEntity sizeCategory;
 
     @Column(name = "animal_characteristics")
     private String animalCharacteristics;
+    @Column(name = "animal_isAdopted", columnDefinition = "BOOLEAN NOT NULL DEFAULT FALSE")
+    private boolean animalIsAdopted;
 
-    // @Enumerated(EnumType.STRING)
-    // private SizeCategoryEnum size;
-    public Animals() {
+    public AnimalsEntity() {
     }
 
 }
