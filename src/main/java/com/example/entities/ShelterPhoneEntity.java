@@ -17,6 +17,5 @@ public class ShelterPhoneEntity {
     private long shelterPhoneID;
 
     @Column(name = "shelter_phone")
-    @NotNull
     private String shelterPhone;
 }

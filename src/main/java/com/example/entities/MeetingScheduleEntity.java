@@ -29,7 +29,6 @@ public class MeetingScheduleEntity {
     private AnimalsEntity animal;
 
     @Column(name = "meeting_date")
-    @NotNull
     private LocalDateTime meetingDate;
 
 }

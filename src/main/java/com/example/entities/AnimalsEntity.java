@@ -27,30 +27,27 @@ public class AnimalsEntity {
     @JoinColumn(name = "animal_photo_id")
     private AnimalPhotoEntity animalPhoto;
 
-    @Column(name = "animal_name")
-    @NotNull
+    @Column(name = "animal_name", nullable = true)
     private String animalName;
 
-    @Column(name = "animal_species")
-    @NotNull
+    @Column(name = "animal_species", nullable = true)
     @Enumerated(EnumType.STRING)
     private AnimalSpeciesEnum animalSpecies;
 
-    @Column(name = "animal_sex")
-    @NotNull
+    @Column(name = "animal_sex", nullable = true)
     @Enumerated(EnumType.STRING)
     private AnimalSexEnum gender;
 
     @Column(name = "animal_age")
     private int animalAge;
 
-    @JoinColumn(name = "size_category_id")
-    @NotNull
+    @JoinColumn(name = "size_category_id", nullable = true)
     @ManyToOne
     private SizeCategoryEntity sizeCategory;
 
     @Column(name = "animal_characteristics")
     private String animalCharacteristics;
+
     @Column(name = "animal_isAdopted", columnDefinition = "BOOLEAN NOT NULL DEFAULT FALSE")
     private boolean animalIsAdopted;
 

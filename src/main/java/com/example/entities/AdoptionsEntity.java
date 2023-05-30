@@ -26,28 +26,22 @@ public class AdoptionsEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @Column(name = "adopter_first_name")
-    @NotNull
+    @Column(name = "adopter_first_name", nullable = true)
     private String adopterFirstName;
 
-    @Column(name = "adopter_last_name")
-    @NotNull
+    @Column(name = "adopter_last_name", nullable = true)
     private String adopterLastName;
 
-    @Column(name = "adopter_phone")
-    @NotNull
+    @Column(name = "adopter_phone", nullable = true)
     private String adopterPhone;
 
-    @Column(name = "adopter_email")
-    @NotNull
+    @Column(name = "adopter_email", nullable = true)
     private String adopterEmail;
 
-    @Column(name = "adopter_address")
-    @NotNull
+    @Column(name = "adopter_address", nullable = true)
     private String adopterAddress;
 
-    @Column(name = "adoption_date")
-    @NotNull
+    @Column(name = "adoption_date", nullable = true)
     private LocalDate adoptionDate;
 
     public AdoptionsEntity() {

@@ -17,16 +17,13 @@ public class SheltersEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long shelterID;
 
-    @Column(name = "shelter_name")
-    @NotNull
+    @Column(name = "shelter_name", nullable = true)
     private String shelterName;
 
     @Column(name = "shelter_city")
-    @NotNull
     private String shelterCity;
 
     @Column(name = "shelter_address")
-    @NotNull
     private String shelterAddress;
 
     @JoinColumn(name = "shelter_phone_id")

@@ -16,8 +16,7 @@ public class AnimalPhotoEntity {
     @Column(name = "animal_photo_it")
     private long animalPhotoId;
 
-    @Column(name = "animal_photo_url")
-    @NotNull
+    @Column(name = "animal_photo_url", nullable = true)
     private String animalPhotoURL;
 
     public AnimalPhotoEntity() {
