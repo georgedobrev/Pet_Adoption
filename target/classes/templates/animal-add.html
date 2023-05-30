@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Paw Finder - Add Animal</title>
+
+  <!-- Add any additional CSS or JS dependencies here -->
+
+</head>
+<body>
+<div class="container">
+  <h1>Add Animal</h1>
+
+  <form th:object="${animal}" method="post">
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" class="form-control" th:field="*{animalName}">
+    </div>
+
+    <div class="form-group">
+      <label for="species">Species:</label>
+      <input type="text" id="species" name="species" class="form-control" th:field="*{animalSpecies}">
+    </div>
+
+    <div class="form-group">
+      <label for="sex">Sex:</label>
+      <select id="sex" name="sex" class="form-control" th:field="*{gender}">
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="age">Age:</label>
+      <input type="number" id="age" name="age" class="form-control" th:field="*{animalAge}">
+    </div>
+
+    <div class="form-group">
+      <label for="size">Size Category:</label>
+      <select id="size" name="size" class="form-control" th:field="*{sizeCategory}">
+        <option value="Small">Small</option>
+        <option value="Medium">Medium</option>
+        <option value="Large">Large</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="characteristics">Characteristics:</label>
+      <textarea id="characteristics" name="characteristics" class="form-control" th:field="*{animalCharacteristics}"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="isAdopted">Is It Adopted?:</label>
+      <input type="checkbox" id="isAdopted" name="isAdopted" class="form-control" th:field="*{animalIsAdopted}">
+    </div>
+
+    <button type="submit" class="btn btn-primary" th:action="@{/animals/add}">Add</button>
+  </form>
+</div>
+</body>
+</html>
