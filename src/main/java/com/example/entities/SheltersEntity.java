@@ -17,7 +17,7 @@ public class SheltersEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long shelterID;
 
-    @Column(name = "shelter_name", nullable = true)
+    @Column(name = "shelter_name", nullable = false)
     private String shelterName;
 
     @Column(name = "shelter_city")
