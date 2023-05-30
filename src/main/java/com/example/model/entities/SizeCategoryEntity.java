@@ -1,6 +1,6 @@
-package com.example.entities;
+package com.example.model.entities;
 
-import com.example.entities.enums.SizeCategoryEnum;
+import com.example.enums.SizeCategoryEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

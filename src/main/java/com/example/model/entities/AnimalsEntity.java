@@ -1,12 +1,10 @@
-package com.example.entities;
+package com.example.model.entities;
 
-import com.example.entities.enums.AnimalSexEnum;
-import com.example.entities.enums.AnimalSpeciesEnum;
+import com.example.enums.AnimalSexEnum;
+import com.example.enums.AnimalSpeciesEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter

@@ -1,8 +1,7 @@
-package com.example.entities;
+package com.example.model.entities;
 
-import com.example.entities.enums.RoleEnum;
+import com.example.enums.RoleEnum;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 

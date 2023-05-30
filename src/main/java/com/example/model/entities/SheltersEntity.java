@@ -1,10 +1,8 @@
-package com.example.entities;
+package com.example.model.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter

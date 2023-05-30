@@ -1,9 +1,6 @@
-package com.example.entities;
+package com.example.model.entities;
 
-import com.example.entities.AnimalsEntity;
-import com.example.entities.UserEntity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 

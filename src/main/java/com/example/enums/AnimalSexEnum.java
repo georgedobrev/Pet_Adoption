@@ -1,4 +1,4 @@
-package com.example.entities.enums;
+package com.example.enums;
 
 public enum AnimalSexEnum {
     M, F
