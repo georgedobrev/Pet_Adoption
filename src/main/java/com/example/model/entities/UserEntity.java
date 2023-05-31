@@ -16,16 +16,16 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userID;
 
-    @Column(name = "user_first_name", nullable = true)
+    @Column(name = "user_first_name", nullable = false)
     private String userFirstName;
 
-    @Column(name = "user_last_name", nullable = true)
+    @Column(name = "user_last_name", nullable = false)
     private String userLastName;
 
-    @Column(name = "user_email", nullable = true)
+    @Column(name = "user_email", nullable = false)
     private String userEmail;
 
-    @Column(name = "user_password", nullable = true)
+    @Column(name = "user_password", nullable = false)
     private String userPassword;
 
     @Column(name = "user_photo_url")
@@ -37,7 +37,7 @@ public class UserEntity {
     @Column(name = "user_refresh_token")
     private String userRefreshToken;
 
-    @Column(name = "user_role", nullable = true)
+    @Column(name = "user_role", nullable = false)
     @Enumerated(EnumType.STRING)
     private RoleEnum roles;
 
