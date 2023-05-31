@@ -25,22 +25,22 @@ public class AdoptionsEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @Column(name = "adopter_first_name", nullable = true)
+    @Column(name = "adopter_first_name", nullable = false)
     private String adopterFirstName;
 
-    @Column(name = "adopter_last_name", nullable = true)
+    @Column(name = "adopter_last_name", nullable = false)
     private String adopterLastName;
 
-    @Column(name = "adopter_phone", nullable = true)
+    @Column(name = "adopter_phone", nullable = false)
     private String adopterPhone;
 
-    @Column(name = "adopter_email", nullable = true)
+    @Column(name = "adopter_email", nullable = false)
     private String adopterEmail;
 
-    @Column(name = "adopter_address", nullable = true)
+    @Column(name = "adopter_address", nullable = false)
     private String adopterAddress;
 
-    @Column(name = "adoption_date", nullable = true)
+    @Column(name = "adoption_date", nullable = false)
     private LocalDate adoptionDate;
 
     public AdoptionsEntity() {
