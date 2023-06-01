@@ -1,6 +1,6 @@
 package com.example.service;
 
-import com.example.model.entities.SheltersEntity;
+import com.example.persistence.entities.SheltersEntity;
 import java.util.List;
 
 public interface ShelterService {

@@ -1,6 +1,6 @@
 package com.example.controllers;
 
-import com.example.model.entities.SheltersEntity;
+import com.example.persistence.entities.SheltersEntity;
 import com.example.service.ShelterService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

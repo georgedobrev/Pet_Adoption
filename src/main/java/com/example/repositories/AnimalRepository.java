@@ -1,6 +1,6 @@
 package com.example.repositories;
 
-import com.example.model.entities.AnimalsEntity;
+import com.example.persistence.entities.AnimalsEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
