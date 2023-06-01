@@ -1,6 +1,6 @@
 package com.example.service;
 
-import com.example.model.entities.AnimalsEntity;
+import com.example.persistence.entities.AnimalsEntity;
 import java.util.List;
 
 public interface AnimalService {

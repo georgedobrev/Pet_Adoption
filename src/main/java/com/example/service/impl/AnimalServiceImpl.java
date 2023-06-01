@@ -1,6 +1,6 @@
 package com.example.service.impl;
 
-import com.example.model.entities.AnimalsEntity;
+import com.example.persistence.entities.AnimalsEntity;
 import com.example.repositories.AnimalRepository;
 import com.example.service.AnimalService;
 import org.springframework.beans.factory.annotation.Autowired;
