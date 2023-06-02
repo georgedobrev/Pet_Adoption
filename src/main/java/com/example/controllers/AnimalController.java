@@ -1,7 +1,11 @@
 package com.example.controllers;
 
+import com.example.persistence.binding.AnimalAddBindingModel;
 import com.example.persistence.entities.AnimalsEntity;
 import com.example.persistence.entities.SheltersEntity;
+import com.example.persistence.enums.AnimalSexEnum;
+import com.example.persistence.enums.AnimalSpeciesEnum;
+import com.example.persistence.enums.SizeCategoryEnum;
 import com.example.persistence.view.AddAnimalViewModel;
 import com.example.service.AnimalService;
 import com.example.service.ShelterService;
@@ -31,17 +35,15 @@ public class AnimalController {
     }
 
     @PostMapping("/add")
-    public String addAnimal(@ModelAttribute("animal") AddAnimalViewModel animalViewModel) {
-        AnimalsEntity animal = new AnimalsEntity();
-//        animal.setAnimalName(animalViewModel.getAnimalName());
-//        animal.setAnimalSpecies(animalViewModel.getAnimalSpecies());
-//        animal.setGender(animalViewModel.getAnimalGender());
-//        animal.setAnimalAge(animalViewModel.getAnimalAge());
-//        animal.setSizeCategory(animalViewModel.getAnimalSize());
-//        animal.setAnimalCharacteristics(animalViewModel.getAnimalCharacteristics());
-
-
-        animalService.createAnimal(animal);
+    public String addAnimal(@ModelAttribute("animal") AnimalAddBindingModel animalViewModel) {
+     AnimalsEntity animal = new AnimalsEntity();
+     animal.setAnimalName(animalViewModel.getAnimalName());
+     animal.setAnimalSpecies(AnimalSpeciesEnum.valueOf(String.valueOf(animalViewModel.getAnimalSpecies())));
+     animal.setGender(AnimalSexEnum.valueOf(String.valueOf(animalViewModel.getAnimalGender())));
+     animal.setAnimalAge(animalViewModel.getAnimalAge());
+        animal.setSizeCategory(SizeCategoryEnum.valueOf(String.valueOf(animalViewModel.getAnimalSize())));
+        animal.setAnimalCharacteristics(animalViewModel.getAnimalCharacteristics());
+       animalService.createAnimal(animal);
         return "redirect:/animals";
     }
 
@@ -50,28 +52,28 @@ public class AnimalController {
         AnimalsEntity animalEntity = animalService.getAnimalById(id);
         List<SheltersEntity> shelters = shelterService.getAllShelters();
 
-//        AddAnimalViewModel animal = new AddAnimalViewModel();
-//        animal.setAnimalName(animalEntity.getAnimalName());
-//        animal.setAnimalSpecies(animalEntity.getAnimalSpecies());
-//        animal.setAnimalGender(animalEntity.getGender());
-//        animal.setAnimalAge(animalEntity.getAnimalAge());
-//        animal.setAnimalSize(animalEntity.getSizeCategory());
-//        animal.setAnimalCharacteristics(animalEntity.getAnimalCharacteristics());
-//        model.addAttribute("animal", animal);
-//        model.addAttribute("shelters", shelters);
+      AddAnimalViewModel animal = new AddAnimalViewModel();
+      animal.setAnimalName(animalEntity.getAnimalName());
+      animal.setAnimalSpecies(AnimalSpeciesEnum.valueOf(String.valueOf(animalEntity.getAnimalSpecies())));
+      animal.setAnimalGender(AnimalSexEnum.valueOf(String.valueOf(animalEntity.getGender())));
+      animal.setAnimalAge(animalEntity.getAnimalAge());
+      animal.setAnimalSize(SizeCategoryEnum.valueOf(String.valueOf(animalEntity.getSizeCategory())));
+      animal.setAnimalCharacteristics(animalEntity.getAnimalCharacteristics());
+      model.addAttribute("animal", animal);
+       model.addAttribute("shelters", shelters);
         return "animal-edit";
     }
 
 
     @PostMapping("/{id}/edit")
-    public String updateAnimal(@PathVariable("id") long id, @ModelAttribute("animal") AddAnimalViewModel animalViewModel) {
+    public String updateAnimal(@PathVariable("id") long id, @ModelAttribute("animal") AnimalAddBindingModel animalViewModel) {
         AnimalsEntity animal = animalService.getAnimalById(id);
-//        animal.setAnimalName(animalViewModel.getAnimalName());
-//        animal.setAnimalSpecies(animalViewModel.getAnimalSpecies());
-//        animal.setGender(animalViewModel.getAnimalGender());
-//        animal.setAnimalAge(animalViewModel.getAnimalAge());
-//        animal.setSizeCategory(animalViewModel.getAnimalSize());
-//        animal.setAnimalCharacteristics(animalViewModel.getAnimalCharacteristics());
+       animal.setAnimalName(animalViewModel.getAnimalName());
+       animal.setAnimalSpecies(AnimalSpeciesEnum.valueOf(String.valueOf(animalViewModel.getAnimalSpecies())));
+       animal.setGender(AnimalSexEnum.valueOf(String.valueOf(animalViewModel.getAnimalGender())));
+       animal.setAnimalAge(animalViewModel.getAnimalAge());
+       animal.setSizeCategory(SizeCategoryEnum.valueOf(String.valueOf(animalViewModel.getAnimalSize())));
+       animal.setAnimalCharacteristics(animalViewModel.getAnimalCharacteristics());
 
 
         animalService.updateAnimal(animal);

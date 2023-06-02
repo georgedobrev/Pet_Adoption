@@ -15,10 +15,10 @@ import java.util.List;
 public class AddAnimalViewModel {
     private List<String> animalPhoto;
     private String animalName;
-    private String animalSpecies;
-    private String animalGender;
+    private AnimalSpeciesEnum animalSpecies;
+    private AnimalSexEnum animalGender;
     private int animalAge;
-    private String animalSize;
+    private SizeCategoryEnum animalSize;
     private String animalCharacteristics;
 
 

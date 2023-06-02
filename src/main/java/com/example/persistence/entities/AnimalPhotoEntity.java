@@ -13,7 +13,7 @@ public class AnimalPhotoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "animal_photo_it")
+    @Column(name = "animal_photo_id")
     private long animalPhotoId;
 
     @Column(name = "animal_photo_url", nullable = false)
