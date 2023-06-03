@@ -1,50 +1,78 @@
 package com.example.service.impl;
 
+import com.example.persistence.binding.AnimalAddBindingModel;
 import com.example.persistence.entities.AnimalsEntity;
+import com.example.persistence.entities.SheltersEntity;
+import com.example.persistence.view.AddAnimalViewModel;
 import com.example.repositories.AnimalRepository;
-import com.example.service.AnimalService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.repositories.SizeCategoryRepository;
+import com.example.service.ServiceAnimal;
+import com.example.service.ShelterService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class AnimalServiceImpl implements AnimalService {
+public class AnimalServiceImpl implements ServiceAnimal {
+    private final AnimalRepository animalRepository;
+    private final ShelterService shelterService;
+    private final SizeCategoryRepository sizeCategoryRepository;
 
-    private AnimalRepository animalRepository;
 
-    @Autowired
-    public AnimalServiceImpl(AnimalRepository animalRepository) {
+    public AnimalServiceImpl(AnimalRepository animalRepository, ShelterService shelterService, SizeCategoryRepository sizeCategoryRepository) {
         this.animalRepository = animalRepository;
+        this.shelterService = shelterService;
+        this.sizeCategoryRepository = sizeCategoryRepository;
     }
 
     @Override
-    public void createAnimal(AnimalsEntity animal) {
+    public List<SheltersEntity> getAllShelters() {
+        return shelterService.getAllShelters();
+    }
+
+    @Override
+    public AddAnimalViewModel getAddAnimalViewModel() {
+        return new AddAnimalViewModel();
+    }
+
+    @Override
+    public String addAnimal(AnimalAddBindingModel animalViewModel) {
+        AnimalsEntity animal = new AnimalsEntity();
+        animal.setAnimalName(animalViewModel.getAnimalName());
+        animal.setAnimalSpecies(animalViewModel.getAnimalSpecies());
+        animal.setGender(animalViewModel.getAnimalGender());
+        animal.setAnimalAge(animalViewModel.getAnimalAge());
+        animal.setSizeCategory(sizeCategoryRepository.findByCategory(animalViewModel.getAnimalSize()));
+        animal.setAnimalCharacteristics(animalViewModel.getAnimalCharacteristics());
+
         animalRepository.save(animal);
+        return "redirect:/animals";
     }
 
     @Override
-    public AnimalsEntity getAnimalById(long animalId) {
-        return animalRepository.findById(animalId).orElse(null);
+    public AddAnimalViewModel getAnimalForEdit(long id) {
+        AnimalsEntity animalEntity = animalRepository.findById(id).orElseThrow();
+        AddAnimalViewModel animal = new AddAnimalViewModel();
+        animal.setAnimalName(animalEntity.getAnimalName());
+        animal.setAnimalSpecies(animalEntity.getAnimalSpecies());
+        animal.setAnimalGender(animalEntity.getGender());
+        animal.setAnimalAge(animalEntity.getAnimalAge());
+        animal.setAnimalSize(animalEntity.getSizeCategory().getCategory());
+        animal.setAnimalCharacteristics(animalEntity.getAnimalCharacteristics());
+        return animal;
     }
 
     @Override
-    public List<AnimalsEntity> getAllAnimals() {
-        return animalRepository.findAll();
-    }
+    public String updateAnimal(long id, AnimalAddBindingModel animalViewModel) {
+        AnimalsEntity animal = animalRepository.findById(id).orElseThrow();
+        animal.setAnimalName(animalViewModel.getAnimalName());
+        animal.setAnimalSpecies(animalViewModel.getAnimalSpecies());
+        animal.setGender(animalViewModel.getAnimalGender());
+        animal.setAnimalAge(animalViewModel.getAnimalAge());
+        animal.setSizeCategory(sizeCategoryRepository.findByCategory(animalViewModel.getAnimalSize()));
+        animal.setAnimalCharacteristics(animalViewModel.getAnimalCharacteristics());
 
-    @Override
-    public List<AnimalsEntity> getAnimalsByShelterId(long shelterId) {
-        return animalRepository.findByShelter_ShelterID(shelterId);
-    }
-
-    @Override
-    public void updateAnimal(AnimalsEntity animal) {
         animalRepository.save(animal);
-    }
-
-    @Override
-    public void deleteAnimal(AnimalsEntity animal) {
-        animalRepository.delete(animal);
+        return "redirect:/animals";
     }
 }

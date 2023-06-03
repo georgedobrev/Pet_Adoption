@@ -40,9 +40,9 @@ public class AnimalsEntity {
     @Column(name = "animal_age")
     private int animalAge;
 
-    @Column(name = "size_category_id", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private SizeCategoryEnum sizeCategory;
+    @ManyToOne
+    @JoinColumn(name = "size_category_id")
+    private SizeCategoryEntity sizeCategory;
 
 
     @Column(name = "animal_characteristics")
