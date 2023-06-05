@@ -2,7 +2,6 @@ package com.example.controllers;
 
 import com.example.persistence.binding.UserRegisterBindingModel;
 import com.example.persistence.entities.UserEntity;
-import com.example.persistence.view.UserViewModel;
 import com.example.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
@@ -27,13 +26,13 @@ public class UserController {
 
     @GetMapping("/register")
     public String register(Model model) {
-        model.addAttribute("user", new UserViewModel());
+        model.addAttribute("user", new UserRegisterBindingModel());
         return "register";
     }
 
     @PostMapping("/register")
-    public String registerConfirm(@ModelAttribute UserRegisterBindingModel userEntity) {
-        userService.register(modelMapper.map(userEntity, UserEntity.class));
+    public String registerConfirm(@ModelAttribute("user") UserRegisterBindingModel user) {
+        userService.register(modelMapper.map(user, UserEntity.class));
         return "redirect:/users/login";
     }
 }

@@ -16,5 +16,8 @@ public class UserViewModel {
     private String profilePicture;
     private AddressViewModel address;
     private Integer phone;
+    private String password;
+    private String confirmPassword;
+
 
 }
