@@ -1,12 +1,14 @@
 package com.example.service;
 
+import com.example.persistence.binding.ShelterAddBindingModel;
 import com.example.persistence.entities.SheltersEntity;
+import com.example.persistence.view.AddShelterViewModel;
+
 import java.util.List;
 
 public interface ShelterService {
-    void createShelter(SheltersEntity shelter);
-    SheltersEntity getShelterById(long shelterId);
-    List<SheltersEntity> getAllShelters();
-    void updateShelter(SheltersEntity shelter);
-    void deleteShelter(SheltersEntity shelter);
+    AddShelterViewModel getAddShelterViewModel();
+    String addShelter(ShelterAddBindingModel shelterViewModel);
+    AddShelterViewModel getShelterForEditing(long id);
+    String updateShelter(long id, ShelterAddBindingModel shelterViewModel);
 }

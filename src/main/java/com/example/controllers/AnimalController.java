@@ -24,8 +24,8 @@ public class AnimalController {
 
     @GetMapping("/add")
     public String showAddAnimalForm(Model model) {
-        List<SheltersEntity> shelters = shelterService.getAllShelters();
-        model.addAttribute("shelters", shelters);
+    //    List<SheltersEntity> shelters = shelterService.getAllShelters();
+        //     model.addAttribute("shelters", shelters);
         model.addAttribute("animal", new AddAnimalViewModel());
         return "animal-add";
     }
@@ -48,7 +48,7 @@ public class AnimalController {
     @GetMapping("/{id}/edit")
     public String showEditAnimalForm(@PathVariable("id") long id, Model model) {
         AnimalsEntity animalEntity = animalService.getAnimalById(id);
-        List<SheltersEntity> shelters = shelterService.getAllShelters();
+     //   List<SheltersEntity> shelters = shelterService.getAllShelters();
 
 //        AddAnimalViewModel animal = new AddAnimalViewModel();
 //        animal.setAnimalName(animalEntity.getAnimalName());

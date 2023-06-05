@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -25,7 +27,7 @@ public class SheltersEntity {
     private String shelterAddress;
 
     @JoinColumn(name = "shelter_phone_id")
-    @ManyToOne
+    @ManyToOne()
     private ShelterPhoneEntity shelterPhone;
 
     @Column(name = "shelter_email", unique = true)
