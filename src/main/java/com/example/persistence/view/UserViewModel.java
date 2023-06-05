@@ -9,7 +9,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserViewModel {
 
-    private String username;
     private String firstName;
     private String lastName;
     private String email;
