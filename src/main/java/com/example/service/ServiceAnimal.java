@@ -1,6 +1,7 @@
 package com.example.service;
 
 import com.example.persistence.binding.AnimalAddBindingModel;
+import com.example.persistence.entities.AnimalsEntity;
 import com.example.persistence.entities.SheltersEntity;
 import com.example.persistence.view.AddAnimalViewModel;
 
@@ -12,4 +13,6 @@ public interface ServiceAnimal {
     String addAnimal(AnimalAddBindingModel animalViewModel);
     AddAnimalViewModel getAnimalForEdit(long id);
     String updateAnimal(long id, AnimalAddBindingModel animalViewModel);
+
+    List<AnimalsEntity> getAllAnimals();
 }

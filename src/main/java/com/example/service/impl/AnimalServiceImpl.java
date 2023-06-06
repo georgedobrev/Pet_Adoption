@@ -81,4 +81,9 @@ public class AnimalServiceImpl implements ServiceAnimal {
         animalRepository.save(animal);
         return "redirect:/animals";
     }
+
+    @Override
+    public List<AnimalsEntity> getAllAnimals() {
+        return animalRepository.findAll();
+    }
 }

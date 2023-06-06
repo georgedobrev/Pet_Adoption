@@ -1,6 +1,7 @@
 package com.example.controllers;
 
 import com.example.persistence.binding.AnimalAddBindingModel;
+import com.example.persistence.entities.AnimalsEntity;
 import com.example.persistence.entities.SheltersEntity;
 import com.example.service.ServiceAnimal;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,13 @@ public class AnimalController {
 
     public AnimalController(ServiceAnimal serviceAnimal) {
         this.serviceAnimal = serviceAnimal;
+    }
+
+    @GetMapping("")
+    public String showAnimalList(Model model) {
+        List<AnimalsEntity> animals = serviceAnimal.getAllAnimals();
+        model.addAttribute("animals", animals);
+        return "animal-list";
     }
 
     @GetMapping("/add")
