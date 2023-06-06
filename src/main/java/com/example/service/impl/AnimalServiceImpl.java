@@ -5,6 +5,7 @@ import com.example.persistence.entities.AnimalsEntity;
 import com.example.persistence.entities.SheltersEntity;
 import com.example.persistence.view.AddAnimalViewModel;
 import com.example.repositories.AnimalRepository;
+import com.example.repositories.ShelterRepository;
 import com.example.repositories.SizeCategoryRepository;
 import com.example.service.ServiceAnimal;
 import com.example.service.ShelterService;
@@ -17,12 +18,15 @@ public class AnimalServiceImpl implements ServiceAnimal {
     private final AnimalRepository animalRepository;
     private final ShelterService shelterService;
     private final SizeCategoryRepository sizeCategoryRepository;
+    private final ShelterRepository shelterRepository;
 
 
-    public AnimalServiceImpl(AnimalRepository animalRepository, ShelterService shelterService, SizeCategoryRepository sizeCategoryRepository) {
+
+    public AnimalServiceImpl(AnimalRepository animalRepository,  SizeCategoryRepository sizeCategoryRepository , ShelterRepository shelterRepository,ShelterService shelterService) {
         this.animalRepository = animalRepository;
         this.shelterService = shelterService;
         this.sizeCategoryRepository = sizeCategoryRepository;
+        this.shelterRepository = shelterRepository;
     }
 
     @Override
@@ -44,9 +48,11 @@ public class AnimalServiceImpl implements ServiceAnimal {
         animal.setAnimalAge(animalViewModel.getAnimalAge());
         animal.setSizeCategory(sizeCategoryRepository.findByCategory(animalViewModel.getAnimalSize()));
         animal.setAnimalCharacteristics(animalViewModel.getAnimalCharacteristics());
-
+       SheltersEntity shelter = shelterRepository.findById(Long.valueOf(animalViewModel.getShelterID())).orElseThrow(
+               () -> new RuntimeException("No shelter found with id " + animalViewModel.getShelterID()));
+       animal.setShelter(shelter);
         animalRepository.save(animal);
-        return "redirect:/animals";
+        return "redirect:/";
     }
 
     @Override
