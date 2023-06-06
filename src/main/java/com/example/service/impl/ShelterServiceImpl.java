@@ -80,6 +80,12 @@ public class ShelterServiceImpl implements ShelterService {
 //                .collect(Collectors.toList());
 //        shelter.setShelterPhone(shelterPhones);
         shelterRepository.save(shelter);
-        return null;
+        return "redirect:/shelters";
+    }
+
+    @Override
+    public List<SheltersEntity> getAllShelters() {
+
+        return shelterRepository.findAll();
     }
 }
