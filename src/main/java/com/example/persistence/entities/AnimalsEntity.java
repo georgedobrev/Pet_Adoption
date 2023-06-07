@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -22,9 +24,9 @@ public class AnimalsEntity {
     @ManyToOne
     private SheltersEntity shelter;
 
-    @ManyToOne
+    @OneToMany
     @JoinColumn(name = "animal_photo_id")
-    private AnimalPhotoEntity animalPhoto;
+    private List<AnimalPhotoEntity> animalPhotos;
 
     @Column(name = "animal_name", nullable = false)
     private String animalName;

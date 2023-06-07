@@ -1,4 +1,4 @@
-package com.example.repositories;
+package com.example.persistence.repositories;
 
 import com.example.persistence.entities.SizeCategoryEntity;
 import com.example.persistence.enums.SizeCategoryEnum;

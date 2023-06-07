@@ -1,7 +1,7 @@
 package com.example.service.impl;
 
 import com.example.persistence.entities.SheltersEntity;
-import com.example.repositories.ShelterRepository;
+import com.example.persistence.repositories.ShelterRepository;
 import com.example.service.ShelterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
