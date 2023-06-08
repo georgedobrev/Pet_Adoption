@@ -4,6 +4,7 @@ import com.example.persistence.entities.UserEntity;
 import com.example.persistence.enums.RoleEnum;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface UserService extends UserDetailsService {
@@ -16,4 +17,10 @@ public interface UserService extends UserDetailsService {
     List<UserEntity> getAllUsers();
 
     UserEntity changeRole(String email, RoleEnum authority);
+
+
+
+    //UserServiceModel updateProfile(UserServiceModel userServiceModel) throws IOException;
+    //UserServiceModel changeRole(String username, RoleEnum authority);
+
 }

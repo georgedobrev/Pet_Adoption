@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Entity
 @Getter
 @Setter
@@ -42,6 +44,11 @@ public class UserEntity {
     @Column(name = "user_role", nullable = false)
     @Enumerated(EnumType.STRING)
     private RoleEnum roles;
+
+//    @JoinTable(name = "user_role",
+//            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+//            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+//    private Set<AuthorityEntity> authorities;
 
     public UserEntity() {
     }

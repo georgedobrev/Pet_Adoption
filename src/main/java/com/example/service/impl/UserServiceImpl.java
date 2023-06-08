@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,6 +30,10 @@ public class UserServiceImpl implements UserService {
         userEntity.setUserPassword(passwordEncoder.encode(userEntity.getUserPassword()));
         return userRepository.save(userEntity);
     }
+
+//    public UserEntity authenticate (String userEmail, String password){
+//        return userRepository.findByLoginAndPassword(userEmail,password). orElse(null);
+//    }
 
     @Override
     public boolean emailExists(String email) {
@@ -60,4 +65,6 @@ public class UserServiceImpl implements UserService {
         }
         return new User(user.getUserEmail(), user.getUserPassword(), Collections.singleton(new SimpleGrantedAuthority(user.getRoles().toString())));
     }
+
+
 }
