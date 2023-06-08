@@ -11,7 +11,7 @@ import lombok.Setter;
 @Table(name = "users")
 public class UserEntity {
 
-    @Column(name = "user_id", nullable = true)
+    @Column(name = "user_id", nullable = false)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userID;

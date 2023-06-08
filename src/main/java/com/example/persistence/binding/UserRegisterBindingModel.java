@@ -8,14 +8,6 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-import com.example.util.annotation.UniqueEmail;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-
 @Getter
 @Setter
 public class UserRegisterBindingModel {
@@ -45,6 +37,11 @@ public class UserRegisterBindingModel {
     @Length(min = 6, max = 30, message = "Password must be between 6 and 30")
     private String confirmPassword;
 
+    @NotBlank
+    @Pattern(regexp = "^\\+?359\\d{9}$", message = "Phone number must be in the format +359xxxxxxxxx")
+    private String userPhone;
+
     public UserRegisterBindingModel() {
+        this.userPhone = "+359";
     }
 }
