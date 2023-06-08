@@ -25,16 +25,14 @@ public class AnimalServiceImpl implements AnimalService {
 
 
     @Override
-    public  String addAnimal() {
+    public  void addAnimal(AnimalAddBindingModel animalAddBindingModel) {
 
         SizeCategoryEntity size = sizeCategoryRepository.findByCategory(animalAddBindingModel.getAnimalSize());
         SheltersEntity shelter = shelterRepository.findByShelterName(animalAddBindingModel.getShelterName()).orElseThrow(
                 () -> new RuntimeException("No shelter found with this name: " + animalAddBindingModel.getShelterName()));
-        AnimalsEntity animal = animalMapper.toEntity(animalAddBindingModel , sizeCategory ,shelters);
-        animal.setSizeCategory(size);
-        animal.setShelter(shelter);
+        AnimalsEntity animal = animalMapper.toEntity(animalAddBindingModel , size ,shelter);
         animalRepository.save(animal);
-        return animalRepository;
+
     }
 
   @Override

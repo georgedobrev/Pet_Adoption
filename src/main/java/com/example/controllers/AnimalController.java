@@ -28,8 +28,9 @@ public class AnimalController {
     }
 
     @PostMapping("/add")
-    public String addAnimal(@ModelAttribute("animal") AnimalAddBindingModel animalViewModel , SheltersEntity shelters , SizeCategoryEntity size) {
-        return serviceAnimal.addAnimal(animalViewModel , shelters , size);
+    public String addAnimal(@ModelAttribute("animal") AnimalAddBindingModel animalAddBindingModel) {
+         serviceAnimal.addAnimal(animalAddBindingModel);
+         return "";
     }
 
     @PostMapping("/{id}/edit")

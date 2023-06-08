@@ -18,9 +18,9 @@ public interface AnimalMapper {
     @Mapping(target ="animalSpecies", source = "model.animalSpecies")
     @Mapping(target = "gender", source = "model.animalGender")
     @Mapping(target = "animalAge", source = "model.animalAge")
-    @Mapping(target ="sizeCategory" , source = "model.animalSize")
+    @Mapping(target ="sizeCategory" , source = "sizeCategory")
     @Mapping(target = "animalCharacteristics" , source = "model.animalCharacteristics")
-    @Mapping(target = "shelters" ,source = "model.shelterName")
+    @Mapping(target = "shelter" ,source = "shelters")
     AnimalsEntity toEntity(AnimalAddBindingModel model, SizeCategoryEntity sizeCategory , SheltersEntity shelters);
 
 //    @Mapping(target = "animalPhotos", ignore = true)

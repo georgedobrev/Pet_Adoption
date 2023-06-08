@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface AnimalService {
 
-    String addAnimal(AnimalAddBindingModel animalAddBindingModel, SizeCategoryEntity sizeCategory, SheltersEntity shelters);
+     void addAnimal(AnimalAddBindingModel animalAddBindingModel);
 
     String updateAnimal(long id, AnimalAddBindingModel animalViewModel);
 
