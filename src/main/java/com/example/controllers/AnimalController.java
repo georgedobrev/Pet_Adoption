@@ -3,6 +3,7 @@ package com.example.controllers;
 import com.example.persistence.binding.AnimalAddBindingModel;
 import com.example.persistence.entities.AnimalsEntity;
 import com.example.persistence.entities.SheltersEntity;
+import com.example.persistence.entities.SizeCategoryEntity;
 import com.example.service.impl.AnimalServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,8 +28,8 @@ public class AnimalController {
     }
 
     @PostMapping("/add")
-    public String addAnimal(@ModelAttribute("animal") AnimalAddBindingModel animalViewModel) {
-        return serviceAnimal.addAnimal(animalViewModel);
+    public String addAnimal(@ModelAttribute("animal") AnimalAddBindingModel animalViewModel , SheltersEntity shelters , SizeCategoryEntity size) {
+        return serviceAnimal.addAnimal(animalViewModel , shelters , size);
     }
 
     @PostMapping("/{id}/edit")

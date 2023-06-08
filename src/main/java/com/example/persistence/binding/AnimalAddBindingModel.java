@@ -34,8 +34,8 @@ public class AnimalAddBindingModel {
     @NotBlank(message = "Cannot be empty")
     @Length(min = 3, max = 55)
     private String animalCharacteristics;
-    @NotBlank(message = "Shelter ID cannot be empty")
-    private long shelterID;
+    @NotBlank(message = "Shelter name cannot be empty")
+    private String shelterName;
 }
 
 
