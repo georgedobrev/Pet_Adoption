@@ -3,12 +3,14 @@ package com.example.persistence.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "shelters_phones")
 @Getter
 @Setter
+@NoArgsConstructor
 public class ShelterPhoneEntity {
 
     @Id
@@ -18,4 +20,5 @@ public class ShelterPhoneEntity {
 
     @Column(name = "shelter_phone")
     private String shelterPhone;
+
 }

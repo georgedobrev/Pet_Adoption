@@ -27,8 +27,8 @@ public class SheltersEntity {
     private String shelterAddress;
 
     @JoinColumn(name = "shelter_phone_id")
-    @ManyToOne()
-    private ShelterPhoneEntity shelterPhone;
+    @OneToMany()
+    private List<ShelterPhoneEntity> shelterPhone;
 
     @Column(name = "shelter_email", unique = true)
     private String shelterEmail;

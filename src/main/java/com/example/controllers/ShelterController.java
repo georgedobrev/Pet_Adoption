@@ -25,36 +25,36 @@ public class ShelterController {
 
     @GetMapping("/add")
     public String showAddShelterForm(Model model) {
-        model.addAttribute("shelter", shelterService.getAddShelterViewModel());
+        model.addAttribute("shelter", new AddShelterViewModel());
         return "shelter-add";
     }
 
     @PostMapping("/add")
-    public String addShelter(@ModelAttribute("shelter") ShelterAddBindingModel shelterViewModel) {
-        return shelterService.addShelter(shelterViewModel);
+    public String addShelter(@ModelAttribute("shelter") ShelterAddBindingModel shelterAddBindingModel) {
+        return shelterService.addShelter(shelterAddBindingModel);
     }
-
-    @GetMapping("/{id}/edit")
-    public String showEditShelterForm(@PathVariable("id") long id, Model model) {
-        AddShelterViewModel shelter = shelterService.getShelterForEditing(id);
-        System.out.println(shelter);
-        model.addAttribute("shelter", shelter);
-        return "shelter-edit";
-    }
-
-
-    @PostMapping("/{id}/edit")
-    public String updateShelter(@PathVariable("id") long id, @ModelAttribute("shelter") ShelterAddBindingModel shelterViewModel) {
-        System.out.println("The ID received is: " + id);
-        return shelterService.updateShelter(id, shelterViewModel);
-    }
-
-    @GetMapping
-    public String showShelterList(Model model) {
-        List<SheltersEntity> shelters = shelterService.getAllShelters();
-        model.addAttribute("shelters", shelters);
-        return "shelter-list";
-    }
+//
+//    @GetMapping("/{id}/edit")
+//    public String showEditShelterForm(@PathVariable("id") long id, Model model) {
+//        AddShelterViewModel shelter = shelterService.getShelterForEditing(id);
+//        System.out.println(shelter);
+//        model.addAttribute("shelter", shelter);
+//        return "shelter-edit";
+//    }
+//
+//
+//    @PostMapping("/{id}/edit")
+//    public String updateShelter(@PathVariable("id") long id, @ModelAttribute("shelter") ShelterAddBindingModel shelterViewModel) {
+//        System.out.println("The ID received is: " + id);
+//        return shelterService.updateShelter(id, shelterViewModel);
+//    }
+//
+//    @GetMapping
+//    public String showShelterList(Model model) {
+//        List<SheltersEntity> shelters = shelterService.getAllShelters();
+//        model.addAttribute("shelters", shelters);
+//        return "shelter-list";
+//    }
 
 
 }

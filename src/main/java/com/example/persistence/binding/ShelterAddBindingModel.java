@@ -25,5 +25,5 @@ public class ShelterAddBindingModel {
     @Length(min = 3, max = 20)
     private String shelterEmail;
     @NotBlank
-    private List<String> shelterPhones;
+    private Long shelterPhoneId;
 }
