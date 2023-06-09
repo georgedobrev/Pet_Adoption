@@ -4,20 +4,22 @@ import com.example.persistence.binding.UserRegisterBindingModel;
 import com.example.persistence.entities.UserEntity;
 import com.example.persistence.enums.RoleEnum;
 import com.example.service.UserService;
-import org.modelmapper.ModelMapper;
+import com.example.mapper.UserRegisterMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
-    private final ModelMapper modelMapper;
+    private final UserRegisterMapper userRegisterMapper;
 
-    public UserController(UserService userService, ModelMapper modelMapper) {
+    public UserController(UserService userService, UserRegisterMapper userRegisterMapper) {
         this.userService = userService;
-        this.modelMapper = modelMapper;
+        this.userRegisterMapper = userRegisterMapper;
     }
 
     @GetMapping("/login")
@@ -33,9 +35,18 @@ public class UserController {
 
     @PostMapping("/register")
     public String registerConfirm(@ModelAttribute("user") UserRegisterBindingModel user) {
-        UserEntity userEntity = modelMapper.map(user, UserEntity.class);
-        userEntity.setRoles(RoleEnum.USER); // Assign the "USER" role to the user
-        userService.register(userEntity);
+        UserEntity userEntity = userRegisterMapper.toUserEntity(user);
+        userEntity.setRoles(RoleEnum.USER);
+        userService.register(user);
         return "redirect:/users/login";
     }
+
+    @GetMapping("/user-list")
+    public String userList(Model model) {
+        List<UserEntity> users = userService.getAllUsers();
+        model.addAttribute("users", users);
+        return "user-list";
+    }
+
+
 }

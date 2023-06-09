@@ -1,4 +1,4 @@
-package com.example.repositories;
+package com.example.persistence.repositories;
 
 public interface SizeCategoryRepository {
 

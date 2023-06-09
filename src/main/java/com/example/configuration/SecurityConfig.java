@@ -24,7 +24,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/**", "/home", "/animals/add", "/img").permitAll()
+                        .requestMatchers("/**", "/home", "/animals/add", "/img", "/user-list").permitAll()
                         .anyRequest().authenticated()
                 )
                 .logout(LogoutConfigurer::permitAll);
