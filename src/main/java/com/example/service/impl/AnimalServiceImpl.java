@@ -1,6 +1,7 @@
 package com.example.service.impl;
 
 import com.example.persistence.binding.AnimalAddBindingModel;
+import com.example.persistence.binding.UpdateAnimalBindingModel;
 import com.example.persistence.entities.AnimalsEntity;
 import com.example.persistence.entities.SheltersEntity;
 import com.example.persistence.entities.SizeCategoryEntity;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 
@@ -20,36 +22,34 @@ public class AnimalServiceImpl implements AnimalService {
     private final AnimalRepository animalRepository;
     private final ShelterRepository shelterRepository;
     private final AnimalMapper animalMapper;
-   private final SizeCategoryRepository sizeCategoryRepository;
-
+    private final SizeCategoryRepository sizeCategoryRepository;
 
 
     @Override
-    public  void addAnimal(AnimalAddBindingModel animalAddBindingModel) {
-
+    public void addAnimal(AnimalAddBindingModel animalAddBindingModel) {
         SizeCategoryEntity size = sizeCategoryRepository.findByCategory(animalAddBindingModel.getAnimalSize());
         SheltersEntity shelter = shelterRepository.findByShelterName(animalAddBindingModel.getShelterName()).orElseThrow(
                 () -> new RuntimeException("No shelter found with this name: " + animalAddBindingModel.getShelterName()));
-        AnimalsEntity animal = animalMapper.toEntity(animalAddBindingModel , size ,shelter);
+        AnimalsEntity animal = animalMapper.toEntity(animalAddBindingModel, size, shelter);
         animalRepository.save(animal);
 
     }
 
-  @Override
-  public String updateAnimal(long id, AnimalAddBindingModel animalAddBindingModel) {
-      AnimalsEntity existingAnimal = animalRepository.findById(id).orElseThrow(
-              () -> new RuntimeException("No animal found with id " + id));
-   //   AnimalsEntity updatedAnimal = animalMapper.toEntity(animalAddBindingModel);
-   //   updatedAnimal.setAnimalID(existingAnimal.getAnimalID());
-    //  updatedAnimal.setShelter(existingAnimal.getShelter());
-    //  animalRepository.save(updatedAnimal);
-      return "redirect:/animals";
-  }
+// @Override
+// public void updateAnimal(long id, UpdateAnimalBindingModel updateAnimalBindingModel) {
+//     AnimalsEntity existingAnimal = animalRepository.findById(id).orElseThrow(
+//             () -> new RuntimeException("No animal found with id " + id));
+//     SizeCategoryEntity sizeCategory = sizeCategoryRepository.findByCategory(updateAnimalBindingModel.getAnimalSize());
+
+//       AnimalsEntity updatedAnimal = animalMapper.updateEntity(updateAnimalBindingModel , existingAnimal , sizeCategory);
+//      animalRepository.save(updatedAnimal);
+
+// }
 
   @Override
   public List<AnimalsEntity> getAllAnimals() {
       return animalRepository.findAll();
-    }
+  }
 }
 
 

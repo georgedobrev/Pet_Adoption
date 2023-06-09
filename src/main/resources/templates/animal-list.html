@@ -27,7 +27,7 @@
         <a class="nav-link" th:href="@{/}">Home</a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" th:href="@{/animal-list}">Pet Adoption</a>
+        <a class="nav-link" th:href="@{/animals/showAll}">Animals</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">Lost and Found</a>
@@ -53,37 +53,38 @@
 <div class="container my-2">
   <h1 class="text-center text-primary mb-4">Animals List</h1>
 
-  <a th:href="@{/animals/add}" class="btn btn-success btn-lg btn-block mb-3">Add Animal</a>
+  <a th:href="@{/animals/add}" class="btn btn-success mb-3">Add Animal</a>
 
   <table class="table table-bordered table-hover">
     <thead class="thead-dark">
     <tr>
-      <th>
-        <a th:href="@{/animals?sortField=name&amp;sortDir=__${reverseSortDir}__}">
-          Animal Name
-        </a>
-      </th>
-      <th>
-        <a th:href="@{/animals?sortField=species&amp;sortDir=__${reverseSortDir}__}">
-          Animal Species
-        </a>
-      </th>
-      <th>
-        <a th:href="@{/animals?sortField=sex&amp;sortDir=__${reverseSortDir}__}">
-          Animal Sex
-        </a>
-      </th>
+      <th>ID</th>
+      <th>Shelter ID</th>
+      <th>Name</th>
+      <th>Species</th>
+      <th>Gender</th>
+      <th>Age</th>
+      <th>Size Category</th>
+      <th>Characteristics</th>
+      <th>Is Adopted</th>
       <th>Actions</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="animal : ${animals}">
-      <td th:text="${animal.name}"></td>
-      <td th:text="${animal.species}"></td>
-      <td th:text="${animal.sex}"></td>
+      <td th:text="${animal.animalID}"></td>
       <td>
-        <a th:href="@{/animals/__${animal.id}__/edit}" class="btn btn-primary">Update</a>
-        <a th:href="@{/animals/__${animal.id}__/delete}" class="btn btn-danger">Delete</a>
+        <span th:if="${animal.shelter != null}" th:text="${animal.shelter.shelterID}"></span>
+      </td>
+      <td th:text="${animal.animalName}"></td>
+      <td th:text="${animal.animalSpecies}"></td>
+      <td th:text="${animal.gender}"></td>
+      <td th:text="${animal.animalAge}"></td>
+      <td th:text="${animal.sizeCategory.category}"></td>
+      <td th:text="${animal.animalCharacteristics}"></td>
+      <td th:text="${animal.is_adopted}"></td>
+      <td>
+        <a th:href="@{/animals/{id}/edit(id=${animal.animalID})}" class="btn btn-primary">Edit</a>
       </td>
     </tr>
     </tbody>
