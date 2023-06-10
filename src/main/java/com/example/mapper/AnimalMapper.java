@@ -27,8 +27,8 @@ public interface AnimalMapper {
     @Mapping(target = "animalName", source = "updateModel.animalName")
     @Mapping(target = "animalAge", source = "updateModel.animalAge")
     @Mapping(target = "sizeCategory", source = "sizeCategory")
-    @Mapping(target = "_adopted", source = "updateModel.adopted") // Use "_adopted" instead of "is_adopted"
     @Mapping(target = "animalCharacteristics", source = "updateModel.animalCharacteristics")
+    @Mapping(target = "is_adopted", source = "updateModel.adopted")
     AnimalsEntity updateEntity(UpdateAnimalBindingModel updateModel, @MappingTarget AnimalsEntity existingAnimal, SizeCategoryEntity sizeCategory);
 
 

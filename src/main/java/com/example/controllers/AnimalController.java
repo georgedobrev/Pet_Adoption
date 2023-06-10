@@ -37,17 +37,14 @@ public class AnimalController {
         animalService.addAnimal(animalAddBindingModel);
         return "redirect:/animals/showAll";
     }
-}
 
-//   @GetMapping("/{id}/edit")
-//   public String updateAnimal(
-//           @PathVariable("id") long id,
-//           @ModelAttribute("animal") UpdateAnimalBindingModel updateAnimalBindingModel
-//   ) {
-//       animalService.updateAnimal(id, updateAnimalBindingModel);
-//       return "redirect:/animals/showAll";
-//   }
-//
-//return "redirect:/animals";
-//return "add-animal-form";
-//return "animals-list";
+    @GetMapping("/{id}/edit")
+    public String updateAnimal(
+            @PathVariable("id") long id,
+            @ModelAttribute("animal") UpdateAnimalBindingModel updateAnimalBindingModel
+    ) {
+        animalService.updateAnimal(id, updateAnimalBindingModel);
+        return "redirect:/animals/showAll";
+    }
+
+}

@@ -35,16 +35,15 @@ public class AnimalServiceImpl implements AnimalService {
 
     }
 
-// @Override
-// public void updateAnimal(long id, UpdateAnimalBindingModel updateAnimalBindingModel) {
-//     AnimalsEntity existingAnimal = animalRepository.findById(id).orElseThrow(
-//             () -> new RuntimeException("No animal found with id " + id));
-//     SizeCategoryEntity sizeCategory = sizeCategoryRepository.findByCategory(updateAnimalBindingModel.getAnimalSize());
+    @Override
+    public void updateAnimal(long id, UpdateAnimalBindingModel updateAnimalBindingModel) {
+        AnimalsEntity existingAnimal = animalRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("No animal found with id " + id));
+        SizeCategoryEntity sizeCategory = sizeCategoryRepository.findByCategory(updateAnimalBindingModel.getAnimalSize());
 
-//       AnimalsEntity updatedAnimal = animalMapper.updateEntity(updateAnimalBindingModel , existingAnimal , sizeCategory);
-//      animalRepository.save(updatedAnimal);
-
-// }
+        AnimalsEntity updatedAnimal = animalMapper.updateEntity(updateAnimalBindingModel, existingAnimal, sizeCategory);
+        animalRepository.save(updatedAnimal);
+    }
 
   @Override
   public List<AnimalsEntity> getAllAnimals() {
