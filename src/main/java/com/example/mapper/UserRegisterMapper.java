@@ -13,5 +13,5 @@ public interface UserRegisterMapper {
     @Mapping(target = "userEmail", source = "userRegisterBindingModel.userEmail")
     @Mapping(target = "userPhone", source = "userRegisterBindingModel.userPhone")
     @Mapping(target = "userPassword", source = "userRegisterBindingModel.userPassword")
-    UserEntity toUserEntity(UserRegisterBindingModel userRegisterBindingModel);
+    UserEntity toUserEntity(UserRegisterBindingModel userRegisterBindingModel, String password);
 }

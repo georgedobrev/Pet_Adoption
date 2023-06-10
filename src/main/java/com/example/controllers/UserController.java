@@ -35,11 +35,10 @@ public class UserController {
 
     @PostMapping("/register")
     public String registerConfirm(@ModelAttribute("user") UserRegisterBindingModel user) {
-        UserEntity userEntity = userRegisterMapper.toUserEntity(user);
-        userEntity.setRoles(RoleEnum.USER);
         userService.register(user);
         return "redirect:/users/login";
     }
+
 
     @GetMapping("/user-list")
     public String userList(Model model) {

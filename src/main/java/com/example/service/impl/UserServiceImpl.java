@@ -1,12 +1,10 @@
 package com.example.service.impl;
 
 import com.example.persistence.entities.UserEntity;
-import com.example.persistence.enums.RoleEnum;
 import com.example.persistence.repositories.UserRepository;
 import com.example.service.UserService;
 import com.example.mapper.UserRegisterMapper;
 import com.example.persistence.binding.UserRegisterBindingModel;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,10 +20,9 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    @Transactional
     public UserEntity register(UserRegisterBindingModel userRegisterBindingModel) {
-        UserEntity userEntity = userRegisterMapper.toUserEntity(userRegisterBindingModel);
-        userEntity.setUserPassword(passwordEncoder.encode(userEntity.getUserPassword()));
+        String password = passwordEncoder.encode(userRegisterBindingModel.getUserPassword());
+        UserEntity userEntity = userRegisterMapper.toUserEntity(userRegisterBindingModel, password);
         return userRepository.save(userEntity);
     }
 
