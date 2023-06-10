@@ -51,7 +51,7 @@ public class AnimalsEntity {
     private String animalCharacteristics;
 
     @Column(name = "is_adopted")
-    private boolean is_adopted;
+    private boolean adopted;
 
     public AnimalsEntity() {
     }
