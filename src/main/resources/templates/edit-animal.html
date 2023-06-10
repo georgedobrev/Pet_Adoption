@@ -9,22 +9,8 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
   <style>
-        body {
-            background: #f2f2f2;
-        }
-        .container {
-            max-width: 500px;
-            margin: 0 auto;
-            margin-top: 50px;
-            background: #fff;
-            padding: 20px;
-            border-radius: 4px;
-            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
-        }
-        .container h1 {
-            margin-bottom: 20px;
-        }
-    </style>
+    /* CSS styles here */
+  </style>
 
 </head>
 <body>
@@ -60,7 +46,7 @@
 
     <div class="form-group">
       <label for="isAdopted">Is Adopted:</label>
-      <input type="checkbox" id="isAdopted" name="isAdopted" class="form-control" th:checked="${animal.isAdopted}" th:field="*{isAdopted}">
+      <input type="checkbox" id="isAdopted" name="isAdopted" class="form-control" th:checked="${animal.adopted}" th:field="*{adopted}">
     </div>
 
     <button type="submit" class="btn btn-primary">Update</button>

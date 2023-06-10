@@ -10,9 +10,11 @@ public interface AnimalService {
 
      void addAnimal(AnimalAddBindingModel animalAddBindingModel);
 
-   // AnimalsEntity updateAnimal(long id, UpdateAnimalBindingModel updateAnimalBindingModel);
+    AnimalsEntity updateAnimal(long id, UpdateAnimalBindingModel updateAnimalBindingModel);
 
     List<AnimalsEntity> getAllAnimals();
 
-   // void updateAnimal(long id , UpdateAnimalBindingModel updateAnimalBindingModel);
+    AnimalsEntity getAnimalById(long id);
+
+    // void updateAnimal(long id , UpdateAnimalBindingModel updateAnimalBindingModel);
 }

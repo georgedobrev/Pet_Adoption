@@ -12,8 +12,7 @@ import org.hibernate.validator.constraints.Length;
 
 @Getter@Setter@NoArgsConstructor
 public class UpdateAnimalBindingModel {
-    @NotBlank(message = "Cannot be empty")
-    @Length(min = 3, max = 20)
+
     private String animalName;
     @Min(value = 1, message = "Age must be greater than 0")
     private int animalAge;

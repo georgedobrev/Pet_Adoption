@@ -7,6 +7,8 @@ import com.example.service.AnimalService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import com.example.mapper.AnimalMapper;
+
 
 import java.util.List;
 
@@ -14,6 +16,8 @@ import java.util.List;
 @RequestMapping("/animals")
 public class AnimalController {
     private final AnimalService animalService;
+
+
 
     public AnimalController(AnimalService animalService) {
         this.animalService = animalService;
@@ -38,23 +42,21 @@ public class AnimalController {
         return "redirect:/animals/showAll";
     }
 
-  //  @GetMapping("/{id}/edit")
-  //  public String showUpdateAnimalForm(@PathVariable("id") long id, Model model) {
-  //      AnimalsEntity existingAnimal = animalService.updateAnimal(id ,new UpdateAnimalBindingModel());
-  //      UpdateAnimalBindingModel updateAnimalBindingModel = animalMapper.mapToUpdateBindingModel(existingAnimal);
-  //      model.addAttribute("animal", updateAnimalBindingModel);
-  //      return "edit-animal";
-  //  }
-//
-//
-  //  @PostMapping("/{id}/edit")
-  //  public String updateAnimal(
-  //          @PathVariable("id") long id,
-  //          @ModelAttribute("animal") UpdateAnimalBindingModel updateAnimalBindingModel
-  //  ) {
-  //      animalService.updateAnimal(id, updateAnimalBindingModel);
-  //      return "redirect:/animals/showAll";
-  //  }
+    @GetMapping("/{id}/edit")
+    public String showUpdateAnimalForm(@PathVariable("id") long id, Model model) {
+        AnimalsEntity existingAnimal = animalService.getAnimalById(id);
+        model.addAttribute("animal", new UpdateAnimalBindingModel());
+        return "edit-animal";
+    }
+
+  @PostMapping("/{id}/edit")
+  public String updateAnimal(
+          @PathVariable("id") long id,
+          @ModelAttribute("animal") UpdateAnimalBindingModel updateAnimalBindingModel
+  ) {
+      animalService.updateAnimal(id, updateAnimalBindingModel);
+      return "redirect:/animals/showAll";
+  }
 
 
 
