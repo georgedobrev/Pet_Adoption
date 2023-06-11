@@ -44,7 +44,7 @@ public class AnimalController {
 
     @GetMapping("/{id}/edit")
     public String showUpdateAnimalForm(@PathVariable("id") long id, Model model) {
-        AnimalsEntity existingAnimal = animalService.getAnimalById(id);
+        AnimalsEntity existingAnimal = animalService.updateAnimal(id ,  new UpdateAnimalBindingModel());
         model.addAttribute("animal", new UpdateAnimalBindingModel());
         return "edit-animal";
     }

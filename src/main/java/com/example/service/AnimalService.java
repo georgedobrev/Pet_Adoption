@@ -14,7 +14,6 @@ public interface AnimalService {
 
     List<AnimalsEntity> getAllAnimals();
 
-    AnimalsEntity getAnimalById(long id);
 
     // void updateAnimal(long id , UpdateAnimalBindingModel updateAnimalBindingModel);
 }
