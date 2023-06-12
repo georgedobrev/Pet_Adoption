@@ -5,10 +5,12 @@ import com.example.persistence.binding.UpdateAnimalBindingModel;
 import com.example.persistence.entities.AnimalsEntity;
 import com.example.persistence.entities.SheltersEntity;
 import com.example.persistence.entities.SizeCategoryEntity;
+import com.example.persistence.enums.SizeCategoryEnum;
 import com.example.persistence.view.AddAnimalViewModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +19,6 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = MapperUtil.class)
 @Component
 public interface AnimalMapper {
-    UpdateAnimalBindingModel toUpdateAnimalBindingModel(AnimalsEntity animalsEntity);
     @Mapping(target = "animalName", source = "model.animalName")
     @Mapping(target = "animalSpecies", source = "model.animalSpecies")
     @Mapping(target = "gender", source = "model.animalGender")
@@ -29,10 +30,12 @@ public interface AnimalMapper {
 
     @Mapping(target = "animalName", source = "updateModel.animalName")
     @Mapping(target = "animalAge", source = "updateModel.animalAge")
-    @Mapping(target = "sizeCategory", source = "sizeCategory")
     @Mapping(target = "animalCharacteristics", source = "updateModel.animalCharacteristics")
     @Mapping(target = "adopted", source = "updateModel.adopted")
-    AnimalsEntity updateEntity(UpdateAnimalBindingModel updateModel, @MappingTarget AnimalsEntity existingAnimal, SizeCategoryEntity sizeCategory);
+    @Mapping(target = "sizeCategory", source = "sizeCategoryEntity")
+    AnimalsEntity updateEntity(
+            UpdateAnimalBindingModel updateModel, AnimalsEntity existingAnimal, SizeCategoryEntity sizeCategoryEntity
+    );
 
 
 
@@ -40,6 +43,8 @@ public interface AnimalMapper {
 
     List<AnimalAddBindingModel> toModelList(List<AnimalsEntity> entities);
 
+    @Mapping(target = "animalSize", source = "existingAnimal.sizeCategory.category")
+    AddAnimalViewModel toAnimalViewModel(AnimalsEntity existingAnimal);
 }
 
 //   @Mapping(target = "animalPhotos", ignore = true)

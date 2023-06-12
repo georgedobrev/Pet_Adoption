@@ -5,19 +5,16 @@
   <title>Paw Finder - Edit Animal</title>
 
   <!-- Add any additional CSS or JS dependencies here -->
-
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
   <style>
     /* CSS styles here */
   </style>
-
 </head>
 <body>
 <div class="container">
   <h1>Edit Animal</h1>
 
-  <form th:action="@{/animals/{id}/edit}" th:object="${animal}" th:method="post">
+  <form th:action="@{/animals/__${id}__/edit/${id}" th:object="${animal}" th:method="post">
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
     <div class="form-group">
@@ -32,11 +29,13 @@
 
     <div class="form-group">
       <label for="animalSize">Size:</label>
-      <select id="animalSize" name="animalSize" class="form-control" th:field="*{animalSize}">
-        <option value="SMALL" th:selected="${animal.animalSize == 'SMALL'}">Small</option>
-        <option value="MEDIUM" th:selected="${animal.animalSize == 'MEDIUM'}">Medium</option>
-        <option value="LARGE" th:selected="${animal.animalSize == 'LARGE'}">Large</option>
+      <select id="animalSize" name="animalSize" class="form-control" th:field="*{sizeCategory}">
+        <option value="SMALL" th:selected="${animal.sizeCategory.category == 'SMALL'}">Small</option>
+        <option value="MEDIUM" th:selected="${animal.sizeCategory.category == 'MEDIUM'}">Medium</option>
+        <option value="LARGE" th:selected="${animal.sizeCategory.category == 'LARGE'}">Large</option>
       </select>
+
+
     </div>
 
     <div class="form-group">
@@ -52,6 +51,6 @@
     <button type="submit" class="btn btn-primary">Update</button>
   </form>
 </div>
-
 </body>
 </html>
+

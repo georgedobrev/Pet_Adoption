@@ -3,6 +3,7 @@ package com.example.persistence.entities;
 import com.example.persistence.enums.SizeCategoryEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter

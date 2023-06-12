@@ -3,6 +3,7 @@ package com.example.controllers;
 import com.example.persistence.binding.AnimalAddBindingModel;
 import com.example.persistence.binding.UpdateAnimalBindingModel;
 import com.example.persistence.entities.AnimalsEntity;
+import com.example.persistence.view.AddAnimalViewModel;
 import com.example.service.AnimalService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +17,6 @@ import java.util.List;
 @RequestMapping("/animals")
 public class AnimalController {
     private final AnimalService animalService;
-
 
 
     public AnimalController(AnimalService animalService) {
@@ -44,21 +44,21 @@ public class AnimalController {
 
     @GetMapping("/{id}/edit")
     public String showUpdateAnimalForm(@PathVariable("id") long id, Model model) {
-        AnimalsEntity existingAnimal = animalService.updateAnimal(id ,  new UpdateAnimalBindingModel());
-        model.addAttribute("animal", new UpdateAnimalBindingModel());
+        AddAnimalViewModel existingAnimal = animalService.getAnimalById(id);
+
+        model.addAttribute("animal", existingAnimal);
         return "edit-animal";
     }
 
-  @PostMapping("/{id}/edit")
-  public String updateAnimal(
-          @PathVariable("id") long id,
-          @ModelAttribute("animal") UpdateAnimalBindingModel updateAnimalBindingModel
-  ) {
-      animalService.updateAnimal(id, updateAnimalBindingModel);
-      return "redirect:/animals/showAll";
-  }
 
-
+    @PostMapping("/{id}/edit")
+    public String updateAnimal(
+            @PathVariable("id") long id,
+            @ModelAttribute("animal") UpdateAnimalBindingModel updateAnimalBindingModel
+    ) {
+        animalService.updateAnimal(id, updateAnimalBindingModel);
+        return "redirect:/animals/showAll";
+    }
 
 
 }

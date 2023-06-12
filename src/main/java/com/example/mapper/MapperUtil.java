@@ -1,6 +1,8 @@
 package com.example.mapper;
 
 import com.example.persistence.entities.AnimalPhotoEntity;
+import com.example.persistence.entities.SizeCategoryEntity;
+import com.example.persistence.enums.SizeCategoryEnum;
 import org.mapstruct.Qualifier;
 import org.springframework.stereotype.Component;
 

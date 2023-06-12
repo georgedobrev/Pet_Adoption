@@ -1,7 +1,7 @@
 package com.example.persistence.entities;
 
+import com.example.persistence.entities.SheltersEntity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,4 +18,8 @@ public class ShelterPhoneEntity {
 
     @Column(name = "shelter_phone")
     private String shelterPhone;
+
+    @JoinColumn(name = "shelter_id")
+    @ManyToOne
+    private SheltersEntity shelter;
 }
