@@ -29,16 +29,19 @@ public class UserRegisterBindingModel {
 
     @NotBlank
     @Length(min = 6, max = 100, message = "Password must be between 6 and 100 characters")
-    @Pattern(regexp = "^[a-zA-Z0-9-/.^&*_!@%+>)(]+$", message = "Password must contain at least 1 special symbol, 1 uppercase letter, 1 lowercase letter, and 1 digit")
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).*$",
+            message = "Password must contain at least 1 special symbol, 1 uppercase letter, 1 lowercase letter, and 1 digit")
     private String userPassword;
 
     @NotBlank
     @Length(min = 6, max = 30, message = "Password must be between 6 and 30")
-    @Pattern(regexp = "^[a-zA-Z0-9-/.^&*_!@%+>)(]+$", message = "Password must contains, at least " +
-            "1 special symbol, 1 uppercase," +
-            " lowercase letter, and 1 digit")
     private String confirmPassword;
 
+    @NotBlank
+    @Pattern(regexp = "^\\+?359\\d{9}$", message = "Phone number must be in the format +359xxxxxxxxx")
+    private String userPhone;
+
     public UserRegisterBindingModel() {
+        this.userPhone = "+359";
     }
 }

@@ -2,6 +2,7 @@ package com.example.controllers;
 
 import com.example.persistence.binding.UserRegisterBindingModel;
 import com.example.persistence.entities.UserEntity;
+import com.example.persistence.enums.RoleEnum;
 import com.example.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.modelmapper.ModelMapper;
@@ -10,9 +11,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import com.example.mapper.UserRegisterMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/users")
@@ -34,20 +38,6 @@ public class UserController {
         return "login";
     }
 
-    @PostMapping("/login")
-    public String loginConfirm(@ModelAttribute("user") UserRegisterBindingModel user, HttpServletRequest request) {
-        UserDetails userDetails = userService.loadUserByUsername(user.getUserEmail());
-        if (userDetails != null && passwordEncoder.matches(user.getUserPassword(), userDetails.getPassword())) {
-            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                    userDetails.getPassword(),
-                    userDetails.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(token);
-            return "redirect:/";
-        }
-        return "redirect:/users/login?error"; //add error
-    }
-
-
     @GetMapping("/register")
     public String register(Model model) {
         model.addAttribute("user", new UserRegisterBindingModel());
@@ -56,7 +46,17 @@ public class UserController {
 
     @PostMapping("/register")
     public String registerConfirm(@ModelAttribute("user") UserRegisterBindingModel user) {
-        userService.register(modelMapper.map(user, UserEntity.class));
+        userService.register(user);
         return "redirect:/users/login";
     }
+
+
+    @GetMapping("/user-list")
+    public String userList(Model model) {
+        List<UserEntity> users = userService.getAllUsers();
+        model.addAttribute("users", users);
+        return "user-list";
+    }
+
+
 }
