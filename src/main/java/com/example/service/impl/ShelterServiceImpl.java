@@ -7,10 +7,11 @@ import com.example.persistence.view.AddShelterViewModel;
 import com.example.repositories.ShelterPhonesRepository;
 import com.example.repositories.ShelterRepository;
 import com.example.service.ShelterService;
-import mapper.ShelterMapper;
+import com.example.mapper.ShelterMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,25 +23,35 @@ public class ShelterServiceImpl implements ShelterService {
 
     @Autowired
     public ShelterServiceImpl(ShelterRepository shelterRepository, ShelterPhonesRepository shelterPhonesRepository, ShelterMapper shelterMapper) {
-
         this.shelterRepository = shelterRepository;
         this.shelterPhonesRepository = shelterPhonesRepository;
         this.shelterMapper = shelterMapper;
     }
 
-//    @Override
-//    public AddShelterViewModel getAddShelterViewModel() {
-//        return new AddShelterViewModel();
-//    }
+    @Override
+    public AddShelterViewModel getAddShelterViewModel() {
+        return new AddShelterViewModel();
+    }
 
     @Override
     public String addShelter(ShelterAddBindingModel shelterAddBindingModel) {
-        ShelterPhoneEntity shelterPhone = shelterPhonesRepository.findByShelterPhoneID(shelterAddBindingModel.getShelterPhoneId());
-        SheltersEntity shelter = shelterMapper.toShelterEntity(shelterAddBindingModel, shelterPhone);
+        List<ShelterPhoneEntity> shelterPhoneEntities = new ArrayList<>();
+        for (String phone : shelterAddBindingModel.getShelterPhones()) {
+            ShelterPhoneEntity shelterPhoneEntity = new ShelterPhoneEntity();
+            shelterPhoneEntity.setShelterPhone(phone);
+            shelterPhoneEntities.add(shelterPhonesRepository.save(shelterPhoneEntity));
+        }
+        SheltersEntity shelter = shelterMapper.toShelterEntity(shelterAddBindingModel);
         shelterRepository.save(shelter);
         return "redirect:/shelters";
     }
+
+    @Override
+    public List<SheltersEntity> getAllShelters() {
+        return shelterRepository.findAll();
+    }
 }
+
 
 //    @Override
 //    public AddShelterViewModel getShelterForEditing(long id) {

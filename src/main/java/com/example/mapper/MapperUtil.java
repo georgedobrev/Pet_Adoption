@@ -1,4 +1,4 @@
-package mapper;
+package com.example.mapper;
 
 import com.example.persistence.entities.AnimalPhotoEntity;
 import org.mapstruct.Qualifier;

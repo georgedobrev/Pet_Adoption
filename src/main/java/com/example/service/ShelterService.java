@@ -7,9 +7,11 @@ import com.example.persistence.view.AddShelterViewModel;
 import java.util.List;
 
 public interface ShelterService {
-//    AddShelterViewModel getAddShelterViewModel();
+    AddShelterViewModel getAddShelterViewModel();
+
+    //    AddShelterViewModel getAddShelterViewModel();
     String addShelter(ShelterAddBindingModel shelterViewModel);
 //    AddShelterViewModel getShelterForEditing(long id);
 //    String updateShelter(long id, ShelterAddBindingModel shelterViewModel);
-//    List<SheltersEntity> getAllShelters();
+    List<SheltersEntity> getAllShelters();
 }

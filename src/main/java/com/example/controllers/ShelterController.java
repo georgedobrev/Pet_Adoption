@@ -49,12 +49,12 @@ public class ShelterController {
 //        return shelterService.updateShelter(id, shelterViewModel);
 //    }
 //
-//    @GetMapping
-//    public String showShelterList(Model model) {
-//        List<SheltersEntity> shelters = shelterService.getAllShelters();
-//        model.addAttribute("shelters", shelters);
-//        return "shelter-list";
-//    }
+    @GetMapping
+    public String showShelterList(Model model) {
+        List<SheltersEntity> shelters = shelterService.getAllShelters();
+        model.addAttribute("shelters", shelters);
+        return "shelter-list";
+    }
 
 
 }

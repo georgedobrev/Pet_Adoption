@@ -26,10 +26,6 @@ public class SheltersEntity {
     @Column(name = "shelter_address")
     private String shelterAddress;
 
-    @JoinColumn(name = "shelter_phone_id")
-    @OneToMany()
-    private List<ShelterPhoneEntity> shelterPhone;
-
     @Column(name = "shelter_email", unique = true)
     private String shelterEmail;
 
