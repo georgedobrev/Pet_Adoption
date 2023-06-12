@@ -14,4 +14,8 @@ public interface ShelterService {
 //    AddShelterViewModel getShelterForEditing(long id);
 //    String updateShelter(long id, ShelterAddBindingModel shelterViewModel);
     List<SheltersEntity> getAllShelters();
+
+    AddShelterViewModel getShelterForEditing(long id);
+
+    String updateShelter(long id, ShelterAddBindingModel shelterViewModel);
 }

@@ -8,11 +8,13 @@ import com.example.repositories.ShelterPhonesRepository;
 import com.example.repositories.ShelterRepository;
 import com.example.service.ShelterService;
 import com.example.mapper.ShelterMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ShelterServiceImpl implements ShelterService {
@@ -30,65 +32,60 @@ public class ShelterServiceImpl implements ShelterService {
 
     @Override
     public AddShelterViewModel getAddShelterViewModel() {
+
         return new AddShelterViewModel();
     }
 
     @Override
     public String addShelter(ShelterAddBindingModel shelterAddBindingModel) {
+        SheltersEntity shelter = shelterMapper.toShelterEntity(shelterAddBindingModel);
+        SheltersEntity savedShelter = shelterRepository.save(shelter);
+
         List<ShelterPhoneEntity> shelterPhoneEntities = new ArrayList<>();
         for (String phone : shelterAddBindingModel.getShelterPhones()) {
             ShelterPhoneEntity shelterPhoneEntity = new ShelterPhoneEntity();
             shelterPhoneEntity.setShelterPhone(phone);
-            shelterPhoneEntities.add(shelterPhonesRepository.save(shelterPhoneEntity));
+            shelterPhoneEntity.setShelter(savedShelter);
+            shelterPhoneEntities.add(shelterPhoneEntity);
         }
-        SheltersEntity shelter = shelterMapper.toShelterEntity(shelterAddBindingModel);
-        shelterRepository.save(shelter);
+
+        shelterPhonesRepository.saveAll(shelterPhoneEntities);
         return "redirect:/shelters";
     }
 
+
     @Override
     public List<SheltersEntity> getAllShelters() {
+
         return shelterRepository.findAll();
     }
+
+
+
+
+    @Override
+    public AddShelterViewModel getShelterForEditing(long id) {
+        SheltersEntity sheltersEntity = shelterRepository.findById(id).orElseThrow();
+        ShelterAddBindingModel model = shelterMapper.toShelterAddBindingModel(sheltersEntity);
+        AddShelterViewModel shelter = new AddShelterViewModel();
+        BeanUtils.copyProperties(model, shelter);
+        List<String> shelterPhones = shelterPhonesRepository.findAllByShelter(sheltersEntity)
+                .stream()
+                .map(ShelterPhoneEntity::getShelterPhone)
+                .collect(Collectors.toList());
+        shelter.setShelterPhone(shelterPhones);
+        return shelter;
+    }
+
+    @Override
+    public String updateShelter(long id, ShelterAddBindingModel shelterViewModel) {
+        SheltersEntity shelter = shelterRepository.findById(id).orElseThrow();
+        BeanUtils.copyProperties(shelterViewModel, shelter);
+        List<ShelterPhoneEntity> shelterPhoneEntities = shelterViewModel.getShelterPhones().stream()
+                .map(phone -> shelterMapper.toShelterPhoneEntity(shelter, phone))
+                .collect(Collectors.toList());
+        shelterPhonesRepository.saveAll(shelterPhoneEntities);
+        shelterRepository.save(shelter);
+        return "redirect:/shelters";
+    }
 }
-
-
-//    @Override
-//    public AddShelterViewModel getShelterForEditing(long id) {
-//        SheltersEntity sheltersEntity = shelterRepository.findById(id).orElseThrow();
-//        AddShelterViewModel shelter = new AddShelterViewModel();
-//        shelter.setShelterName(sheltersEntity.getShelterName());
-//        shelter.setShelterCity(sheltersEntity.getShelterCity());
-//        shelter.setShelterAddress(sheltersEntity.getShelterAddress());
-//        shelter.setShelterEmail(sheltersEntity.getShelterEmail());
-////        List<String> shelterPhones = sheltersEntity.getShelterPhone().stream()
-////                .map(ShelterPhoneEntity::getShelterPhone)
-////                .collect(Collectors.toList());
-////        shelter.setShelterPhone(shelterPhones);
-//        return shelter;
-//    }
-//
-//    @Override
-//    public String updateShelter(long id, ShelterAddBindingModel shelterViewModel) {
-//        SheltersEntity shelter = shelterRepository.findById(id).orElseThrow();
-//        shelter.setShelterName(shelterViewModel.getShelterName());
-//        shelter.setShelterCity(shelterViewModel.getShelterCity());
-//        shelter.setShelterAddress(shelterViewModel.getShelterAddress());
-//        shelter.setShelterEmail(shelterViewModel.getShelterEmail());
-////        List<ShelterPhoneEntity> shelterPhones = shelterViewModel.getShelterPhones().stream()
-////                .map(phoneNumber -> {
-////                    ShelterPhoneEntity shelterPhone = new ShelterPhoneEntity();
-////                    return shelterPhone;
-////                })
-////                .collect(Collectors.toList());
-////        shelter.setShelterPhone(shelterPhones);
-//        shelterRepository.save(shelter);
-//        return "redirect:/shelters";
-//    }
-//
-//    @Override
-//    public List<SheltersEntity> getAllShelters() {
-//
-//        return shelterRepository.findAll();
-//    }
-//}

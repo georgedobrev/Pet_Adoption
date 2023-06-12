@@ -22,6 +22,12 @@ public class ShelterController {
         this.shelterService = shelterService;
         this.animalService = animalService;
     }
+    @GetMapping
+    public String showShelterList(Model model) {
+        List<SheltersEntity> shelters = shelterService.getAllShelters();
+        model.addAttribute("shelters", shelters);
+        return "shelter-list";
+    }
 
     @GetMapping("/add")
     public String showAddShelterForm(Model model) {
@@ -33,28 +39,22 @@ public class ShelterController {
     public String addShelter(@ModelAttribute("shelter") ShelterAddBindingModel shelterAddBindingModel) {
         return shelterService.addShelter(shelterAddBindingModel);
     }
-//
-//    @GetMapping("/{id}/edit")
-//    public String showEditShelterForm(@PathVariable("id") long id, Model model) {
-//        AddShelterViewModel shelter = shelterService.getShelterForEditing(id);
-//        System.out.println(shelter);
-//        model.addAttribute("shelter", shelter);
-//        return "shelter-edit";
-//    }
-//
-//
-//    @PostMapping("/{id}/edit")
-//    public String updateShelter(@PathVariable("id") long id, @ModelAttribute("shelter") ShelterAddBindingModel shelterViewModel) {
-//        System.out.println("The ID received is: " + id);
-//        return shelterService.updateShelter(id, shelterViewModel);
-//    }
-//
-    @GetMapping
-    public String showShelterList(Model model) {
-        List<SheltersEntity> shelters = shelterService.getAllShelters();
-        model.addAttribute("shelters", shelters);
-        return "shelter-list";
+
+    @GetMapping("/{id}/edit")
+    public String showEditShelterForm(@PathVariable("id") long id, Model model) {
+        AddShelterViewModel shelter = shelterService.getShelterForEditing(id);
+        System.out.println(shelter);
+        model.addAttribute("shelter", shelter);
+        return "shelter-edit";
     }
+
+
+    @PostMapping("/{id}/edit")
+    public String updateShelter(@PathVariable("id") long id, @ModelAttribute("shelter") ShelterAddBindingModel shelterViewModel) {
+        System.out.println("The ID received is: " + id);
+        return shelterService.updateShelter(id, shelterViewModel);
+    }
+
 
 
 }
