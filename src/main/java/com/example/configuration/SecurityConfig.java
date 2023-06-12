@@ -1,5 +1,4 @@
 package com.example.configuration;
-
 import com.example.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -25,16 +24,24 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/**", "/home", "/animals/add", "/img", "/user-list").permitAll()
+                        .requestMatchers("/**", "/home", "/animals/add", "/img").permitAll()
                         .anyRequest().authenticated()
                 )
+                .formLogin(formLoginConfigurer -> formLoginConfigurer
+                        .loginPage("/users/login")
+                        .failureUrl("/users/login?error=true")
+                        .permitAll()
+                )
+
+
                 .logout(LogoutConfigurer::permitAll);
 
         return http.build();
     }
 
+
     @Bean
-    public UserDetailsService userDetailsService() {
+    public UserDetailsService userDetailsService () {
         UserDetails user =
                 User.withDefaultPasswordEncoder()
                         .username("user")

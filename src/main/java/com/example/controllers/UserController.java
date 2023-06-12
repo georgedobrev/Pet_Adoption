@@ -5,7 +5,6 @@ import com.example.persistence.entities.UserEntity;
 import com.example.persistence.enums.RoleEnum;
 import com.example.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,13 +21,11 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
-    private final ModelMapper modelMapper;
+
     private final PasswordEncoder passwordEncoder;
 
-
-    public UserController(UserService userService, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
+    public UserController(UserService userService,  PasswordEncoder passwordEncoder) {
         this.userService = userService;
-        this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -37,6 +34,33 @@ public class UserController {
         model.addAttribute("user", new UserRegisterBindingModel());
         return "login";
     }
+
+    @PostMapping("/login")
+    public String loginConfirm(@ModelAttribute("user") UserRegisterBindingModel user, HttpServletRequest request) {
+        UserDetails userDetails = userService.loadUserByUsername(user.getUserEmail());
+        if (userDetails != null && passwordEncoder.matches(user.getUserPassword(), userDetails.getPassword())) {
+            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+                    userDetails.getPassword(),
+                    userDetails.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(token);
+            return "redirect:/";
+        }
+        return "redirect:/users/login?error=true"; //add error
+    }
+//    @PostMapping("/login")
+//    public String loginConfirm(@ModelAttribute("user") UserRegisterBindingModel user, HttpServletRequest request) {
+//        UserDetails userDetails = userService.loadUserByUsername(user.getUserEmail());
+//        if (userDetails != null && passwordEncoder.matches(user.getUserPassword(), userDetails.getPassword())) {
+//            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+//                    userDetails.getUsername(), // Use getUsername() instead of getPassword()
+//                    userDetails.getPassword(),
+//                    userDetails.getAuthorities());
+//            SecurityContextHolder.getContext().setAuthentication(token);
+//            return "redirect:/";
+//        }
+//        return "redirect:/users/login?error=true";
+//    }
+
 
     @GetMapping("/register")
     public String register(Model model) {

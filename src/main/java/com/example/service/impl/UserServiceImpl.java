@@ -6,6 +6,10 @@ import com.example.service.UserService;
 import com.example.mapper.UserRegisterMapper;
 import com.example.persistence.binding.UserRegisterBindingModel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +24,20 @@ public class UserServiceImpl implements UserService {
     private final UserRegisterMapper userRegisterMapper;
     private final PasswordEncoder passwordEncoder;
 
+//    @Override
+//    public UserEntity register(UserRegisterBindingModel userRegisterBindingModel) {
+//        String password = passwordEncoder.encode(userRegisterBindingModel.getUserPassword());
+//        UserEntity userEntity = userRegisterMapper.toUserEntity(userRegisterBindingModel, password);
+//        return userRepository.save(userEntity);
+//    }
     @Override
     public UserEntity register(UserRegisterBindingModel userRegisterBindingModel) {
         String password = passwordEncoder.encode(userRegisterBindingModel.getUserPassword());
+        userRegisterBindingModel.setUserPassword(password); // Set the encoded password back to the model
         UserEntity userEntity = userRegisterMapper.toUserEntity(userRegisterBindingModel, password);
         return userRepository.save(userEntity);
     }
+
 
     @Override
     public boolean emailExists(String email) {
@@ -41,5 +53,15 @@ public class UserServiceImpl implements UserService {
     public List<UserEntity> getAllUsers() {
         return userRepository.findAll();
     }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        UserEntity user = userRepository.findByUserEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException(email);
+        }
+        return new User(user.getUserEmail(), user.getUserPassword(), Collections.singleton(new SimpleGrantedAuthority(user.getRoles().toString())));
+    }
+
 
 }
