@@ -21,6 +21,7 @@ public class AddAnimalViewModel {
     private SizeCategoryEnum animalSize;
     private String animalCharacteristics;
     private String shelterName;
+    private long animalId;
 
 
 

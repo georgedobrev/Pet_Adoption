@@ -44,6 +44,7 @@ public interface AnimalMapper {
     List<AnimalAddBindingModel> toModelList(List<AnimalsEntity> entities);
 
     @Mapping(target = "animalSize", source = "existingAnimal.sizeCategory.category")
+    @Mapping(target = "animalId", source = "existingAnimal.animalID")
     AddAnimalViewModel toAnimalViewModel(AnimalsEntity existingAnimal);
 }
 

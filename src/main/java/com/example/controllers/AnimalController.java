@@ -45,7 +45,6 @@ public class AnimalController {
     @GetMapping("/{id}/edit")
     public String showUpdateAnimalForm(@PathVariable("id") long id, Model model) {
         AddAnimalViewModel existingAnimal = animalService.getAnimalById(id);
-
         model.addAttribute("animal", existingAnimal);
         return "edit-animal";
     }
