@@ -21,7 +21,6 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
-
     private final PasswordEncoder passwordEncoder;
 
     public UserController(UserService userService,  PasswordEncoder passwordEncoder) {
@@ -35,33 +34,28 @@ public class UserController {
         return "login";
     }
 
-    @PostMapping("/login")
-    public String loginConfirm(@ModelAttribute("user") UserRegisterBindingModel user, HttpServletRequest request) {
-        UserDetails userDetails = userService.loadUserByUsername(user.getUserEmail());
-        if (userDetails != null && passwordEncoder.matches(user.getUserPassword(), userDetails.getPassword())) {
-            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                    userDetails.getPassword(),
-                    userDetails.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(token);
-            return "redirect:/";
-        }
-        return "redirect:/users/login?error=true"; //add error
-    }
 //    @PostMapping("/login")
 //    public String loginConfirm(@ModelAttribute("user") UserRegisterBindingModel user, HttpServletRequest request) {
 //        UserDetails userDetails = userService.loadUserByUsername(user.getUserEmail());
 //        if (userDetails != null && passwordEncoder.matches(user.getUserPassword(), userDetails.getPassword())) {
 //            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-//                    userDetails.getUsername(), // Use getUsername() instead of getPassword()
 //                    userDetails.getPassword(),
 //                    userDetails.getAuthorities());
 //            SecurityContextHolder.getContext().setAuthentication(token);
-//            return "redirect:/";
+//            return "redirect:/"; //userService
 //        }
-//        return "redirect:/users/login?error=true";
+//        return "redirect:/users/login?error=true"; //add error
 //    }
 
-
+    @PostMapping("/login")
+    public String loginConfirm(@ModelAttribute("user") UserRegisterBindingModel user) {
+        try {
+            userService.loginUser(user);
+            return "redirect:/";
+        } catch (BadCredentialsException ex) {
+            return "redirect:/users/login?error=true";
+        }
+    }
     @GetMapping("/register")
     public String register(Model model) {
         model.addAttribute("user", new UserRegisterBindingModel());
@@ -81,6 +75,4 @@ public class UserController {
         model.addAttribute("users", users);
         return "user-list";
     }
-
-
 }

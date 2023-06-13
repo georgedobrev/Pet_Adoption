@@ -17,4 +17,6 @@ public interface UserService {
     List<UserEntity> getAllUsers();
 
     UserDetails loadUserByUsername(String userEmail);
+
+    UserEntity loginUser(UserRegisterBindingModel userRegisterBindingModel);
 }
