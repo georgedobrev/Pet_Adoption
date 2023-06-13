@@ -42,8 +42,8 @@ public class AnimalServiceImpl implements AnimalService {
                 .orElseThrow(() -> new RuntimeException("No animal found with id " + id));
         SizeCategoryEntity sizeCategory = sizeCategoryRepository.findByCategory(updateAnimalBindingModel.getSizeCategory());
         AnimalsEntity updatedAnimal = animalMapper.updateEntity(updateAnimalBindingModel, existingAnimal, sizeCategory);
-        animalRepository.save(updatedAnimal);
-        return existingAnimal;
+        return animalRepository.save(updatedAnimal);
+
     }
 @Override
     public AddAnimalViewModel getAnimalById(long id) {
