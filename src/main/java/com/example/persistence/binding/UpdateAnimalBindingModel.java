@@ -22,5 +22,6 @@ public class UpdateAnimalBindingModel {
     @Length(min = 3, max = 55)
     private String animalCharacteristics;
     private boolean adopted;
+    private Long animalId;
 
 }

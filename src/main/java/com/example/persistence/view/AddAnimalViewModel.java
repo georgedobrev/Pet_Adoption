@@ -22,7 +22,7 @@ public class AddAnimalViewModel {
     private String animalCharacteristics;
     private String shelterName;
     private long animalId;
-
+    private boolean adopted;
 
 
 }

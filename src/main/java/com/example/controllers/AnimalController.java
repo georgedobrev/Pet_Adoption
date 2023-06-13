@@ -46,6 +46,7 @@ public class AnimalController {
     public String showUpdateAnimalForm(@PathVariable("id") long id, Model model) {
         AddAnimalViewModel existingAnimal = animalService.getAnimalById(id);
         model.addAttribute("animal", existingAnimal);
+        model.addAttribute("animalId" , id);
         return "edit-animal";
     }
 
@@ -55,9 +56,11 @@ public class AnimalController {
             @PathVariable("id") long id,
             @ModelAttribute("animal") UpdateAnimalBindingModel updateAnimalBindingModel
     ) {
+        updateAnimalBindingModel.setAnimalId(id);
         animalService.updateAnimal(id, updateAnimalBindingModel);
         return "redirect:/animals/showAll";
     }
+
 
 
 }
