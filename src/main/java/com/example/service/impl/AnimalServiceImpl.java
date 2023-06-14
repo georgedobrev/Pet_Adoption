@@ -45,20 +45,20 @@ public class AnimalServiceImpl implements AnimalService {
         return animalRepository.save(updatedAnimal);
 
     }
-@Override
+
+    @Override
     public AddAnimalViewModel getAnimalById(long id) {
         AnimalsEntity existingAnimal = animalRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("No animal found with id " + id));
+        AddAnimalViewModel animalViewModel = animalMapper.toAnimalViewModel(existingAnimal);
 
-    AddAnimalViewModel animalViewModel = animalMapper.toAnimalViewModel(existingAnimal);
-
-    return animalViewModel;
+        return animalViewModel;
     }
 
     @Override
-  public List<AnimalsEntity> getAllAnimals() {
-      return animalRepository.findAll();
-  }
+    public List<AnimalsEntity> getAllAnimals() {
+        return animalRepository.findAll();
+    }
 }
 
 

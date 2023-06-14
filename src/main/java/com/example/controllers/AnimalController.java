@@ -8,7 +8,6 @@ import com.example.service.AnimalService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import com.example.mapper.AnimalMapper;
 
 
 import java.util.List;
@@ -21,6 +20,7 @@ public class AnimalController {
 
     public AnimalController(AnimalService animalService) {
         this.animalService = animalService;
+
     }
 
     @GetMapping("/showAll")
@@ -50,7 +50,6 @@ public class AnimalController {
         return "edit-animal";
     }
 
-
     @PostMapping("/{id}/edit")
     public String updateAnimal(
             @PathVariable("id") long id,
@@ -60,7 +59,4 @@ public class AnimalController {
         animalService.updateAnimal(id, updateAnimalBindingModel);
         return "redirect:/animals/showAll";
     }
-
-
-
 }

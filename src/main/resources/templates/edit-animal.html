@@ -26,10 +26,10 @@
     </div>
 
     <div class="form-group">
-      <label for="animalSize">Size:</label>
-      <select id="animalSize" name="animalSize" class="form-control" th:field="*{animalSize}">
+      <label for="sizeCategory">Size:</label>
+      <select id="sizeCategory" name="sizeCategory" class="form-control" th:field="*{sizeCategory}">
         <option th:each="sizeOpt : ${T(com.example.persistence.enums.SizeCategoryEnum).values()}"
-                th:value="${sizeOpt}" th:text="${sizeOpt}"></option>
+                th:value="${sizeOpt.toString()}" th:text="${sizeOpt.toString()}"></option>
       </select>
     </div>
 

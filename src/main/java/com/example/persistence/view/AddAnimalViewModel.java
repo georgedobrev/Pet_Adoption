@@ -18,7 +18,7 @@ public class AddAnimalViewModel {
     private AnimalSpeciesEnum animalSpecies;
     private AnimalSexEnum animalGender;
     private int animalAge;
-    private SizeCategoryEnum animalSize;
+    private SizeCategoryEnum sizeCategory;
     private String animalCharacteristics;
     private String shelterName;
     private long animalId;
