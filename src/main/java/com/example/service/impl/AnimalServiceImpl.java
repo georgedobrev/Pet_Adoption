@@ -25,6 +25,7 @@ public class AnimalServiceImpl implements AnimalService {
 
     @Override
     public AnimalsEntity getAnimalById(long animalId) {
+
         return animalRepository.findById(animalId).orElse(null);
     }
 

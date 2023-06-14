@@ -19,14 +19,15 @@ public class ShelterPhoneEntity {
     private long shelterPhoneID;
 
     @Column(name = "shelter_phone")
-    private String shelterPhone;
+    private String shelterPhones;
 
     @JoinColumn(name = "shelter_id")
     @ManyToOne
     private SheltersEntity shelter;
 
     public ShelterPhoneEntity(String shelterPhone) {
-        this.shelterPhone = shelterPhone;
+
+        this.shelterPhones = shelterPhone;
     }
 
 }

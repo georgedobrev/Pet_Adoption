@@ -71,9 +71,9 @@
             <label for="shelterEmail">Email:</label>
             <input type="email" id="shelterEmail" th:field="*{shelterEmail}" required>
         </div>
-        <div th:each="phone, stat : *{shelterPhone}">
-            <label th:for="${'shelterPhone['+stat.index+']'}">Phone:</label>
-            <input type="text" th:id="${'shelterPhone['+stat.index+']'}" th:field="*{shelterPhone[__${stat.index}__]}" required>
+        <div th:each="phone, stat : *{shelterPhones}">
+            <label th:for="${'shelterPhones['+stat.index+']'}">Phone:</label>
+            <input type="text" th:id="${'shelterPhones['+stat.index+']'}" th:field="*{shelterPhones[__${stat.index}__]}" required>
         </div>
         <button type="submit">Save</button>
     </form>

@@ -30,11 +30,7 @@ public class ShelterServiceImpl implements ShelterService {
         this.shelterMapper = shelterMapper;
     }
 
-    @Override
-    public AddShelterViewModel getAddShelterViewModel() {
 
-        return new AddShelterViewModel();
-    }
 
     @Override
     public String addShelter(ShelterAddBindingModel shelterAddBindingModel) {
@@ -44,7 +40,7 @@ public class ShelterServiceImpl implements ShelterService {
         List<ShelterPhoneEntity> shelterPhoneEntities = new ArrayList<>();
         for (String phone : shelterAddBindingModel.getShelterPhones()) {
             ShelterPhoneEntity shelterPhoneEntity = new ShelterPhoneEntity();
-            shelterPhoneEntity.setShelterPhone(phone);
+            shelterPhoneEntity.setShelterPhones(phone);
             shelterPhoneEntity.setShelter(savedShelter);
             shelterPhoneEntities.add(shelterPhoneEntity);
         }
@@ -60,32 +56,38 @@ public class ShelterServiceImpl implements ShelterService {
         return shelterRepository.findAll();
     }
 
-
-
-
     @Override
-    public AddShelterViewModel getShelterForEditing(long id) {
-        SheltersEntity sheltersEntity = shelterRepository.findById(id).orElseThrow();
-        ShelterAddBindingModel model = shelterMapper.toShelterAddBindingModel(sheltersEntity);
-        AddShelterViewModel shelter = new AddShelterViewModel();
-        BeanUtils.copyProperties(model, shelter);
-        List<String> shelterPhones = shelterPhonesRepository.findAllByShelter(sheltersEntity)
-                .stream()
-                .map(ShelterPhoneEntity::getShelterPhone)
-                .collect(Collectors.toList());
-        shelter.setShelterPhone(shelterPhones);
-        return shelter;
+    public AddShelterViewModel getShelterById(long id) {
+        SheltersEntity existingShelter = shelterRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("No shelter found with id " + id));
+        AddShelterViewModel shelterViewModel = shelterMapper.toShelterViewModel(existingShelter);
+
+        return shelterViewModel;
     }
 
     @Override
-    public String updateShelter(long id, ShelterAddBindingModel shelterViewModel) {
-        SheltersEntity shelter = shelterRepository.findById(id).orElseThrow();
-        BeanUtils.copyProperties(shelterViewModel, shelter);
-        List<ShelterPhoneEntity> shelterPhoneEntities = shelterViewModel.getShelterPhones().stream()
-                .map(phone -> shelterMapper.toShelterPhoneEntity(shelter, phone))
-                .collect(Collectors.toList());
-        shelterPhonesRepository.saveAll(shelterPhoneEntities);
-        shelterRepository.save(shelter);
-        return "redirect:/shelters";
+    public String updateShelter(long id, ShelterAddBindingModel shelterAddBindingModelModel) {
+        SheltersEntity existingShelter = shelterRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("No shelter found with id" + id));
+        List<String> phoneNumbers = shelterAddBindingModelModel.getShelterPhones();
+        List<ShelterPhoneEntity> shelterPhone = phoneNumbers.stream().map(phone -> shelterMapper.toShelterEntity())
+        return null;
     }
+
+
+//    @Override
+//    public String updateShelter(long id, ShelterAddBindingModel shelterViewModel) {
+//        SheltersEntity shelter = shelterRepository.findById(id).orElseThrow();
+//        BeanUtils.copyProperties(shelterViewModel, shelter);
+//        List<String> phoneNumbers = shelterViewModel.getShelterPhones();
+//        List<ShelterPhoneEntity> shelterPhoneEntities = phoneNumbers.stream()
+//                .map(phone -> shelterMapper.toShelterPhoneEntity(shelter, phone))
+//                .collect(Collectors.toList());
+//        shelterPhonesRepository.saveAll(shelterPhoneEntities);
+//
+//        shelter.setShelterPhones(shelterPhoneEntities);
+//        shelterRepository.save(shelter);
+//        return "redirect:/shelters";
+//    }
+
 }

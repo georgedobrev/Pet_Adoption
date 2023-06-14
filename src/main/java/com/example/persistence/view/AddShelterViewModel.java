@@ -15,5 +15,5 @@ public class AddShelterViewModel {
     private String shelterCity;
     private String shelterAddress;
     private String shelterEmail;
-    private List<String> shelterPhone;
+    private List<String> shelterPhones;
 }

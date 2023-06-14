@@ -41,19 +41,19 @@ public class ShelterController {
     }
 
     @GetMapping("/{id}/edit")
-    public String showEditShelterForm(@PathVariable("id") long id, Model model) {
-        AddShelterViewModel shelter = shelterService.getShelterForEditing(id);
-        System.out.println(shelter);
-        model.addAttribute("shelter", shelter);
+    public String showUpdateShelterForm(@PathVariable("id") long id, Model model) {
+        AddShelterViewModel existingShelter = shelterService.getShelterById(id);
+        model.addAttribute("shelter", existingShelter);
+        model.addAttribute("shelterId" , id);
         return "shelter-edit";
     }
 
 
-    @PostMapping("/{id}/edit")
-    public String updateShelter(@PathVariable("id") long id, @ModelAttribute("shelter") ShelterAddBindingModel shelterViewModel) {
-        System.out.println("The ID received is: " + id);
-        return shelterService.updateShelter(id, shelterViewModel);
-    }
+//    @PostMapping("/{id}/edit")
+//    public String updateShelter(@PathVariable("id") long id, @ModelAttribute("shelter") ShelterAddBindingModel shelterViewModel) {
+//        System.out.println("The ID received is: " + id);
+//        return shelterService.updateShelter(id, shelterViewModel);
+//    }
 
 
 

@@ -29,6 +29,10 @@ public class SheltersEntity {
     @Column(name = "shelter_email", unique = true)
     private String shelterEmail;
 
+    @OneToMany(mappedBy = "shelter", cascade = CascadeType.ALL)
+    private List<ShelterPhoneEntity> shelterPhones;
+
+
     public SheltersEntity() {
     }
 
