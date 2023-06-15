@@ -10,7 +10,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
-@Getter@Setter@NoArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 public class UpdateAnimalBindingModel {
     @NotBlank(message = "Cannot be empty")
     @Length(min = 3, max = 20)

@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class AddAnimalViewModel {
-  //  private List<String> animalPhoto;
+    //  private List<String> animalPhoto;
     private String animalName;
     private AnimalSpeciesEnum animalSpecies;
     private AnimalSexEnum animalGender;

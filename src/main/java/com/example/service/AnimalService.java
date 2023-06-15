@@ -9,14 +9,13 @@ import java.util.List;
 
 public interface AnimalService {
 
-     void addAnimal(AnimalAddBindingModel animalAddBindingModel);
+    void addAnimal(AnimalAddBindingModel animalAddBindingModel);
 
     AnimalsEntity updateAnimal(long id, UpdateAnimalBindingModel updateAnimalBindingModel);
 
     AddAnimalViewModel getAnimalById(long id);
 
     List<AnimalsEntity> getAllAnimals();
-
 
 
 }

@@ -46,7 +46,7 @@ public class AnimalController {
     public String showUpdateAnimalForm(@PathVariable("id") long id, Model model) {
         AddAnimalViewModel existingAnimal = animalService.getAnimalById(id);
         model.addAttribute("animal", existingAnimal);
-        model.addAttribute("animalId" , id);
+        model.addAttribute("animalId", id);
         return "edit-animal";
     }
 

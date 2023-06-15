@@ -25,7 +25,6 @@ public class MapperUtil {
     public @interface MapPhotoList {
     }
 
-
     @MapPhotoList
     public List<String> mapPhotost(List<AnimalPhotoEntity> animalPhotoEntityList) {
         return animalPhotoEntityList.stream().map(AnimalPhotoEntity::getAnimalPhotoURL).toList();

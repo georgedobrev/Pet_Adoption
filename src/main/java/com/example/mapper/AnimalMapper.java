@@ -38,7 +38,6 @@ public interface AnimalMapper {
     );
 
 
-
     List<AnimalsEntity> toEntityList(List<AnimalAddBindingModel> models);
 
     List<AnimalAddBindingModel> toModelList(List<AnimalsEntity> entities);

@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface ShelterRepository extends JpaRepository<SheltersEntity , Long> {
+public interface ShelterRepository extends JpaRepository<SheltersEntity, Long> {
     Optional<SheltersEntity> findByShelterName(String shelterName);
 }
