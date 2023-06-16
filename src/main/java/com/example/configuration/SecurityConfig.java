@@ -1,9 +1,11 @@
 package com.example.configuration;
 import com.example.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.core.userdetails.User;
@@ -23,13 +25,17 @@ public class SecurityConfig {
 
     private final PasswordEncoder passwordEncoder;
 
+
+
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests( auth -> {
-                    auth.requestMatchers("/", "/register", "/home").permitAll();
+                    auth.requestMatchers("/", "/users/register", "/home", "/users/login").permitAll();
                     auth.anyRequest().authenticated();
                 })
+
                 .formLogin(formLoginConfigurer -> formLoginConfigurer
                         .loginPage("/users/login")
                         .passwordParameter("userPassword").usernameParameter("userEmail")

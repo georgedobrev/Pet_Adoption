@@ -6,11 +6,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class UserSecurityEntity implements UserDetails {
 
-    private UserEntity userEntity;
+    private final UserEntity userEntity;
 
     public UserSecurityEntity(UserEntity userEntity){
         this.userEntity = userEntity;
@@ -23,8 +24,9 @@ public class UserSecurityEntity implements UserDetails {
 //    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-    return Arrays.asList(new SimpleGrantedAuthority(userEntity.getAuthority().getAuthority()));
+    return List.of(new SimpleGrantedAuthority(userEntity.getAuthority().getAuthority()));
     }
+
 
 
     @Override

@@ -65,21 +65,15 @@ public class UserServiceImpl implements UserService {
         }
         return new UserSecurityEntity(user);
     }
-//    @Override
-//    public UserDetails loadUserByUsername(String userEmail) {
-//        Optional<UserEntity> user = this.userRepository.findByEmail(userEmail);
-//        user.orElseThrow(() -> new UsernameNotFoundException(userEmail));
-//        return user.map(UserSecurityEntity::new).get();
-//    }
+
 
     @Override
     public UserEntity loginUser(UserRegisterBindingModel userRegisterBindingModel) {
-        UserEntity userDetails = this.userRepository.findByUserEmail(userRegisterBindingModel.getUserEmail());
-
-
-        // watch watch-shop
-
-        return null;
+        UserEntity user = this.userRepository.findByUserEmail(userRegisterBindingModel.getUserEmail());
+        if (user == null || !passwordEncoder.matches(userRegisterBindingModel.getUserPassword(), user.getUserPassword())) {
+            throw new BadCredentialsException("Invalid email/password provided");
+        }
+        return user;
     }
 
 //    public String loginUser(@ModelAttribute("user") UserRegisterBindingModel user) {
