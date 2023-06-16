@@ -19,15 +19,24 @@ public interface ShelterMapper {
     @Mapping(target = "shelterAddress", source = "model.shelterAddress")
     @Mapping(target = "shelterEmail", source = "model.shelterEmail")
     @Mapping(target = "shelterPhones", ignore = true)
-    //@Mapping(target = "shelterPhones", source = "model.shelterPhones", qualifiedBy = MapperUtil.MapPhoneList.class)
     SheltersEntity toShelterEntity(ShelterAddBindingModel model);
 
     @Mapping(target = "shelterName", source = "entity.shelterName")
     @Mapping(target = "shelterCity", source = "entity.shelterCity")
     @Mapping(target = "shelterAddress", source = "entity.shelterAddress")
     @Mapping(target = "shelterEmail", source = "entity.shelterEmail")
+    //@Mapping(target = "shelterPhones", ignore = true)
     @Mapping(target = "shelterPhones", source = "entity.shelterPhones", qualifiedBy = MapperUtil.MapPhoneList.class)
     AddShelterViewModel toShelterViewModel(SheltersEntity entity);
 
+
+    @Mapping(target = "shelterName", source = "bindingModel.shelterName")
+    @Mapping(target = "shelterCity", source = "bindingModel.shelterCity")
+    @Mapping(target = "shelterAddress", source = "bindingModel.shelterAddress")
+    @Mapping(target = "shelterEmail", source = "bindingModel.shelterEmail")
+    @Mapping(target = "shelterPhones", ignore = true)
+    //@Mapping(target = "shelterPhones", source = "bindingModel.shelterPhones", qualifiedBy = MapperUtil.MapPhoneEntity.class)
+    SheltersEntity updateEntity(ShelterAddBindingModel bindingModel,
+                                SheltersEntity existingShelter);
 
 }

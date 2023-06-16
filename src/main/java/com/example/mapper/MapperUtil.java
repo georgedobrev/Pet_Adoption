@@ -22,8 +22,20 @@ public class MapperUtil {
     }
 
     @MapPhoneList
-    public List<String> mapPhones(List<ShelterPhoneEntity> phones) {
+    public List<String> mapPhonesToStringg(List<ShelterPhoneEntity> phones) {
    return phones.stream().map(ShelterPhoneEntity::getShelterPhones)
            .collect(Collectors.toList());
+    }
+
+    @Qualifier
+    @Target(ElementType.METHOD)
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface MapPhoneEntity {
+    }
+
+    @MapPhoneEntity
+    public List<ShelterPhoneEntity> mapToShelterPhoneEntitiess(List<String> phones) {
+        return phones.stream().map(ShelterPhoneEntity::new)
+                .collect(Collectors.toList());
     }
 }

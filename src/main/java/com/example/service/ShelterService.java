@@ -11,7 +11,7 @@ public interface ShelterService {
     String addShelter(ShelterAddBindingModel shelterViewModel);
     List<SheltersEntity> getAllShelters();
     AddShelterViewModel getShelterById(long shelterId);
-    String updateShelter(long id, ShelterAddBindingModel shelterAddBindingModelodel);
+    String updateShelter(long id, ShelterAddBindingModel shelterAddBindingModel);
 
 
 

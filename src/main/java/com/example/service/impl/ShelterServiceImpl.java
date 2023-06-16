@@ -65,29 +65,38 @@ public class ShelterServiceImpl implements ShelterService {
         return shelterViewModel;
     }
 
+
     @Override
-    public String updateShelter(long id, ShelterAddBindingModel shelterAddBindingModelModel) {
+    public String updateShelter(long id, ShelterAddBindingModel shelterAddBindingModel) {
         SheltersEntity existingShelter = shelterRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("No shelter found with id" + id));
-        List<String> phoneNumbers = shelterAddBindingModelModel.getShelterPhones();
-        List<ShelterPhoneEntity> shelterPhone = phoneNumbers.stream().map(phone -> shelterMapper.toShelterEntity())
-        return null;
+                .orElseThrow(() -> new RuntimeException("No shelter find with id" + id));
+        List<ShelterPhoneEntity> phoneEntities = shelterPhonesRepository.findByShelter(existingShelter);
+        SheltersEntity updatedShelter = shelterMapper.updateEntity(shelterAddBindingModel, existingShelter);
+        for (int i = 0; i < shelterAddBindingModel.getShelterPhones().size(); i++) {
+            phoneEntities.get(i).setShelterPhones(shelterAddBindingModel.getShelterPhones().get(i));
+        }
+
+        updatedShelter.setShelterPhones(phoneEntities);
+        shelterRepository.save(updatedShelter);
+        return "redirect:/shelters";
     }
 
 
-//    @Override
-//    public String updateShelter(long id, ShelterAddBindingModel shelterViewModel) {
-//        SheltersEntity shelter = shelterRepository.findById(id).orElseThrow();
-//        BeanUtils.copyProperties(shelterViewModel, shelter);
-//        List<String> phoneNumbers = shelterViewModel.getShelterPhones();
-//        List<ShelterPhoneEntity> shelterPhoneEntities = phoneNumbers.stream()
-//                .map(phone -> shelterMapper.toShelterPhoneEntity(shelter, phone))
-//                .collect(Collectors.toList());
-//        shelterPhonesRepository.saveAll(shelterPhoneEntities);
-//
-//        shelter.setShelterPhones(shelterPhoneEntities);
-//        shelterRepository.save(shelter);
-//        return "redirect:/shelters";
+
+
+
+
+//@Override
+//public String updateShelter(long id, ShelterAddBindingModel shelterAddBindingModel) {
+//    SheltersEntity existingShelter = shelterRepository.findById(id)
+//            .orElseThrow(() -> new RuntimeException("No shelter find with id" + id));
+//    List<ShelterPhoneEntity> phoneEntities = shelterPhonesRepository.findByShelter(existingShelter);
+//    for (ShelterPhoneEntity oldPhone : phoneEntities) {
+//        shelterPhonesRepository.delete(oldPhone);
 //    }
+//    SheltersEntity updatedShelter = shelterMapper.updateEntity(shelterAddBindingModel,existingShelter,phoneEntities);
+//    shelterRepository.save(updatedShelter);
+//    return "redirect:/shelters";
+//}
 
 }

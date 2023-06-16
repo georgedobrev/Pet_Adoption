@@ -49,11 +49,11 @@ public class ShelterController {
     }
 
 
-//    @PostMapping("/{id}/edit")
-//    public String updateShelter(@PathVariable("id") long id, @ModelAttribute("shelter") ShelterAddBindingModel shelterViewModel) {
-//        System.out.println("The ID received is: " + id);
-//        return shelterService.updateShelter(id, shelterViewModel);
-//    }
+    @PostMapping("/{id}/edit")
+    public String updateShelter(@PathVariable("id") long id,
+                                @ModelAttribute("shelter") ShelterAddBindingModel shelterViewModel) {
+        return shelterService.updateShelter(id, shelterViewModel);
+    }
 
 
 
