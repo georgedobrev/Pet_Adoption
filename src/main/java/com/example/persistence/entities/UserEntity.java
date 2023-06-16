@@ -1,5 +1,7 @@
 package com.example.persistence.entities;
 
+import com.example.persistence.enums.AnimalSexEnum;
+import com.example.persistence.enums.AnimalSpeciesEnum;
 import com.example.persistence.enums.RoleEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -26,6 +28,7 @@ public class UserEntity {
 
     @Column(name = "user_email", nullable = false)
     private String userEmail;
+
     @Column(name = "user_phone")
     private String userPhone;
 
@@ -41,14 +44,12 @@ public class UserEntity {
     @Column(name = "user_refresh_token")
     private String userRefreshToken;
 
-    @Column(name = "user_role", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private RoleEnum roles;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "role_id", referencedColumnName = "role_id")
+    private AuthorityEntity authority;
 
-//    @JoinTable(name = "user_role",
-//            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-//            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-//    private Set<AuthorityEntity> authorities;
+
+
 
     public UserEntity() {
     }

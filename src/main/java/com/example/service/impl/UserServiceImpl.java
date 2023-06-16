@@ -1,6 +1,7 @@
 package com.example.service.impl;
 
 import com.example.persistence.entities.UserEntity;
+import com.example.persistence.entities.UserSecurityEntity;
 import com.example.persistence.repositories.UserRepository;
 import com.example.service.UserService;
 import com.example.mapper.UserRegisterMapper;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -40,13 +42,13 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public boolean emailExists(String email) {
-        return userRepository.findByUserEmail(email) != null;
+    public boolean emailExists(String userEmail) {
+        return userRepository.findByUserEmail(userEmail) != null;
     }
 
     @Override
-    public UserEntity findByEmail(String email) {
-        return userRepository.findByUserEmail(email);
+    public UserEntity findByEmail(String userEmail) {
+        return userRepository.findByUserEmail(userEmail);
     }
 
     @Override
@@ -54,35 +56,31 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
+
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        UserEntity user = userRepository.findByUserEmail(email);
+    public UserDetails loadUserByUsername(String userEmail) {
+        UserEntity user = this.userRepository.findByUserEmail(userEmail);
         if (user == null) {
-            throw new UsernameNotFoundException(email);
+            throw new UsernameNotFoundException(userEmail);
         }
-        return new User(user.getUserEmail(), user.getUserPassword(), Collections.singleton(new SimpleGrantedAuthority(user.getRoles().toString())));
+        return new UserSecurityEntity(user);
     }
+//    @Override
+//    public UserDetails loadUserByUsername(String userEmail) {
+//        Optional<UserEntity> user = this.userRepository.findByEmail(userEmail);
+//        user.orElseThrow(() -> new UsernameNotFoundException(userEmail));
+//        return user.map(UserSecurityEntity::new).get();
+//    }
+
     @Override
     public UserEntity loginUser(UserRegisterBindingModel userRegisterBindingModel) {
-        UserDetails userDetails = this.loadUserByUsername(userRegisterBindingModel.getUserEmail());
+        UserEntity userDetails = this.userRepository.findByUserEmail(userRegisterBindingModel.getUserEmail());
 
-        if (userDetails == null || !passwordEncoder.matches(userRegisterBindingModel.getUserPassword(), userDetails.getPassword())) {
-            throw new BadCredentialsException("Invalid credentials!");
-        }
 
-        // If we've reached this point, the credentials are valid
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                userDetails,
-                userDetails.getPassword(),
-                userDetails.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(token);
+        // watch watch-shop
 
-        // Get UserEntity
-        UserEntity loginUser = this.findByEmail(userRegisterBindingModel.getUserEmail());
-
-        return loginUser;
+        return null;
     }
-
 
 //    public String loginUser(@ModelAttribute("user") UserRegisterBindingModel user) {
 //        UserDetails userDetails = userService.loadUserByUsername(user.getUserEmail());

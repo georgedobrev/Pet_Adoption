@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:mysql://18.158.211.226:3306/pet_v1
+    username: aleksandra.mihaylova
+    password: aleksandra.mihaylova123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+#  security:
+#    user:
+#      name: test
+#      password: test1
