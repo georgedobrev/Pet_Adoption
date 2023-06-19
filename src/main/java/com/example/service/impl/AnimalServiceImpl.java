@@ -31,7 +31,7 @@ public class AnimalServiceImpl implements AnimalService {
         SizeCategoryEntity size = sizeCategoryRepository.findByCategory(animalAddBindingModel.getAnimalSize());
         SheltersEntity shelter = shelterRepository.findByShelterName(animalAddBindingModel.getShelterName()).orElseThrow(
                 () -> new RuntimeException("No shelter found with this name: " + animalAddBindingModel.getShelterName()));
-        AnimalsEntity animal = animalMapper.toEntity(animalAddBindingModel, size, shelter);
+        AnimalsEntity animal = animalMapper.toAnimalEntity(animalAddBindingModel, size, shelter);
         animalRepository.save(animal);
 
     }
@@ -41,7 +41,7 @@ public class AnimalServiceImpl implements AnimalService {
         AnimalsEntity existingAnimal = animalRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("No animal found with id " + id));
         SizeCategoryEntity sizeCategory = sizeCategoryRepository.findByCategory(updateAnimalBindingModel.getSizeCategory());
-        AnimalsEntity updatedAnimal = animalMapper.updateEntity(updateAnimalBindingModel, existingAnimal, sizeCategory);
+        AnimalsEntity updatedAnimal = animalMapper.updateAnimalEntity(updateAnimalBindingModel, existingAnimal, sizeCategory);
         return animalRepository.save(updatedAnimal);
 
     }
