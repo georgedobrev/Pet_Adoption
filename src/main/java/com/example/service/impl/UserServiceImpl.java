@@ -1,9 +1,12 @@
 package com.example.service.impl;
 
+import com.example.persistence.entities.AuthorityEntity;
 import com.example.persistence.entities.UserEntity;
 import com.example.persistence.entities.UserSecurityEntity;
+import com.example.persistence.repositories.AuthorityRepository;
 import com.example.persistence.repositories.UserRepository;
 import com.example.service.UserService;
+import com.example.persistence.enums.RoleEnum;
 import com.example.mapper.UserRegisterMapper;
 import com.example.persistence.binding.UserRegisterBindingModel;
 import lombok.RequiredArgsConstructor;
@@ -28,17 +31,35 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserRegisterMapper userRegisterMapper;
     private final PasswordEncoder passwordEncoder;
+    private final AuthorityRepository authorityRepository;
 
     //private final AuthorityService authorityService;
     //private final AuthorityDepository authorityDepository;
 
-    @Override
-    public UserEntity register(UserRegisterBindingModel userRegisterBindingModel) {
-        String password = passwordEncoder.encode(userRegisterBindingModel.getUserPassword());
-        userRegisterBindingModel.setUserPassword(password); // Set the encoded password back to the model
-        UserEntity userEntity = userRegisterMapper.toUserEntity(userRegisterBindingModel, password);
-        return userRepository.save(userEntity);
-    }
+
+
+//    @Override
+//    public UserEntity register(UserRegisterBindingModel userRegisterBindingModel) {
+//        String password = passwordEncoder.encode(userRegisterBindingModel.getUserPassword());
+//        userRegisterBindingModel.setUserPassword(password); // Set the encoded password back to the model
+//        UserEntity userEntity = userRegisterMapper.toUserEntity(userRegisterBindingModel, password);
+//        return userRepository.save(userEntity);
+//    }
+        @Override
+        public UserEntity register(UserRegisterBindingModel userRegisterBindingModel) {
+            String password = passwordEncoder.encode(userRegisterBindingModel.getUserPassword());
+            userRegisterBindingModel.setUserPassword(password); // Set the encoded password back to the model
+            UserEntity userEntity = userRegisterMapper.toUserEntity(userRegisterBindingModel, password);
+
+            // assign default role USER authority
+            AuthorityEntity defaultAuthority = authorityRepository.findByAuthority(RoleEnum.USER);
+            userEntity.setAuthorities(Collections.singleton(defaultAuthority));
+
+            //migration seedAuthority..
+            return userRepository.save(userEntity);
+        }
+
+
 
 
     @Override

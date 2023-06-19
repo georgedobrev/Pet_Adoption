@@ -24,7 +24,8 @@ public class UserSecurityEntity implements UserDetails {
 //    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-    return List.of(new SimpleGrantedAuthority(userEntity.getAuthority().getAuthority()));
+    return userEntity.getAuthorities().stream().map(role -> new SimpleGrantedAuthority(role.getAuthority()))
+                .collect(Collectors.toList());
     }
 
 

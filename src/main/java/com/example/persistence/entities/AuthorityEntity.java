@@ -4,23 +4,23 @@ import com.example.persistence.enums.RoleEnum;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
-@Table(name = "user_role")
-//@Getter
-//@Setter
-//@NoArgsConstructor
-//@AllArgsConstructor
+@Table(name = "roles")
 public class AuthorityEntity implements GrantedAuthority {
 
-    @Column(name = "role_id", nullable = false)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "role_id", nullable = false)
     private long roleID;
+
     @Enumerated(EnumType.STRING)
+    @Column(name = "role_name", nullable = false)
     private RoleEnum authority;
 
     @Override
-    @Column(name = "user_role", nullable = false, unique = true)
     public String getAuthority() {
         return authority.name();
     }
