@@ -7,12 +7,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
-public class AddAnimalViewModel {
+public class AnimalViewModel {
     //  private List<String> animalPhoto;
     private String animalName;
     private AnimalSpeciesEnum animalSpecies;
@@ -22,7 +20,7 @@ public class AddAnimalViewModel {
     private String animalCharacteristics;
     private String shelterName;
     private long animalId;
-    private boolean adopted;
+    private boolean isAdopted;
 
 
 }

@@ -5,7 +5,7 @@ import com.example.persistence.binding.UpdateAnimalBindingModel;
 import com.example.persistence.entities.AnimalsEntity;
 import com.example.persistence.entities.SheltersEntity;
 import com.example.persistence.entities.SizeCategoryEntity;
-import com.example.persistence.view.AddAnimalViewModel;
+import com.example.persistence.view.AnimalViewModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.stereotype.Component;
@@ -34,12 +34,12 @@ public interface AnimalMapper {
     );
 
 
-    List<AnimalsEntity> toEntityList(List<AnimalAddBindingModel> models);
+    List<AnimalsEntity> toAnimalEntityList(List<AnimalAddBindingModel> models);
 
-    List<AnimalAddBindingModel> toModelList(List<AnimalsEntity> entities);
+    List<AnimalAddBindingModel> toAnimalBindingModelList(List<AnimalsEntity> entities);
 
     @Mapping(target = "sizeCategory", source = "existingAnimal.sizeCategory.category")
     @Mapping(target = "animalId", source = "existingAnimal.animalID")
-    AddAnimalViewModel toAnimalViewModel(AnimalsEntity existingAnimal);
+    AnimalViewModel toAnimalViewModel(AnimalsEntity existingAnimal);
 }
 

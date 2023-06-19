@@ -3,7 +3,7 @@ package com.example.controllers;
 import com.example.persistence.binding.AnimalAddBindingModel;
 import com.example.persistence.binding.UpdateAnimalBindingModel;
 import com.example.persistence.entities.AnimalsEntity;
-import com.example.persistence.view.AddAnimalViewModel;
+import com.example.persistence.view.AnimalViewModel;
 import com.example.service.AnimalService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,7 +44,7 @@ public class AnimalController {
 
     @GetMapping("/{id}/edit")
     public String showUpdateAnimalForm(@PathVariable("id") long id, Model model) {
-        AddAnimalViewModel existingAnimal = animalService.getAnimalById(id);
+        AnimalViewModel existingAnimal = animalService.getAnimalById(id);
         model.addAttribute("animal", existingAnimal);
         model.addAttribute("animalId", id);
         return "edit-animal";

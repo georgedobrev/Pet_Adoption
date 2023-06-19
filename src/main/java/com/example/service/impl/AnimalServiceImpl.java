@@ -9,7 +9,7 @@ import com.example.persistence.repositories.AnimalRepository;
 import com.example.persistence.repositories.ShelterRepository;
 import com.example.mapper.AnimalMapper;
 import com.example.persistence.repositories.SizeCategoryRepository;
-import com.example.persistence.view.AddAnimalViewModel;
+import com.example.persistence.view.AnimalViewModel;
 import com.example.service.AnimalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -47,10 +47,10 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public AddAnimalViewModel getAnimalById(long id) {
+    public AnimalViewModel getAnimalById(long id) {
         AnimalsEntity existingAnimal = animalRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("No animal found with id " + id));
-        AddAnimalViewModel animalViewModel = animalMapper.toAnimalViewModel(existingAnimal);
+        AnimalViewModel animalViewModel = animalMapper.toAnimalViewModel(existingAnimal);
 
         return animalViewModel;
     }
