@@ -11,8 +11,6 @@ import org.mapstruct.factory.Mappers;
 @Mapper(componentModel = "spring")
 public interface UserRegisterMapper {
 
-    @Mapping(source = "userEmail", target = "email")
-    UserServiceModel mapToUserServiceModel(UserEntity userEntity);
 
     @Mapping(target = "userFirstName", source = "userRegisterBindingModel.userFirstName")
     @Mapping(target = "userLastName", source = "userRegisterBindingModel.userLastName")
