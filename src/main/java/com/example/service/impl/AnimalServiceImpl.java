@@ -59,6 +59,14 @@ public class AnimalServiceImpl implements AnimalService {
     public List<AnimalsEntity> getAllAnimals() {
         return animalRepository.findAll();
     }
+
+    @Override
+    public List<AnimalsEntity> getAnimalsByShelterId(long id) {
+        SheltersEntity shelter = shelterRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("No shelter found with id " + id));
+        return animalRepository.findByShelter_ShelterID(shelter.getShelterID());
+
+    }
 }
 
 

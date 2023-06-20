@@ -1,0 +1,16 @@
+<!-- shelters.html -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <!-- Include necessary CSS and JS libraries -->
+</head>
+<body>
+<h1>List of Shelters</h1>
+<ul>
+  <!-- Iterate over the shelters and display their names as links -->
+  <li th:each="shelter : ${shelters}">
+    <a th:href="@{/shelters/{id}/animals(id=${shelter.shelterID})}" th:text="${shelter.shelterName}"></a>
+  </li>
+</ul>
+</body>
+</html>

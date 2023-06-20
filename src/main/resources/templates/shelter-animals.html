@@ -1,0 +1,19 @@
+<!-- shelter-animals.html -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <!-- Include necessary CSS and JS libraries -->
+</head>
+<body>
+<h1>Animals in the Shelter</h1>
+<ul>
+  <!-- Iterate over the animals and display their details -->
+  <li th:each="animal : ${animals}">
+    <h2 th:text="${animal.animalName}"></h2>
+    <p>Species: <span th:text="${animal.animalSpecies}"></span></p>
+    <p>Sex: <span th:text="${animal.gender}"></span></p>
+    <!-- Display other animal details as needed -->
+  </li>
+</ul>
+</body>
+</html>

@@ -1,3 +1,4 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -81,7 +82,7 @@
         <a class="nav-link" href="#">Home</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" th:href="@{/animal-list}">Pet Adoption</a>
+        <a class="nav-link" th:href="@{/shelters/list}">Pet Adoption</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">Lost and Found</a>
@@ -109,7 +110,7 @@
 <div class="container">
   <div class="hero-text">
     <h2>Meet the perfect pet for your lifestyle</h2>
-    <a th:href="@{/animals/showAll}" class="btn btn-primary btn-lg">View Animals</a>
+    <a th:href="@{/shelters}" class="btn btn-primary btn-lg">View Animals</a>
   </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

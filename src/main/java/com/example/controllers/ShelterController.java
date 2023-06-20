@@ -55,6 +55,19 @@ public class ShelterController {
         return shelterService.updateShelter(id, shelterViewModel);
     }
 
+    @GetMapping("/list")
+    public String showShelters(Model model) {
+        List<SheltersEntity> shelters = shelterService.getAllShelters();
+        model.addAttribute("shelters", shelters);
+        return "shelters";
+    }
+
+    @GetMapping("/{id}/animals")
+    public String showShelterAnimals(@PathVariable("id") long id, Model model) {
+        List<AnimalsEntity> animals = animalService.getAnimalsByShelterId(id);
+        model.addAttribute("animals", animals);
+        return "shelter-animals";
+    }
 
 
 }
