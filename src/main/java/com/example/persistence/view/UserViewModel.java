@@ -1,8 +1,11 @@
 package com.example.persistence.view;
 
+import com.example.persistence.service.AuthorityServiceModel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Set;
 
 @Getter
 @Setter
@@ -17,6 +20,7 @@ public class UserViewModel {
     private Integer phone;
     private String password;
     private String confirmPassword;
+    private Set<AuthorityServiceModel> authorities;
 
 
 }

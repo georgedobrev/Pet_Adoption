@@ -20,6 +20,10 @@ public class AuthorityEntity implements GrantedAuthority {
     @Column(name = "role_name", nullable = false)
     private RoleEnum authority;
 
+//    @ManyToMany(mappedBy = "authorities")
+//    private Set<UserEntity> users = new HashSet<>();
+
+
     @Override
     public String getAuthority() {
         return authority.name();

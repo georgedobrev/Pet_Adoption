@@ -44,4 +44,7 @@ public class SecurityConfig {
                 .logout(LogoutConfigurer::permitAll)
                 .build();
     }
+
+
+
 }

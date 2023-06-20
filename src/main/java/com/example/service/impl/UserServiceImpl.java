@@ -5,25 +5,22 @@ import com.example.persistence.entities.UserEntity;
 import com.example.persistence.entities.UserSecurityEntity;
 import com.example.persistence.repositories.AuthorityRepository;
 import com.example.persistence.repositories.UserRepository;
+import com.example.persistence.service.UserServiceModel;
+import com.example.persistence.view.UserViewModel;
 import com.example.service.UserService;
 import com.example.persistence.enums.RoleEnum;
 import com.example.mapper.UserRegisterMapper;
 import com.example.persistence.binding.UserRegisterBindingModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +31,6 @@ public class UserServiceImpl implements UserService {
     private final AuthorityRepository authorityRepository;
 
     //private final AuthorityService authorityService;
-    //private final AuthorityDepository authorityDepository;
 
 
 
@@ -67,10 +63,27 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUserEmail(userEmail) != null;
     }
 
+
+    //Doubt it works!? reason look at mapToUserServiceModel
+    //Need following method for loggedUserInfo in userController
+    //No implementation for now
     @Override
-    public UserEntity findByEmail(String userEmail) {
-        return userRepository.findByUserEmail(userEmail);
+    @Transactional
+    public UserServiceModel findByEmail(String loggedUser) {
+        UserEntity user = this.userRepository.findByUserEmail(loggedUser);
+        UserServiceModel userServiceModel = userRegisterMapper.mapToUserServiceModel(user);
+        return userServiceModel;
+        //return userRegisterMapper.mapToUserServiceModel(user);
+
+
     }
+//    @Override
+//    @Transactional
+//    public UserServiceModel findByUsername(String loggedUser) {
+//        User user = this.userRepository.findByUsername(loggedUser);
+//        UserServiceModel userServiceModel = this.modelMapper.map(user, UserServiceModel.class);
+//        return userServiceModel;
+//    }
 
     @Override
     public List<UserEntity> getAllUsers() {

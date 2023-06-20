@@ -106,12 +106,12 @@
                     <a class="dropdown-item" href="#">Edit Profile</a>
                 </div>
             </li>
-            <li class="nav-item">
-                <a th:href="@{/users/register}" class="btn btn-primary" th:unless="${#authorization.principal.authenticated}">Register</a>
-            </li>
-            <li class="nav-item">
-                <a th:href="@{/users/login}" class="btn btn-primary" th:unless="${#authorization.principal.authenticated}">Login</a>
-            </li>
+            <li class="nav-item">-->
+                <a th:href="@{/users/register}" class="btn btn-primary" th:unless="${#authentication.principal != 'anonymousUser'}">Register</a>
+            </li>-->
+            <li class="nav-item">-->
+                <a th:href="@{/users/login}" class="btn btn-primary" th:unless="${#authentication.principal != 'anonymousUser'}">Login</a>
+            </li>-->
 
         </ul>
     </div>
