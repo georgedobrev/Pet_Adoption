@@ -24,6 +24,7 @@
         .container h1 {
             margin-bottom: 20px;
         }
+
     </style>
 
 </head>
@@ -42,16 +43,16 @@
         <div class="form-group">
             <label for="animalSpecies">Species:</label>
             <select id="animalSpecies" name="animalSpecies" class="form-control" th:field="*{animalSpecies}">
-                <option th:value="DOG">Dog</option>
-                <option th:value="CAT">Cat</option>
+                <option value="DOG">Dog</option>
+                <option value="CAT">Cat</option>
             </select>
         </div>
 
         <div class="form-group">
             <label for="animalGender">Sex:</label>
             <select id="animalGender" name="animalGender" class="form-control" th:field="*{animalGender}">
-                <option th:value="MALE">Male</option>
-                <option th:value="FEMALE">Female</option>
+                <option value="MALE">Male</option>
+                <option value="FEMALE">Female</option>
             </select>
         </div>
 
@@ -70,11 +71,15 @@
         </div>
 
         <div class="form-group">
-            <label for="animalCharacteristics">Characteristics:</label>
-            <textarea id="animalCharacteristics" name="animalCharacteristics" class="form-control" th:field="*{animalCharacteristics}"></textarea>
+            <label for="shelterName">Shelter Name:</label>
+            <input type="text" id="shelterName" name="shelterName" class="form-control" th:field="*{shelterName}">
         </div>
 
-        <!-- The form elements for other fields go here -->
+        <div class="form-group">
+            <label for="animalCharacteristics">Characteristics:</label>
+            <textarea id="animalCharacteristics" name="animalCharacteristics" class="form-control"
+                      th:field="*{animalCharacteristics}"></textarea>
+        </div>
 
         <button type="submit" class="btn btn-primary">Add</button>
     </form>

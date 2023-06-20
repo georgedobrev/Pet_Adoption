@@ -1,6 +1,7 @@
-package com.example.repositories;
+package com.example.persistence.repositories;
 
 import com.example.persistence.entities.AnimalsEntity;
+import com.example.persistence.entities.SheltersEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
