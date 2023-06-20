@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -22,9 +24,9 @@ public class AnimalsEntity {
     @ManyToOne
     private SheltersEntity shelter;
 
-    @ManyToOne
+    @OneToMany
     @JoinColumn(name = "animal_photo_id")
-    private AnimalPhotoEntity animalPhoto;
+    private List<AnimalPhotoEntity> animalPhotos;
 
     @Column(name = "animal_name", nullable = false)
     private String animalName;
@@ -40,16 +42,16 @@ public class AnimalsEntity {
     @Column(name = "animal_age")
     private int animalAge;
 
-    @Column(name = "size_category_id", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private SizeCategoryEnum sizeCategory;
+    @ManyToOne
+    @JoinColumn(name = "size_category_id")
+    private SizeCategoryEntity sizeCategory;
 
 
     @Column(name = "animal_characteristics")
     private String animalCharacteristics;
 
     @Column(name = "is_adopted")
-    private boolean is_adopted;
+    private boolean adopted;
 
     public AnimalsEntity() {
     }
