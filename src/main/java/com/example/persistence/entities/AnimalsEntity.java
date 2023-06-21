@@ -5,6 +5,7 @@ import com.example.persistence.enums.AnimalSpeciesEnum;
 import com.example.persistence.enums.SizeCategoryEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
@@ -55,5 +56,4 @@ public class AnimalsEntity {
 
     public AnimalsEntity() {
     }
-
 }
