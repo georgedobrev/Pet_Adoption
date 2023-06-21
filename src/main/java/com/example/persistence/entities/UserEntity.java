@@ -4,6 +4,10 @@ import com.example.persistence.enums.RoleEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -37,10 +41,11 @@ public class UserEntity {
     @Column(name = "user_refresh_token")
     private String userRefreshToken;
 
-    @Column(name = "user_role", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private RoleEnum roles;
-
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"))
+    private Set<AuthorityEntity> authorities = new HashSet<>();
     public UserEntity() {
     }
 
