@@ -60,7 +60,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean emailExists(String userEmail) {
-        return userRepository.findByUserEmail(userEmail) != null;
+
+            return userRepository.findByUserEmail(userEmail) != null;
     }
 
 
@@ -70,13 +71,19 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserServiceModel findByEmail(String loggedUser) {
-        UserEntity user = this.userRepository.findByUserEmail(loggedUser);
-        UserServiceModel userServiceModel = userRegisterMapper.mapToUserServiceModel(user);
-        return userServiceModel;
+//        UserEntity user = this.userRepository.findByUserEmail(loggedUser);
+//        UserServiceModel userServiceModel = userRegisterMapper.mapToUserServiceModel(user);
+//        return userServiceModel;
         //return userRegisterMapper.mapToUserServiceModel(user);
 
-
+        return null;
     }
+
+
+
+
+
+    //-------------------------
 //    @Override
 //    @Transactional
 //    public UserServiceModel findByUsername(String loggedUser) {
