@@ -7,11 +7,14 @@ import com.example.persistence.entities.UserEntity;
 import com.example.service.UserService;
 import com.example.service.impl.AuthenticationServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -50,14 +53,6 @@ public class UserAuthController {
     }
 
 
-
-
-
-
-
-
-
-
     @GetMapping("/authenticate")
     public String showLoginForm(Model model) {
         model.addAttribute("request", new UserLoginBindingModel());
@@ -71,8 +66,8 @@ public class UserAuthController {
         return "loginSuccess";
     }
 
-//    @PostMapping("/refresh-token")
-//    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
-//        service.refreshToken(request, response);
-//    }
-//}
+    @PostMapping("/refresh-token")
+    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        service.refreshToken(request, response);
+    }
+}
