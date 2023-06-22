@@ -4,31 +4,23 @@ import com.example.configuration.auth.AuthenticationResponse;
 import com.example.persistence.binding.UserLoginBindingModel;
 import com.example.persistence.binding.UserRegisterBindingModel;
 import com.example.persistence.entities.UserEntity;
-import com.example.persistence.entities.UserSecurityEntity;
-import com.example.persistence.enums.RoleEnum;
 import com.example.service.UserService;
 import com.example.service.impl.AuthenticationServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import com.example.mapper.UserRegisterMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 
 @Controller
 @RequestMapping("/users")  //@RequestMapping("/Authentication")
 @RequiredArgsConstructor
-public class UserAuthenticationController {
+public class UserAuthController {
 
     private final AuthenticationServiceImpl service;
+    private final UserService userService;
 
 
 //    @PostMapping("/register")
@@ -49,6 +41,12 @@ public class UserAuthenticationController {
         AuthenticationResponse response = service.register(request);
         model.addAttribute("response", response);
         return "redirect:/users/login"; // successful reg
+    }
+    @GetMapping("/user-list")
+    public String userList(Model model) {
+        List<UserEntity> users = userService.getAllUsers();
+        model.addAttribute("users", users);
+        return "user-list";
     }
 
 
@@ -73,8 +71,8 @@ public class UserAuthenticationController {
         return "loginSuccess";
     }
 
-    @PostMapping("/refresh-token")
-    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        service.refreshToken(request, response);
-    }
-}
+//    @PostMapping("/refresh-token")
+//    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+//        service.refreshToken(request, response);
+//    }
+//}
