@@ -22,8 +22,10 @@ import java.util.List;
 @Controller
 @RequestMapping("/users")
 public class UserController {
+    // equal to authenticationController
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
+
 
     public UserController(UserService userService,  PasswordEncoder passwordEncoder) {
         this.userService = userService;

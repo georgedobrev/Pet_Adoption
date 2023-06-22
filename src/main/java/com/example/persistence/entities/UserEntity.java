@@ -1,5 +1,6 @@
 package com.example.persistence.entities;
 
+import com.example.configuration.auth.AuthenticationResponse;
 import com.example.persistence.enums.AnimalSexEnum;
 import com.example.persistence.enums.AnimalSpeciesEnum;
 import com.example.persistence.enums.RoleEnum;
@@ -51,7 +52,6 @@ public class UserEntity {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"))
     private Set<AuthorityEntity> authorities = new HashSet<>();
-
 
 
     public UserEntity() {
