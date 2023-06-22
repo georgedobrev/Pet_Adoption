@@ -1,7 +1,9 @@
 package com.example.persistence.binding;
 
 import com.example.util.annotation.UniqueEmail;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
@@ -10,7 +12,9 @@ import javax.validation.constraints.Pattern;
 
 @Getter
 @Setter
+
 public class UserRegisterBindingModel {
+    //equals RegisterRequest
 
     @NotBlank
     @Length(min = 3, max = 20, message = "First name must be between 3 and 20 characters")

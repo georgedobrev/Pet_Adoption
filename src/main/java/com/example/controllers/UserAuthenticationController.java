@@ -1,6 +1,7 @@
 package com.example.controllers;
 
 import com.example.configuration.auth.AuthenticationResponse;
+import com.example.persistence.binding.UserLoginBindingModel;
 import com.example.persistence.binding.UserRegisterBindingModel;
 import com.example.persistence.entities.UserEntity;
 import com.example.persistence.entities.UserSecurityEntity;
@@ -38,16 +39,16 @@ public class UserAuthenticationController {
     // Display the form to the user
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
-        model.addAttribute("request", new RegisterRequest());
+        model.addAttribute("request", new UserRegisterBindingModel()); /*RegisterRequest in video*/
         return "register"; // this is the name of the view (e.g., a Thymeleaf template) to display
     }
 
     // Handle the form submission
     @PostMapping("/register")
-    public String register(@ModelAttribute("request") RegisterRequest request, Model model) {
+    public String register(@ModelAttribute("request") UserRegisterBindingModel request, Model model) /*UserRegisterBindingModel*/ {
         AuthenticationResponse response = service.register(request);
         model.addAttribute("response", response);
-        return "redirect:/users/login"; // this is the name of the view to display after a successful registration
+        return "redirect:/users/login"; // successful reg
     }
 
 
@@ -61,12 +62,12 @@ public class UserAuthenticationController {
 
     @GetMapping("/authenticate")
     public String showLoginForm(Model model) {
-        model.addAttribute("request", new AuthenticationRequest());
+        model.addAttribute("request", new UserLoginBindingModel());
         return "login";
     }
 
     @PostMapping("/authenticate")
-    public String authenticate(@ModelAttribute("request") AuthenticationRequest request, Model model) {
+    public String authenticate(@ModelAttribute("request") UserLoginBindingModel request, Model model) {
         AuthenticationResponse response = service.authenticate(request);
         model.addAttribute("response", response);
         return "loginSuccess";

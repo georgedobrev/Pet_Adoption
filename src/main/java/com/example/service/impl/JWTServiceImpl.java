@@ -1,5 +1,7 @@
 package com.example.service.impl;
 
+import com.example.persistence.entities.UserEntity;
+import com.example.persistence.entities.UserSecurityEntity;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -28,7 +30,9 @@ public class JWTServiceImpl {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
-    public String generateToken(UserDetails userDetails){
+
+
+    public String generateToken(UserDetails userDetails) /*UserEntity*/{
         return generateToken(new HashMap<>(), userDetails);
     }
 

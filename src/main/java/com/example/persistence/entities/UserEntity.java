@@ -10,13 +10,14 @@ import lombok.Setter;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "users")
-public class UserEntity {
+public class UserEntity{
 
     @Column(name = "user_id", nullable = false)
     @Id
@@ -41,11 +42,16 @@ public class UserEntity {
     @Column(name = "user_photo_url")
     private String userPhotoURL;
 
+    //questionMark
     @Column(name = "user_access_token")
     private String userAccessToken;
 
+    //questionMark
     @Column(name = "user_refresh_token")
     private String userRefreshToken;
+
+    @OneToMany(mappedBy = "userEntity")
+    private List<TokenEntity> tokens;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_roles",

@@ -1,14 +1,16 @@
 package com.example.configuration.auth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
+@RequiredArgsConstructor
 
 public class AuthenticationResponse {
+
+    private String token;
+
+
 
     //DTO or ViewModel
     //look table
