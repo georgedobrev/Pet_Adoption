@@ -81,84 +81,54 @@ public class AuthenticationServiceImpl implements UserDetailsService {
         return response;
     }
 
-//-------------------------------------------------------------------------------
-    //double check!
-//    public AuthenticationResponse authenticate(UserLoginBindingModel request) {
-//        // Here we will use the returned Authentication object
-//        Authentication authentication = authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(
-//                        request.getUserEmail(),
-//                        request.getUserPassword()
-//                )
-//        );
-//        if (authentication.isAuthenticated()) {
-//            UserEntity user = userRepository.findByEmail(request.getUserEmail()).orElseThrow();
-//
-//            UserEntity savedUser = userRepository.save(user);
-//
-//            // Wrap the UserEntity in a UserSecurityEntity
-//            UserSecurityEntity userSecurity = new UserSecurityEntity(savedUser);
-//
-//            // Generate the tokens
-//            String jwtToken = jwtServiceImpl.generateToken(userSecurity);
-//            String refreshToken = jwtServiceImpl.generateRefreshToken(userSecurity);
-//
-//            // Revoke old tokens and save the new one
-//            revokeAllUserTokens(userSecurity);
-//            saveUserToken(userSecurity, jwtToken);
-//
-//            // Create and return the response
-//            AuthenticationResponse response = new AuthenticationResponse();
-//            response.setUserAccessToken(jwtToken);
-//            response.setUserRefreshToken(refreshToken);
-//
-//            return response;
-//        } else {
-//            throw new BadCredentialsException("Invalid email or password");// The authentication failed.
-//        }
-//    }
-//--------------------------------------------------------------------------------------------------------
 
     public AuthenticationResponse authenticate(UserLoginBindingModel request) {
-        // Here we will use the returned Authentication object
-        Authentication authentication = authenticationManager.authenticate(
+        authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUserEmail(),
                         request.getUserPassword()
                 )
         );
+        UserEntity userEntity = userRepository.findByEmail(request.getUserEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        if (authentication.isAuthenticated()) {
-            // Load the UserEntity using the email
-            UserEntity userEntity = userRepository.findByEmail(request.getUserEmail())
-                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        UserDetails userDetails = User.withUsername(userEntity.getUserEmail())
+                .password(userEntity.getUserPassword())
+                .authorities((GrantedAuthority) userEntity.getAuthorities().stream()
+                        .map(AuthorityEntity::getAuthority)
+                        .collect(Collectors.toList()))
+                .build();
 
-            // Create UserDetails from UserEntity
-            UserDetails userDetails = User.withUsername(userEntity.getUserEmail())
-                    .password(userEntity.getUserPassword())
-                    .authorities((GrantedAuthority) userEntity.getAuthorities().stream()
-                            .map(AuthorityEntity::getAuthority).collect(Collectors.toList()))
-                    .build();
+        String jwtToken = jwtServiceImpl.generateToken(userDetails);
+        String refreshToken = jwtServiceImpl.generateRefreshToken(userDetails);
 
-            // Generate the tokens using UserDetails
-            String jwtToken = jwtServiceImpl.generateToken(userDetails);
-            String refreshToken = jwtServiceImpl.generateRefreshToken(userDetails);
+        revokeAllUserTokens(userEntity);
+        saveUserToken(userEntity, jwtToken);
 
-            // Revoke old tokens and save the new one
-            revokeAllUserTokens(userEntity);
-            saveUserToken(userEntity, jwtToken);
+        //instead of build pattern
+        AuthenticationResponse response = new AuthenticationResponse();
+        response.setUserAccessToken(jwtToken);
+        response.setUserRefreshToken(refreshToken);
 
-            // Create and return the response
-            AuthenticationResponse response = new AuthenticationResponse();
-            response.setUserAccessToken(jwtToken);
-            response.setUserRefreshToken(refreshToken);
-
-            return response;
-        } else {
-            // The authentication failed. Throw an exception or return an error response as appropriate.
-            throw new BadCredentialsException("Invalid username or password");
-        }
+        return response;
     }
+
+//    public AuthenticationResponse authenticate(UserLoginBindingModel request) {
+//        authenticationManager.authenticate(
+//                new UsernamePasswordAuthenticationToken(
+//                        request.getUserEmail(),
+//                        request.getUserPassword()));
+//        var user = userRepository.findByEmail(request.getUserEmail())
+//                .orElseThrow();
+//        var jwtToken = jwtServiceImpl.generateToken(user);
+//        var refreshToken = jwtServiceImpl.generateRefreshToken(user);
+//        revokeAllUserTokens(user);
+//        saveUserToken(user, jwtToken);
+//        return AuthenticationResponse.builder()
+//                .accessToken(jwtToken)
+//                .refreshToken(refreshToken)
+//                .build();
+//    }
 
 
 

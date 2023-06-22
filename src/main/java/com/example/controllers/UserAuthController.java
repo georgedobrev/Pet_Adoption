@@ -25,12 +25,6 @@ public class UserAuthController {
     private final AuthenticationServiceImpl service;
     private final UserService userService;
 
-
-//    @PostMapping("/register")
-//    public ResponseEntity<AuthenticationResponse> register(
-//            @RequestBody RegisterRequest request) {
-//        return ResponseEntity.ok(service.register(request));
-//    }
     // Display the form to the user
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
@@ -45,6 +39,7 @@ public class UserAuthController {
         model.addAttribute("response", response);
         return "redirect:/users/login"; // successful reg
     }
+
     @GetMapping("/user-list")
     public String userList(Model model) {
         List<UserEntity> users = userService.getAllUsers();
@@ -67,7 +62,9 @@ public class UserAuthController {
     }
 
     @PostMapping("/refresh-token")
-    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        service.refreshToken(request, response);
+    @ResponseBody
+    public AuthenticationResponse refreshToken(@RequestParam String refreshToken) throws IOException {
+        return service.refreshToken(refreshToken);
     }
+
 }
