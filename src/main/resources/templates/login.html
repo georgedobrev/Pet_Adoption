@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>User Login</title>
+  <style>
+    body {
+      background: linear-gradient(to bottom, #DCB05E, #E8DCA2);
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .form-container {
+      width: 30%;
+      margin: 50px auto 0;
+      background-color: rgba(255, 255, 255, 0.7);
+      padding: 15px;
+      border-radius: 40px;
+      box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .logo {
+      width: 110px;
+      height: 110px;
+      margin-bottom: 0px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      font-weight: bold;
+      color: #4A4A4A;
+      margin-bottom: 5px;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 20px;
+      background-color: #F5F5F5;
+      color: #4A4A4A;
+      box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1);
+      box-sizing: border-box;
+      margin-top: 1px;
+      margin-bottom: 1px;
+    }
+    .form-group input:focus {
+      outline: none;
+      background-color: #E9E9E9;
+    }
+    .btn {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      background-color: #DCB05E;
+      color: #fff;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background-color: #4A2B10;
+    }
+    .btn:active {
+      transform: translateY(1px);
+    }
+    .form-container {
+      transform: scale(0.95);
+      transition: transform 0.3s;
+    }
+    .form-container:hover {
+      transform: scale(0.96);
+    }
+    .already-user {
+      font-size: 12px;
+    }
+    .social-login {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+    .social-login__google,
+    .social-login__facebook {
+      width: 48%;
+    }
+    .social-login__link {
+      align-items: center;
+      justify-content: center;
+      background-color: #F8F3E2;
+      border-radius: 4px;
+      padding: 10px;
+      text-decoration: none;
+      color: #333;
+      transition: background-color 0.3s;
+    }
+    .social-login__link img {
+      width: 20px;
+      margin-right: 10px;
+    }
+    .social-login__link:hover {
+      background-color: #F5F5F5;
+    }
+  </style>
+</head>
+<body>
+<div class="form-container">
+  <img class="logo" src="/img/Logo.png" alt="Logo">
+  <h2>Login</h2>
+  <div th:if="${param.error}">
+    <p th:if="${param.error == 'true'}" style="color: red;">Wrong email or password combination!</p>
+  </div>
+  <form th:action="@{/users/login}" th:object="${user}" method="post">
+    <div class="form-group">
+      <label for="userEmail">Email</label>
+      <input id="userEmail" th:field="*{userEmail}" type="email" placeholder="Enter Email" required>
+    </div>
+    <div class="form-group">
+      <label for="userPassword">Password</label>
+      <input id="userPassword" th:field="*{userPassword}" type="password" placeholder="Enter Password" required>
+    </div>
+    <button type="submit" class="btn">Login</button>
+    <a href="/forgot_password">Forgot Password?</a>
+  </form>
+  <p class="already-user">Not a user? <a href="/users/register">Register</a></p>
+  <div class="social-login">
+    <div class="social-login__google">
+      <a href="#" class="social-login__link">
+        <img src="/img/google-icon.png" alt="Google">
+      </a>
+    </div>
+    <div class="social-login__facebook">
+      <a href="#" class="social-login__link">
+        <img src="/img/facebook-icon.png" alt="Facebook">
+      </a>
+    </div>
+  </div>
+</div>
+</body>
+</html>
