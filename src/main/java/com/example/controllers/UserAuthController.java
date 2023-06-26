@@ -5,11 +5,8 @@ import com.example.persistence.binding.UserLoginBindingModel;
 import com.example.persistence.binding.UserRegisterBindingModel;
 import com.example.persistence.entities.UserEntity;
 import com.example.service.UserService;
-import com.example.service.impl.AuthenticationServiceImpl;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import com.example.service.impl.UserAuthenticationServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserAuthController {
 
-    private final AuthenticationServiceImpl service;
+    private final UserAuthenticationServiceImpl service;
     private final UserService userService;
 
     // Display the form to the user

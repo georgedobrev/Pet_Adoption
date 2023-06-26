@@ -6,7 +6,6 @@ import com.example.persistence.binding.UserRegisterBindingModel;
 import com.example.persistence.entities.AuthorityEntity;
 import com.example.persistence.entities.TokenEntity;
 import com.example.persistence.entities.UserEntity;
-import com.example.persistence.entities.UserSecurityEntity;
 import com.example.persistence.enums.RoleEnum;
 import com.example.persistence.enums.TokenTypeEnum;
 import com.example.persistence.repositories.AuthorityRepository;
@@ -14,9 +13,7 @@ import com.example.persistence.repositories.TokenRepository;
 import com.example.persistence.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,7 +30,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class AuthenticationServiceImpl implements UserDetailsService {
+public class UserAuthenticationServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthorityRepository authorityRepository;
@@ -86,7 +83,7 @@ public class AuthenticationServiceImpl implements UserDetailsService {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUserEmail(),
-                        request.getUserPassword()
+                        request.getUserPassword() //1.TODO check returning encoded password, expects raw password.
                 )
         );
         UserEntity userEntity = userRepository.findByEmail(request.getUserEmail())
