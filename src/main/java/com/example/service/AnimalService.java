@@ -18,4 +18,6 @@ public interface AnimalService {
     List<AnimalsEntity> getAllAnimals();
 
 
+    List<AnimalsEntity> getAnimalsByShelterId(long id);
+
 }
