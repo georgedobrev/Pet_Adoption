@@ -11,6 +11,7 @@ import com.example.persistence.enums.TokenTypeEnum;
 import com.example.persistence.repositories.AuthorityRepository;
 import com.example.persistence.repositories.TokenRepository;
 import com.example.persistence.repositories.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,6 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,24 +38,25 @@ public class UserAuthenticationServiceImpl implements UserDetailsService {
     private final JWTServiceImpl jwtServiceImpl;
     private final AuthenticationManager authenticationManager;
     private final TokenRepository tokenRepository;
-
+    private final AuthorityServiceImpl authorityServiceImpl;
     //double check!
+    @Transactional
     public AuthenticationResponse register(UserRegisterBindingModel request) {
         UserEntity newUser = new UserEntity();
 
         newUser.setUserFirstName(request.getUserFirstName());
         newUser.setUserLastName(request.getUserLastName());
         newUser.setUserEmail(request.getUserEmail());
-        newUser.setUserPassword(passwordEncoder.encode(request.getUserPassword()));
-        // Set role on the User object.
-        AuthorityEntity authority = authorityRepository.findByAuthority(RoleEnum.USER);
-        if (authority == null) {
-            // if the authority does not exist, create a new one
-            authority = new AuthorityEntity();
-            authority.setAuthority(RoleEnum.USER);
-            authority = authorityRepository.save(authority);
+        //add default picture
+        //newUser.setUserPhotoURL("https://cdn.vox-cdn.com/thumbor/qds1ovjTYIqLY6Cr2jW1YfeDJ-s=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/21730397/avatar_airbender.jpg");
+        if (userRepository.count() == 0) {
+            authorityServiceImpl.seedAuthorities();
+            newUser.setAuthorities(new HashSet<>(authorityRepository.findAll()));
+        } else {
+            newUser.setAuthorities(new HashSet<>(authorityRepository.findAllByAuthority(RoleEnum.USER)));
         }
-        newUser.getAuthorities().add(authority);
+        newUser.setUserPassword(passwordEncoder.encode(request.getUserPassword()));
+
         // Save the User object
         UserEntity savedUser = userRepository.save(newUser);
 
@@ -70,6 +73,7 @@ public class UserAuthenticationServiceImpl implements UserDetailsService {
         return response;
     }
 
+    @Transactional
     public AuthenticationResponse authenticate(UserLoginBindingModel request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -94,6 +98,7 @@ public class UserAuthenticationServiceImpl implements UserDetailsService {
         return response;
     }
 
+    @Transactional
     private void saveUserToken(UserEntity userEntityToken, String jwtToken) {
         // Create a new TokenEntity object
         TokenEntity token = new TokenEntity();
@@ -107,6 +112,7 @@ public class UserAuthenticationServiceImpl implements UserDetailsService {
         tokenRepository.save(token);
     }
 
+    @Transactional
     private void revokeAllUserTokens(UserEntity userEntity) {
         List<TokenEntity> validUserTokens = tokenRepository.findAllValidTokenByUser(userEntity.getUserID());
         if (validUserTokens.isEmpty())
@@ -123,6 +129,7 @@ public class UserAuthenticationServiceImpl implements UserDetailsService {
 //        tokenRepository.saveAll(validUserTokens);
     }
 
+    @Transactional
     public AuthenticationResponse refreshToken(String refreshToken) throws IOException {
         // Extract the user email from the token
         String userEmail = jwtServiceImpl.extractUsername(refreshToken);

@@ -6,6 +6,8 @@ import com.example.persistence.binding.UserRegisterBindingModel;
 import com.example.persistence.entities.UserEntity;
 import com.example.service.UserService;
 import com.example.service.impl.UserAuthenticationServiceImpl;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,12 +53,23 @@ public class UserAuthController {
         return "login";
     }
 
+    //should i use cookies (JWTAuthenticationFiler/DoFilterInternal)
+//    @PostMapping("/authenticate")
+//    public String authenticate(@ModelAttribute("request") UserLoginBindingModel request, Model model) {
+//        AuthenticationResponse response = service.authenticate(request);
+//        model.addAttribute("response", response);
+//        return "redirect:/";
+//    }
     @PostMapping("/authenticate")
-    public String authenticate(@ModelAttribute("request") UserLoginBindingModel request, Model model) {
-        AuthenticationResponse response = service.authenticate(request);
-        model.addAttribute("response", response);
-        return "loginSuccess";
+    public String authenticate(@ModelAttribute("request") UserLoginBindingModel request, Model model, HttpServletResponse response) {
+        AuthenticationResponse authResponse = service.authenticate(request);
+        Cookie jwtCookie = new Cookie("jwt", authResponse.getUserAccessToken());
+        jwtCookie.setHttpOnly(true);
+        response.addCookie(jwtCookie);
+        model.addAttribute("response", authResponse);
+        return "redirect:/";
     }
+
 
     @PostMapping("/refresh-token")
     @ResponseBody

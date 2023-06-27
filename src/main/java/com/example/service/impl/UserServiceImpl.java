@@ -41,7 +41,7 @@
 ////        UserEntity userEntity = userRegisterMapper.toUserEntity(userRegisterBindingModel, password);
 ////        return userRepository.save(userEntity);
 ////    }
-//        @Override
+////        @Override
 //        public UserEntity register(UserRegisterBindingModel userRegisterBindingModel) {
 //            String password = passwordEncoder.encode(userRegisterBindingModel.getUserPassword());
 //            userRegisterBindingModel.setUserPassword(password); // Set the encoded password back to the model

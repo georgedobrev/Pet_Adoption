@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -24,43 +25,39 @@ public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
 
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-         http
-                .csrf()
-                .disable()
-                .authorizeHttpRequests( )
-                .requestMatchers()
-                .permitAll()
-                .anyRequest()
-                .authenticated()
-                .sessionManagment()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .authenticatorProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationToken.class);
-         return http.build();
-    }
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//         http
+//                .csrf()
+//                .disable()
+//                .authorizeHttpRequests( )
+//                .requestMatchers()
+//                .permitAll()
+//                .anyRequest()
+//                .authenticated()
+//                .sessionManagment()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .authenticatorProvider(authenticationProvider)
+//                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationToken.class);
+//         return http.build();
+//    }
 
     // STILL WORKING ON IT
 
-
     //old one
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        return http
-//                .authorizeHttpRequests( auth -> {
-//                    auth.requestMatchers("/", "/users/register", "/home", "/users/login").permitAll();
-//                    auth.anyRequest().authenticated();
-//                })
-//                .formLogin(formLoginConfigurer -> formLoginConfigurer
-//                        .loginPage("/users/login")
-//                        .passwordParameter("userPassword").usernameParameter("userEmail")
-//                        .failureUrl("/users/login?error=true")
-//                        .permitAll())
-//                .logout(LogoutConfigurer::permitAll)
-//                .build();
-//    }
-
-
-
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http
+                .authorizeHttpRequests( auth -> {
+                    auth.requestMatchers("/", "/users/register", "/home", "/users/authenticate").permitAll();
+                    auth.anyRequest().authenticated();
+                })
+                .formLogin(formLoginConfigurer -> formLoginConfigurer
+                        .loginPage("/users/login")
+                        .passwordParameter("userPassword").usernameParameter("userEmail")
+                        .failureUrl("/users/login?error=true")
+                        .permitAll())
+                .logout(LogoutConfigurer::permitAll)
+                .build();
+    }
 }
