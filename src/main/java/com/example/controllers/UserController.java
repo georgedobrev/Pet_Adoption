@@ -98,4 +98,9 @@ public class UserController {
             return "verify-fail";
         }
     }
+
+    @GetMapping("/about-schedule-a-meeting")
+    public String aboutScheduleMeeting() {
+        return "about-schedule-a-meeting";
+    }
 }
