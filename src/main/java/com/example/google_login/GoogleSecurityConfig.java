@@ -16,27 +16,39 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
+
 import java.util.HashSet;
 import java.util.Set;
+
 @Configuration
 public class GoogleSecurityConfig {
     private final UserRepository userRepository;
     private final LoginProviderRepository loginProviderRepository;
+
     public GoogleSecurityConfig(UserRepository userRepository, LoginProviderRepository loginProviderRepository) {
         this.userRepository = userRepository;
         this.loginProviderRepository = loginProviderRepository;
     }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .oauth2Login((oauth2Login) -> oauth2Login
-                        .defaultSuccessUrl("/",true)
+                        .defaultSuccessUrl("/", true)
                         .userInfoEndpoint((userInfo) -> userInfo
                                 .userAuthoritiesMapper(grantedAuthoritiesMapper())
                         )
+                )
+                .logout((logout) -> logout
+                        .logoutSuccessUrl("/")
+                        .logoutSuccessHandler(logoutSuccessHandler())
                 );
+
         return http.build();
     }
+
     @Bean
     public OAuth2UserService<OAuth2UserRequest, OAuth2User> customOAuth2UserService() {
         final DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();
@@ -68,6 +80,14 @@ public class GoogleSecurityConfig {
             return user;
         };
     }
+
+    @Bean
+    public LogoutSuccessHandler logoutSuccessHandler() {
+        SimpleUrlLogoutSuccessHandler logoutSuccessHandler = new SimpleUrlLogoutSuccessHandler();
+        logoutSuccessHandler.setUseReferer(true);
+        return logoutSuccessHandler;
+    }
+
     private GrantedAuthoritiesMapper grantedAuthoritiesMapper() {
         return (authorities) -> {
             Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
