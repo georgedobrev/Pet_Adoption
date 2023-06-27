@@ -17,16 +17,6 @@ public class HomeController {
     public String showHome() {
         return "index";
     }
- //  @GetMapping("/user")
- //  public String getUserPage(OAuth2AuthenticationToken authentication, Model model) {
- //      if (authentication != null) {
- //          String name = authentication.getPrincipal().getAttribute("name");
- //          String emaul = authentication.getPrincipal().getAttribute("lastNAme");
- //          String firstname = authentication.getPrincipal().getAttribute("firstname");
- //          String lastname = authentication.getPrincipal().getAttribute("email");
- //          model.addAttribute("name", name);
- //      }
- //      return "user";
- //  }
+
 
 }
