@@ -18,12 +18,12 @@ public class HomeController {
         return "index";
     }
 
-    @GetMapping("/facebook")
-    public String getUserPage(OAuth2AuthenticationToken authentication, Model model) {
-        if (authentication != null) {
-            String name = authentication.getPrincipal().getAttribute("name");
-            model.addAttribute("name", name);
-        }
-        return "user";
-    }
+//    @GetMapping("/facebook")
+//    public String getUserPage(OAuth2AuthenticationToken authentication, Model model) {
+//        if (authentication != null) {
+//            String name = authentication.getPrincipal().getAttribute("name");
+//            model.addAttribute("name", name);
+//        }
+//        return "user";
+//    }
 }
