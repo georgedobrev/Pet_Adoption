@@ -9,6 +9,7 @@ import com.example.service.impl.UserAuthenticationServiceImpl;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -60,6 +61,8 @@ public class UserAuthController {
 //        model.addAttribute("response", response);
 //        return "redirect:/";
 //    }
+
+    //@PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/authenticate")
     public String authenticate(@ModelAttribute("request") UserLoginBindingModel request, Model model, HttpServletResponse response) {
         AuthenticationResponse authResponse = service.authenticate(request);

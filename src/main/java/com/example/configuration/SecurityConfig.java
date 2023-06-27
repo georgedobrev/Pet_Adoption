@@ -6,9 +6,11 @@ import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -24,31 +26,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 @EnableWebSecurity
 
-public class SecurityConfig {
+public class SecurityConfig extends SecurityConfigurerAdapter{
 
     private final UserService userDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final JWTAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
-
-
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        return http
-//                .csrf(csrf -> csrf.disable())
-//                .authorizeRequests(auth -> auth
-//                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-//                        .requestMatchers("/","/users/register", "/users/authenticate", "/home").permitAll()
-//                        .anyRequest().authenticated()
-//                )
-//                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-//                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .exceptionHandling(eh -> eh
-//                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-//                )
-//                .build();
-//    }
-
-    // STILL WORKING ON IT
 
     //old one
     @Bean
@@ -61,6 +44,9 @@ public class SecurityConfig {
                 .authorizeRequests(auth -> auth
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers("/", "/users/register", "/home", "/users/authenticate").permitAll()
+                        //.requestMatchers("/user/**").hasRole("USER")
+                        //.requestMatchers("/index/update-user").hasRole("ADMIN")
+
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin(fl -> fl
