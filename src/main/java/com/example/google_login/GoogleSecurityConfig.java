@@ -19,10 +19,10 @@ import org.springframework.security.web.SecurityFilterChain;
 import java.util.HashSet;
 import java.util.Set;
 @Configuration
-public class SecurityConfig {
+public class GoogleSecurityConfig {
     private final UserRepository userRepository;
     private final LoginProviderRepository loginProviderRepository;
-    public SecurityConfig(UserRepository userRepository, LoginProviderRepository loginProviderRepository) {
+    public GoogleSecurityConfig(UserRepository userRepository, LoginProviderRepository loginProviderRepository) {
         this.userRepository = userRepository;
         this.loginProviderRepository = loginProviderRepository;
     }
