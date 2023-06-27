@@ -1,4 +1,4 @@
-package com.example.services;
+package com.example.service.impl;
 
 import com.example.persistence.entities.LoginProviderEntity;
 import com.example.persistence.entities.UserEntity;
@@ -17,26 +17,6 @@ public class UserServiceImpl {
     @Autowired
     private LoginProviderRepository loginProviderRepository;
 
-    public UserEntity saveUserFromOAuth2(OAuth2AuthenticationToken authentication) {
-        String email = authentication.getPrincipal().getAttribute("email");
-        UserEntity user = userRepository.findByUserEmail(email);
 
-        if (user == null) {
-            user = new UserEntity();
-            user.setUserEmail(email);
-            user.setUserFirstName(authentication.getPrincipal().getAttribute("name"));
-            user.setUserAccessToken(authentication.getPrincipal().getAttribute("access_token"));
-            user.setUserRefreshToken(authentication.getPrincipal().getAttribute("refresh_token"));
-            userRepository.save(user);
-        }
-
-        LoginProviderEntity loginProvider = new LoginProviderEntity();
-        loginProvider.setUserId(user);
-        loginProvider.setProviderName(authentication.getAuthorizedClientRegistrationId());
-        loginProvider.setAccessToken(authentication.getPrincipal().getAttribute("access_token"));
-
-        loginProviderRepository.save(loginProvider);
-
-        return user;
     }
-}
+

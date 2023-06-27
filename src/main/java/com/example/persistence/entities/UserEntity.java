@@ -20,16 +20,16 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userID;
 
-    @Column(name = "user_first_name", nullable = false)
+    @Column(name = "user_first_name")
     private String userFirstName;
 
-    @Column(name = "user_last_name", nullable = false)
+    @Column(name = "user_last_name")
     private String userLastName;
 
-    @Column(name = "user_email", nullable = false)
+    @Column(name = "user_email")
     private String userEmail;
 
-    @Column(name = "user_password", nullable = false)
+    @Column(name = "user_password")
     private String userPassword;
 
     @Column(name = "user_photo_url")
