@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,9 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,12 +39,12 @@ public class UserAuthenticationServiceImpl implements UserDetailsService {
 
     //double check!
     public AuthenticationResponse register(UserRegisterBindingModel request) {
-        UserEntity user = new UserEntity();
+        UserEntity newUser = new UserEntity();
 
-        user.setUserFirstName(request.getUserFirstName());
-        user.setUserLastName(request.getUserLastName());
-        user.setUserEmail(request.getUserEmail());
-        user.setUserPassword(passwordEncoder.encode(request.getUserPassword()));
+        newUser.setUserFirstName(request.getUserFirstName());
+        newUser.setUserLastName(request.getUserLastName());
+        newUser.setUserEmail(request.getUserEmail());
+        newUser.setUserPassword(passwordEncoder.encode(request.getUserPassword()));
         // Set role on the User object.
         AuthorityEntity authority = authorityRepository.findByAuthority(RoleEnum.USER);
         if (authority == null) {
@@ -54,47 +53,32 @@ public class UserAuthenticationServiceImpl implements UserDetailsService {
             authority.setAuthority(RoleEnum.USER);
             authority = authorityRepository.save(authority);
         }
-        user.getAuthorities().add(authority);
+        newUser.getAuthorities().add(authority);
         // Save the User object
-        UserEntity savedUser = userRepository.save(user);
+        UserEntity savedUser = userRepository.save(newUser);
 
         // Create UserDetails from UserEntity
-        UserDetails userDetails = User.withUsername(savedUser.getUserEmail())
-                .password(savedUser.getUserPassword())
-                .authorities((GrantedAuthority) savedUser.getAuthorities().stream()
-                        .map(AuthorityEntity::getAuthority).collect(Collectors.toList()))
-                .build();        //user->userSecurity;
+        UserDetails userDetails = toUserDetails(savedUser);      //newUser->userSecurity;
         var jwtToken = jwtServiceImpl.generateToken(userDetails);
         var refreshToken = jwtServiceImpl.generateRefreshToken(userDetails);
-
-        // Save user token
+        // Save newUser token
         saveUserToken(savedUser, jwtToken);
-
         // Create AuthenticationResponse and set properties
         AuthenticationResponse response = new AuthenticationResponse();
         response.setUserAccessToken(jwtToken);
         response.setUserRefreshToken(refreshToken);
-
         return response;
     }
-
 
     public AuthenticationResponse authenticate(UserLoginBindingModel request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUserEmail(),
-                        request.getUserPassword() //1.TODO check returning encoded password, expects raw password.
-                )
+                        request.getUserPassword())
         );
         UserEntity userEntity = userRepository.findByEmail(request.getUserEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
-        UserDetails userDetails = User.withUsername(userEntity.getUserEmail())
-                .password(userEntity.getUserPassword())
-                .authorities((GrantedAuthority) userEntity.getAuthorities().stream()
-                        .map(AuthorityEntity::getAuthority)
-                        .collect(Collectors.toList()))
-                .build();
+        UserDetails userDetails = toUserDetails(userEntity);
 
         String jwtToken = jwtServiceImpl.generateToken(userDetails);
         String refreshToken = jwtServiceImpl.generateRefreshToken(userDetails);
@@ -110,25 +94,6 @@ public class UserAuthenticationServiceImpl implements UserDetailsService {
         return response;
     }
 
-//    public AuthenticationResponse authenticate(UserLoginBindingModel request) {
-//        authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(
-//                        request.getUserEmail(),
-//                        request.getUserPassword()));
-//        var user = userRepository.findByEmail(request.getUserEmail())
-//                .orElseThrow();
-//        var jwtToken = jwtServiceImpl.generateToken(user);
-//        var refreshToken = jwtServiceImpl.generateRefreshToken(user);
-//        revokeAllUserTokens(user);
-//        saveUserToken(user, jwtToken);
-//        return AuthenticationResponse.builder()
-//                .accessToken(jwtToken)
-//                .refreshToken(refreshToken)
-//                .build();
-//    }
-
-
-
     private void saveUserToken(UserEntity userEntityToken, String jwtToken) {
         // Create a new TokenEntity object
         TokenEntity token = new TokenEntity();
@@ -143,18 +108,19 @@ public class UserAuthenticationServiceImpl implements UserDetailsService {
     }
 
     private void revokeAllUserTokens(UserEntity userEntity) {
-        // Assuming you have a method in your TokenRepository or service layer to get all valid tokens for a user
         List<TokenEntity> validUserTokens = tokenRepository.findAllValidTokenByUser(userEntity.getUserID());
-
         if (validUserTokens.isEmpty())
             return;
-
         validUserTokens.forEach(token -> {
             token.setExpired(true);
             token.setRevoked(true);
+            tokenRepository.save(token);
         });
-
-        tokenRepository.saveAll(validUserTokens);
+//        validUserTokens.forEach(token -> {
+//            token.setExpired(true);
+//            token.setRevoked(true);
+//        });
+//        tokenRepository.saveAll(validUserTokens);
     }
 
     public AuthenticationResponse refreshToken(String refreshToken) throws IOException {
@@ -187,15 +153,19 @@ public class UserAuthenticationServiceImpl implements UserDetailsService {
         return null;
     }
 
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<UserEntity> userEntityOptional = userRepository.findByEmail(username);
-        if (userEntityOptional.isEmpty()) {
-            throw new UsernameNotFoundException("User not found");
-        }
-        UserEntity userEntity = userEntityOptional.get();
-        return new User(userEntity.getUserEmail(), userEntity.getUserPassword(), new ArrayList<>());
+    private UserDetails toUserDetails(UserEntity userEntity) {
+        return User.withUsername(userEntity.getUserEmail())
+                .password(userEntity.getUserPassword())
+                .authorities(userEntity.getAuthorities().stream()
+                        .map(authorityEntity -> new SimpleGrantedAuthority(authorityEntity.getAuthority()))
+                        .collect(Collectors.toList()))
+                .build();
     }
+    @Override
+public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    UserEntity userEntity = userRepository.findByEmail(username)
+        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    return toUserDetails(userEntity);
+}
 
 }

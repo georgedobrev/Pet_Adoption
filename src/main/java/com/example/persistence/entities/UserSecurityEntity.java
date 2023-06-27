@@ -24,15 +24,6 @@
                     .collect(Collectors.toList());
         }
 
-            //Modify the getAuthorities method in UserSecurityEntity to extract the authorities from the UserEntity object correctly.
-        //Since your AuthorityEntity implements GrantedAuthority, you can directly access the authorities from UserEntity.
-    //    @Override
-    //    public Collection<? extends GrantedAuthority> getAuthorities() {
-    //        return userEntity.getAuthorities();
-    //    }
-
-
-
         @Override
         public String getPassword() {
             return userEntity.getUserPassword();
