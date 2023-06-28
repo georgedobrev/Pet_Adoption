@@ -25,16 +25,16 @@ public class UserAuthController {
     // Display the form to the user
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
-        model.addAttribute("request", new UserRegisterBindingModel()); /*RegisterRequest in video*/
+        model.addAttribute("user", new UserRegisterBindingModel()); /*RegisterRequest in video*/
         return "register"; // this is the name of the view (e.g., a Thymeleaf template) to display
     }
 
     // Handle the form submission
     @PostMapping("/register")
-    public String register(@ModelAttribute("request") UserRegisterBindingModel request, Model model) /*UserRegisterBindingModel*/ {
+    public String register(@ModelAttribute("user") UserRegisterBindingModel request, Model model) /*UserRegisterBindingModel*/ {
         AuthenticationResponse response = userService.register(request);
-        model.addAttribute("response", response);
-        return "redirect:/users/login"; // successful reg
+        model.addAttribute("user", response);
+        return "redirect:/users/register"; // successful reg
     }
 
     @GetMapping("/user-list")
@@ -45,9 +45,9 @@ public class UserAuthController {
     }
 
 
-    @GetMapping("/authenticate")
+    @GetMapping("/login")
     public String showLoginForm(Model model) {
-        model.addAttribute("request", new UserLoginBindingModel());
+        model.addAttribute("users", new UserLoginBindingModel());
         return "login";
     }
 
@@ -60,13 +60,13 @@ public class UserAuthController {
 //    }
 
     //@PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/authenticate")
-    public String authenticate(@ModelAttribute("request") UserLoginBindingModel request, Model model, HttpServletResponse response) {
+    @PostMapping("/login")
+    public String authenticate(@ModelAttribute("users") UserLoginBindingModel request, Model model, HttpServletResponse response) {
         AuthenticationResponse authResponse = userService.authenticate(request);
         Cookie jwtCookie = new Cookie("jwt", authResponse.getUserAccessToken());
         jwtCookie.setHttpOnly(true);
         response.addCookie(jwtCookie);
-        model.addAttribute("response", authResponse);
+        model.addAttribute("users", authResponse);
         return "redirect:/";
     }
 

@@ -40,12 +40,12 @@ public class SecurityConfig {
                 .sessionManagement(sm -> sm
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeRequests(auth -> auth
-                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        .requestMatchers("/", "/users/register", "/home", "/users/authenticate").permitAll()
+                        //.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                        //.requestMatchers("/", "/users/register", "/home", "/users/login").permitAll()
                         //.requestMatchers("/user/**").hasRole("USER")
                         //.requestMatchers("/index/update-user").hasRole("ADMIN")
 
-                        .anyRequest().authenticated())
+                        .anyRequest().permitAll())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin(fl -> fl
                         .loginPage("/users/login")
