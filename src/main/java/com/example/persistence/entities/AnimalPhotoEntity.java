@@ -21,9 +21,10 @@ public class AnimalPhotoEntity {
     @Column(name = "animal_photo_url", nullable = false)
     private String animalPhotoURL;
 
-    @JoinColumn(name= "animal_id")
-   @ManyToOne
+    @JoinColumn(name = "animal_id")
+    @ManyToOne
     private AnimalsEntity animal;
+
     public AnimalPhotoEntity(String animalPhotoURL) {
         this.animalPhotoURL = animalPhotoURL;
     }

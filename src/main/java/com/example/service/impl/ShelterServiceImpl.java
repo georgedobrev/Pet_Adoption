@@ -32,7 +32,6 @@ public class ShelterServiceImpl implements ShelterService {
     }
 
 
-
     @Override
     public String addShelter(ShelterAddBindingModel shelterAddBindingModel) {
         SheltersEntity shelter = shelterMapper.toShelterEntity(shelterAddBindingModel);
@@ -81,10 +80,6 @@ public class ShelterServiceImpl implements ShelterService {
         shelterRepository.save(updatedShelter);
         return "redirect:/shelters";
     }
-
-
-
-
 
 
 //@Override

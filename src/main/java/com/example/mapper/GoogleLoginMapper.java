@@ -13,11 +13,11 @@ import org.springframework.stereotype.Component;
 @Mapper(componentModel = "spring", uses = MapperUtil.class)
 @Component
 public interface GoogleLoginMapper {
-    @Mapping(target ="userFirstName" , source = "userFirstName")
-    @Mapping(target ="userLastName" , source = "userLastName")
-    @Mapping(target ="userEmail" , source = "userEmail")
-    @Mapping(target ="userPhotoURL" , source = "userPhotoURL")
-    @Mapping(target ="userAccessToken" , source = "userAccessToken")
+    @Mapping(target = "userFirstName", source = "userFirstName")
+    @Mapping(target = "userLastName", source = "userLastName")
+    @Mapping(target = "userEmail", source = "userEmail")
+    @Mapping(target = "userPhotoURL", source = "userPhotoURL")
+    @Mapping(target = "userAccessToken", source = "userAccessToken")
     UserEntity toUserEntity(UserGoogleLoginModel userGoogleLoginModel);
 
 }

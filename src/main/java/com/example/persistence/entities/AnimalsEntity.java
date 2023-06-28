@@ -49,7 +49,7 @@ public class AnimalsEntity {
 
     @Column(name = "is_adopted")
     private boolean adopted;
-    @OneToMany(mappedBy = "animal" ,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL)
     private List<AnimalPhotoEntity> animalPhotos;
 
     public AnimalsEntity() {

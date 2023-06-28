@@ -18,5 +18,5 @@ public class UserServiceImpl {
     private LoginProviderRepository loginProviderRepository;
 
 
-    }
+}
 
