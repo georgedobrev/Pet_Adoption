@@ -2,9 +2,11 @@ package com.example.service.impl;
 
 import com.example.persistence.binding.AnimalAddBindingModel;
 import com.example.persistence.binding.UpdateAnimalBindingModel;
+import com.example.persistence.entities.AnimalPhotoEntity;
 import com.example.persistence.entities.AnimalsEntity;
 import com.example.persistence.entities.SheltersEntity;
 import com.example.persistence.entities.SizeCategoryEntity;
+import com.example.persistence.repositories.AnimalPhotoRepository;
 import com.example.persistence.repositories.AnimalRepository;
 import com.example.persistence.repositories.ShelterRepository;
 import com.example.mapper.AnimalMapper;
@@ -14,6 +16,7 @@ import com.example.service.AnimalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -24,6 +27,7 @@ public class AnimalServiceImpl implements AnimalService {
     private final ShelterRepository shelterRepository;
     private final AnimalMapper animalMapper;
     private final SizeCategoryRepository sizeCategoryRepository;
+    private final AnimalPhotoRepository animalPhotosRepository;
 
 
     @Override
@@ -32,9 +36,20 @@ public class AnimalServiceImpl implements AnimalService {
         SheltersEntity shelter = shelterRepository.findByShelterName(animalAddBindingModel.getShelterName()).orElseThrow(
                 () -> new RuntimeException("No shelter found with this name: " + animalAddBindingModel.getShelterName()));
         AnimalsEntity animal = animalMapper.toAnimalEntity(animalAddBindingModel, size, shelter);
-        animalRepository.save(animal);
 
+        List<AnimalPhotoEntity> animalPhotoEntities = new ArrayList<>();
+        for (String photoUrl : animalAddBindingModel.getAnimalPhoto()) {
+            AnimalPhotoEntity animalPhotoEntity = new AnimalPhotoEntity(photoUrl);
+            animalPhotoEntity.setAnimal(animal);
+            animalPhotoEntities.add(animalPhotoEntity);
+        }
+
+        animal.setAnimalPhotos(animalPhotoEntities);
+        animalRepository.save(animal);
+        animalPhotosRepository.saveAll(animalPhotoEntities);
     }
+
+
 
     @Override
     public AnimalsEntity updateAnimal(long id, UpdateAnimalBindingModel updateAnimalBindingModel) {
