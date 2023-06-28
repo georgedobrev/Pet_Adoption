@@ -4,7 +4,7 @@ import com.example.configuration.auth.AuthenticationResponse;
 import com.example.persistence.binding.UserLoginBindingModel;
 import com.example.persistence.binding.UserRegisterBindingModel;
 import com.example.persistence.entities.UserEntity;
-import com.example.service.impl.UserAuthenticationServiceImpl;
+import com.example.service.UserAuthenticationService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserAuthController {
 
-    private final UserAuthenticationServiceImpl userService;
+    private final UserAuthenticationService userService;
 
     // Display the form to the user
     @GetMapping("/register")
