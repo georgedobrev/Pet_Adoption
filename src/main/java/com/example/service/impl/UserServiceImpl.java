@@ -70,7 +70,7 @@
 //    //No implementation for now
 //    @Override
 //    @Transactional
-//    public UserServiceModel findByEmail(String loggedUser) {
+//    public UserServiceModel findByUserEmail(String loggedUser) {
 ////        UserEntity user = this.userRepository.findByUserEmail(loggedUser);
 ////        UserServiceModel userServiceModel = userRegisterMapper.mapToUserServiceModel(user);
 ////        return userServiceModel;

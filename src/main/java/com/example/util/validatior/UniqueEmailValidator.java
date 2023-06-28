@@ -1,6 +1,6 @@
 package com.example.util.validatior;
 
-import com.example.service.UserService;
+import com.example.service.UserAuthenticationService;
 import com.example.util.annotation.UniqueEmail;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import javax.validation.ConstraintValidatorContext;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, String> {
 
-    UserService userService;
+    UserAuthenticationService userService;
 
     @Override
     public void initialize(UniqueEmail constraintAnnotation) {

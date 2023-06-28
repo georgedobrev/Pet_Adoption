@@ -4,12 +4,10 @@ import com.example.configuration.auth.AuthenticationResponse;
 import com.example.persistence.binding.UserLoginBindingModel;
 import com.example.persistence.binding.UserRegisterBindingModel;
 import com.example.persistence.entities.UserEntity;
-import com.example.service.UserService;
 import com.example.service.impl.UserAuthenticationServiceImpl;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserAuthController {
 
-    private final UserAuthenticationServiceImpl service;
-    private final UserService userService;
+    private final UserAuthenticationServiceImpl userService;
 
     // Display the form to the user
     @GetMapping("/register")
@@ -35,7 +32,7 @@ public class UserAuthController {
     // Handle the form submission
     @PostMapping("/register")
     public String register(@ModelAttribute("request") UserRegisterBindingModel request, Model model) /*UserRegisterBindingModel*/ {
-        AuthenticationResponse response = service.register(request);
+        AuthenticationResponse response = userService.register(request);
         model.addAttribute("response", response);
         return "redirect:/users/login"; // successful reg
     }
@@ -57,7 +54,7 @@ public class UserAuthController {
     //should i use cookies (JWTAuthenticationFiler/DoFilterInternal)
 //    @PostMapping("/authenticate")
 //    public String authenticate(@ModelAttribute("request") UserLoginBindingModel request, Model model) {
-//        AuthenticationResponse response = service.authenticate(request);
+//        AuthenticationResponse response = userService.authenticate(request);
 //        model.addAttribute("response", response);
 //        return "redirect:/";
 //    }
@@ -65,7 +62,7 @@ public class UserAuthController {
     //@PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/authenticate")
     public String authenticate(@ModelAttribute("request") UserLoginBindingModel request, Model model, HttpServletResponse response) {
-        AuthenticationResponse authResponse = service.authenticate(request);
+        AuthenticationResponse authResponse = userService.authenticate(request);
         Cookie jwtCookie = new Cookie("jwt", authResponse.getUserAccessToken());
         jwtCookie.setHttpOnly(true);
         response.addCookie(jwtCookie);
@@ -77,7 +74,7 @@ public class UserAuthController {
     @PostMapping("/refresh-token")
     @ResponseBody
     public AuthenticationResponse refreshToken(@RequestParam String refreshToken) throws IOException {
-        return service.refreshToken(refreshToken);
+        return userService.refreshToken(refreshToken);
     }
 
 }

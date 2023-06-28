@@ -1,6 +1,6 @@
 package com.example.configuration;
 import com.example.configuration.auth.JWTAuthenticationFilter;
-import com.example.service.UserService;
+import com.example.service.UserAuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -28,7 +28,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 public class SecurityConfig extends SecurityConfigurerAdapter{
 
-    private final UserService userDetailsService;
+    private final UserAuthenticationService userDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final JWTAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
@@ -37,8 +37,6 @@ public class SecurityConfig extends SecurityConfigurerAdapter{
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(csrf -> csrf
-                        .disable())
                 .sessionManagement(sm -> sm
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeRequests(auth -> auth

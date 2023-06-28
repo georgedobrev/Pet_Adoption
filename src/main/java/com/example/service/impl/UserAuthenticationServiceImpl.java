@@ -3,7 +3,6 @@ package com.example.service.impl;
 import com.example.configuration.auth.AuthenticationResponse;
 import com.example.persistence.binding.UserLoginBindingModel;
 import com.example.persistence.binding.UserRegisterBindingModel;
-import com.example.persistence.entities.AuthorityEntity;
 import com.example.persistence.entities.TokenEntity;
 import com.example.persistence.entities.UserEntity;
 import com.example.persistence.enums.RoleEnum;
@@ -11,15 +10,14 @@ import com.example.persistence.enums.TokenTypeEnum;
 import com.example.persistence.repositories.AuthorityRepository;
 import com.example.persistence.repositories.TokenRepository;
 import com.example.persistence.repositories.UserRepository;
+import com.example.service.UserAuthenticationService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,7 +29,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class UserAuthenticationServiceImpl implements UserDetailsService {
+public class UserAuthenticationServiceImpl implements UserAuthenticationService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthorityRepository authorityRepository;
@@ -80,7 +78,7 @@ public class UserAuthenticationServiceImpl implements UserDetailsService {
                         request.getUserEmail(),
                         request.getUserPassword())
         );
-        UserEntity userEntity = userRepository.findByEmail(request.getUserEmail())
+        UserEntity userEntity = userRepository.findByUserEmail(request.getUserEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         UserDetails userDetails = toUserDetails(userEntity);
 
@@ -99,7 +97,7 @@ public class UserAuthenticationServiceImpl implements UserDetailsService {
     }
 
     @Transactional
-    private void saveUserToken(UserEntity userEntityToken, String jwtToken) {
+    public void saveUserToken(UserEntity userEntityToken, String jwtToken) {
         // Create a new TokenEntity object
         TokenEntity token = new TokenEntity();
         // Set the properties of the token
@@ -113,7 +111,7 @@ public class UserAuthenticationServiceImpl implements UserDetailsService {
     }
 
     @Transactional
-    private void revokeAllUserTokens(UserEntity userEntity) {
+    public void revokeAllUserTokens(UserEntity userEntity) {
         List<TokenEntity> validUserTokens = tokenRepository.findAllValidTokenByUser(userEntity.getUserID());
         if (validUserTokens.isEmpty())
             return;
@@ -142,7 +140,7 @@ public class UserAuthenticationServiceImpl implements UserDetailsService {
                 // Generate a new access token
                 String accessToken = jwtServiceImpl.generateToken(userDetails);
                 // Find the user entity
-                UserEntity user = this.userRepository.findByEmail(userEmail)
+                UserEntity user = this.userRepository.findByUserEmail(userEmail)
                         .orElseThrow(); // Throw an exception if the user doesn't exist
                 // Revoke all the user's tokens
                 revokeAllUserTokens(user);
@@ -160,7 +158,7 @@ public class UserAuthenticationServiceImpl implements UserDetailsService {
         return null;
     }
 
-    private UserDetails toUserDetails(UserEntity userEntity) {
+    public UserDetails toUserDetails(UserEntity userEntity) {
         return User.withUsername(userEntity.getUserEmail())
                 .password(userEntity.getUserPassword())
                 .authorities(userEntity.getAuthorities().stream()
@@ -170,9 +168,19 @@ public class UserAuthenticationServiceImpl implements UserDetailsService {
     }
     @Override
 public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    UserEntity userEntity = userRepository.findByEmail(username)
+    UserEntity userEntity = userRepository.findByUserEmail(username)
         .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     return toUserDetails(userEntity);
 }
+
+    @Override
+    public List<UserEntity> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public boolean emailExists(String userEmail) {
+            return userRepository.findUserByUserEmail(userEmail) != null;
+    }
 
 }
