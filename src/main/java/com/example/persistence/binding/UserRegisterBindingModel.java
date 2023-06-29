@@ -42,7 +42,7 @@ public class UserRegisterBindingModel {
     private String confirmPassword;
 
     @NotBlank
-    @Pattern(regexp = "^\\+?359\\d{9}$", message = "Phone number must be in the format +359xxxxxxxxx")
+    @Pattern(regexp = "^\\+?359\\d{12}$", message = "Phone number must be in the format +359xxxxxxxxx")
     private String userPhone;
 
     public UserRegisterBindingModel() {

@@ -5,6 +5,7 @@ import com.example.persistence.binding.UserLoginBindingModel;
 import com.example.persistence.binding.UserRegisterBindingModel;
 import com.example.persistence.entities.TokenEntity;
 import com.example.persistence.entities.UserEntity;
+import com.example.persistence.entities.UserSecurityEntity;
 import com.example.persistence.enums.RoleEnum;
 import com.example.persistence.enums.TokenTypeEnum;
 import com.example.persistence.repositories.AuthorityRepository;
@@ -45,6 +46,7 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
         newUser.setUserFirstName(request.getUserFirstName());
         newUser.setUserLastName(request.getUserLastName());
         newUser.setUserEmail(request.getUserEmail());
+        newUser.setUserPhone(request.getUserPhone());
         //add default picture
         //newUser.setUserPhotoURL("https://cdn.vox-cdn.com/thumbor/qds1ovjTYIqLY6Cr2jW1YfeDJ-s=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/21730397/avatar_airbender.jpg");
         if (userRepository.count() == 0) {
@@ -103,7 +105,7 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
         // Set the properties of the token
         token.setUserEntity(userEntityToken);
         token.setToken(jwtToken);
-        token.setTokenType(TokenTypeEnum.BEARER);
+        token.setToken_type(TokenTypeEnum.BEARER);
         token.setExpired(false);
         token.setRevoked(false);
         // Save the token
@@ -158,20 +160,32 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
         return null;
     }
 
+
     public UserDetails toUserDetails(UserEntity userEntity) {
-        return User.withUsername(userEntity.getUserEmail())
-                .password(userEntity.getUserPassword())
-                .authorities(userEntity.getAuthorities().stream()
-                        .map(authorityEntity -> new SimpleGrantedAuthority(authorityEntity.getAuthority()))
-                        .collect(Collectors.toList()))
-                .build();
+        return new UserSecurityEntity(userEntity);
     }
     @Override
-public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    UserEntity userEntity = userRepository.findByUserEmail(username)
-        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-    return toUserDetails(userEntity);
-}
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserEntity userEntity = userRepository.findByUserEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return new UserSecurityEntity(userEntity);
+    }
+
+    //old
+//    public UserDetails toUserDetails(UserEntity userEntity) {
+//        return User.withUsername(userEntity.getUserEmail())
+//                .password(userEntity.getUserPassword())
+//                .authorities(userEntity.getAuthorities().stream()
+//                        .map(authorityEntity -> new SimpleGrantedAuthority(authorityEntity.getAuthority()))
+//                        .collect(Collectors.toList()))
+//                .build();
+//    }
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        UserEntity userEntity = userRepository.findByUserEmail(username)
+//                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+//        return toUserDetails(userEntity);
+//    }
 
     @Override
     public List<UserEntity> getAllUsers() {

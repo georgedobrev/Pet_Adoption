@@ -19,9 +19,9 @@ public class TokenEntity {
     @Column(name = "token", unique = true)
     private String token;
 
-    @Column(name = "tokenType")
+    @Column(name = "token_type")
     @Enumerated(EnumType.STRING)
-    private TokenTypeEnum tokenType = TokenTypeEnum.BEARER;
+    private TokenTypeEnum token_type = TokenTypeEnum.BEARER;
 
     @Column(name = "revoked")
     private boolean revoked;
@@ -32,5 +32,7 @@ public class TokenEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
+
+    //0225 radko karta
 
 }

@@ -27,7 +27,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 
 public class SecurityConfig {
-//extends SecurityConfigurerAdapter
+//extends SecurityConfigureAdapter
     private final JWTAuthenticationFilter jwtAuthFilter;
     //private final UserAuthenticationService userDetailsService;
     //private final PasswordEncoder passwordEncoder;
@@ -40,8 +40,8 @@ public class SecurityConfig {
                 .sessionManagement(sm -> sm
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeRequests(auth -> auth
-                        //.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        //.requestMatchers("/", "/users/register", "/home", "/users/login").permitAll()
+                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                        .requestMatchers("/", "/users/register", "/home", "/users/login").permitAll()
                         //.requestMatchers("/user/**").hasRole("USER")
                         //.requestMatchers("/index/update-user").hasRole("ADMIN")
 
