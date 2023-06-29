@@ -5,11 +5,12 @@ import com.example.persistence.binding.UserLoginBindingModel;
 import com.example.persistence.binding.UserRegisterBindingModel;
 import com.example.persistence.entities.UserEntity;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.io.IOException;
 import java.util.List;
 
-public interface UserAuthenticationService {
+public interface UserAuthenticationService extends UserDetailsService {
 
     AuthenticationResponse register(UserRegisterBindingModel request);
 

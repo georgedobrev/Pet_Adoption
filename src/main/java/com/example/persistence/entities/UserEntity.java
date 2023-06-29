@@ -18,7 +18,7 @@ import java.util.Set;
 @Setter
 @Table(name = "users")
 public class UserEntity{
-
+// implements UserDetails
     @Column(name = "user_id", nullable = false)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
