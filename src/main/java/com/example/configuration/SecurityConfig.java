@@ -31,7 +31,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 //extends SecurityConfigureAdapter
     private final JWTAuthenticationFilter jwtAuthFilter;
-    //private final UserAuthenticationService userDetailsService;
+    //private final UserService userDetailsService;
     //private final PasswordEncoder passwordEncoder;
     //private final AuthenticationProvider authenticationProvider;
 

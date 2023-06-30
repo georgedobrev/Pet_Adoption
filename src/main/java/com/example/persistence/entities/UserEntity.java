@@ -4,6 +4,7 @@ import com.example.configuration.auth.AuthenticationResponse;
 import com.example.persistence.enums.AnimalSexEnum;
 import com.example.persistence.enums.AnimalSpeciesEnum;
 import com.example.persistence.enums.RoleEnum;
+import com.example.service.UserAuthenticationService;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

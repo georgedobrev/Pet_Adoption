@@ -1,95 +1,207 @@
 //package com.example.service.impl;
 //
-//import com.example.persistence.entities.AuthorityEntity;
+//import com.example.configuration.auth.AuthenticationResponse;
+//import com.example.persistence.binding.UserLoginBindingModel;
+//import com.example.persistence.binding.UserRegisterBindingModel;
+//import com.example.persistence.entities.LoginProviderEntity;
+//import com.example.persistence.entities.TokenEntity;
 //import com.example.persistence.entities.UserEntity;
 //import com.example.persistence.entities.UserSecurityEntity;
-//import com.example.persistence.repositories.AuthorityRepository;
-//import com.example.persistence.repositories.UserRepository;
-//import com.example.persistence.service.UserServiceModel;
-//import com.example.persistence.view.UserViewModel;
-//import com.example.service.UserService;
 //import com.example.persistence.enums.RoleEnum;
-//import com.example.mapper.UserRegisterMapper;
-//import com.example.persistence.binding.UserRegisterBindingModel;
+//import com.example.persistence.enums.TokenTypeEnum;
+//import com.example.persistence.repositories.AuthorityRepository;
+//import com.example.persistence.repositories.LoginProviderRepository;
+//import com.example.persistence.repositories.TokenRepository;
+//import com.example.persistence.repositories.UserRepository;
+//import com.example.service.UserAuthenticationService;
+//import jakarta.transaction.Transactional;
 //import lombok.RequiredArgsConstructor;
-//import org.springframework.security.authentication.BadCredentialsException;
+//import org.springframework.security.authentication.AuthenticationManager;
+//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+//import org.springframework.security.core.authority.SimpleGrantedAuthority;
+//import org.springframework.security.core.userdetails.User;
 //import org.springframework.security.core.userdetails.UserDetails;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 //import org.springframework.stereotype.Service;
-//import org.springframework.transaction.annotation.Transactional;
 //
-//import java.util.Collections;
+//import java.io.IOException;
+//import java.util.HashSet;
 //import java.util.List;
+//import java.util.stream.Collectors;
 //
 //@Service
 //@RequiredArgsConstructor
 //public class UserServiceImpl implements UserService {
+//
 //    private final UserRepository userRepository;
-//    private final UserRegisterMapper userRegisterMapper;
 //    private final PasswordEncoder passwordEncoder;
 //    private final AuthorityRepository authorityRepository;
+//    private final JWTServiceImpl jwtServiceImpl;
+//    private final AuthenticationManager authenticationManager;
+//    private final TokenRepository tokenRepository;
+//    private final AuthorityServiceImpl authorityServiceImpl;
+//    private final LoginProviderRepository loginProviderRepository;
+//    //double check!
+//    @Transactional
+//    public AuthenticationResponse register(UserRegisterBindingModel request) {
+//        UserEntity newUser = new UserEntity();
 //
-//    //private final AuthorityService authorityService;
+//        newUser.setUserFirstName(request.getUserFirstName());
+//        newUser.setUserLastName(request.getUserLastName());
+//        newUser.setUserEmail(request.getUserEmail());
+//        newUser.setUserPhone(request.getUserPhone());
+//
+//        // Save the User object first
+//        newUser = userRepository.save(newUser);
+//
+//        //Georges stuff
+//        LoginProviderEntity newLoginProvider = new LoginProviderEntity();
+//        newLoginProvider.setUserId(newUser);
+//        newLoginProvider.setProviderName("Local");
+//        newLoginProvider.setAccessToken("JWTToken!?"); //implement jwt token
+//        loginProviderRepository.save(newLoginProvider);
 //
 //
-//
-////    @Override
-////    public UserEntity register(UserRegisterBindingModel userRegisterBindingModel) {
-////        String password = passwordEncoder.encode(userRegisterBindingModel.getUserPassword());
-////        userRegisterBindingModel.setUserPassword(password); // Set the encoded password back to the model
-////        UserEntity userEntity = userRegisterMapper.toUserEntity(userRegisterBindingModel, password);
-////        return userRepository.save(userEntity);
-////    }
-////        @Override
-//        public UserEntity register(UserRegisterBindingModel userRegisterBindingModel) {
-//            String password = passwordEncoder.encode(userRegisterBindingModel.getUserPassword());
-//            userRegisterBindingModel.setUserPassword(password); // Set the encoded password back to the model
-//            UserEntity userEntity = userRegisterMapper.toUserEntity(userRegisterBindingModel, password);
-//
-//            // assign default role USER authority
-//            AuthorityEntity defaultAuthority = authorityRepository.findByAuthority(RoleEnum.USER);
-//            userEntity.setAuthorities(Collections.singleton(defaultAuthority));
-//
-//            //migration seedAuthority..
-//            return userRepository.save(userEntity);
+//        //add default picture
+//        //newUser.setUserPhotoURL("https://cdn.vox-cdn.com/thumbor/qds1ovjTYIqLY6Cr2jW1YfeDJ-s=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/21730397/avatar_airbender.jpg");
+//        if (userRepository.count() == 0) {
+//            authorityServiceImpl.seedAuthorities();
+//            newUser.setAuthorities(new HashSet<>(authorityRepository.findAll()));
+//        } else {
+//            newUser.setAuthorities(new HashSet<>(authorityRepository.findAllByAuthority(RoleEnum.USER)));
 //        }
+//        newUser.setUserPassword(passwordEncoder.encode(request.getUserPassword()));
 //
+//        // Save the User object
+//        UserEntity savedUser = userRepository.save(newUser);
 //
-//
-//
-//    @Override
-//    public boolean emailExists(String userEmail) {
-//
-//            return userRepository.findByUserEmail(userEmail) != null;
+//        // Create UserDetails from UserEntity
+//        UserDetails userDetails = toUserDetails(savedUser);      //newUser->userSecurity;
+//        var jwtToken = jwtServiceImpl.generateToken(userDetails);
+//        var refreshToken = jwtServiceImpl.generateRefreshToken(userDetails);
+//        // Save newUser token
+//        saveUserToken(savedUser, jwtToken);
+//        // Create AuthenticationResponse and set properties
+//        AuthenticationResponse response = new AuthenticationResponse();
+//        response.setUserAccessToken(jwtToken);
+//        response.setUserRefreshToken(refreshToken);
+//        return response;
 //    }
 //
-//
-//    //Doubt it works!? reason look at mapToUserServiceModel
-//    //Need following method for loggedUserInfo in userController
-//    //No implementation for now
-//    @Override
 //    @Transactional
-//    public UserServiceModel findByUserEmail(String loggedUser) {
-////        UserEntity user = this.userRepository.findByUserEmail(loggedUser);
-////        UserServiceModel userServiceModel = userRegisterMapper.mapToUserServiceModel(user);
-////        return userServiceModel;
-//        //return userRegisterMapper.mapToUserServiceModel(user);
+//    public AuthenticationResponse authenticate(UserLoginBindingModel request) {
+//        authenticationManager.authenticate(
+//                new UsernamePasswordAuthenticationToken(
+//                        request.getUserEmail(),
+//                        request.getUserPassword())
+//        );
+//        UserEntity userEntity = userRepository.findByUserEmail(request.getUserEmail())
+//                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+//        UserDetails userDetails = toUserDetails(userEntity);
 //
+//        String jwtToken = jwtServiceImpl.generateToken(userDetails);
+//        String refreshToken = jwtServiceImpl.generateRefreshToken(userDetails);
+//
+//        revokeAllUserTokens(userEntity);
+//        saveUserToken(userEntity, jwtToken);
+//
+//        //instead of build pattern
+//        AuthenticationResponse response = new AuthenticationResponse();
+//        response.setUserAccessToken(jwtToken);
+//        response.setUserRefreshToken(refreshToken);
+//
+//        return response;
+//    }
+//
+//    @Transactional
+//    public void saveUserToken(UserEntity userEntityToken, String jwtToken) {
+//        // Create a new TokenEntity object
+//        TokenEntity token = new TokenEntity();
+//        // Set the properties of the token
+//        token.setUserEntity(userEntityToken);
+//        token.setToken(jwtToken);
+//        token.setToken_type(TokenTypeEnum.BEARER);
+//        token.setExpired(false);
+//        token.setRevoked(false);
+//        // Save the token
+//        tokenRepository.save(token);
+//    }
+//
+//    @Transactional
+//    public void revokeAllUserTokens(UserEntity userEntity) {
+//        List<TokenEntity> validUserTokens = tokenRepository.findAllValidTokenByUser(userEntity.getUserID());
+//        if (validUserTokens.isEmpty())
+//            return;
+//        validUserTokens.forEach(token -> {
+//            token.setExpired(true);
+//            token.setRevoked(true);
+//            tokenRepository.save(token);
+//        });
+////        validUserTokens.forEach(token -> {
+////            token.setExpired(true);
+////            token.setRevoked(true);
+////        });
+////        tokenRepository.saveAll(validUserTokens);
+//    }
+//
+//    @Transactional
+//    public AuthenticationResponse refreshToken(String refreshToken) throws IOException {
+//        // Extract the user email from the token
+//        String userEmail = jwtServiceImpl.extractUsername(refreshToken);
+//        // If the userEmail is not null, proceed
+//        if (userEmail != null) {
+//            // Load the user details
+//            UserDetails userDetails = loadUserByUsername(userEmail);
+//            // Check if the token is valid
+//            if (jwtServiceImpl.isTokenValid(refreshToken, userDetails)) {
+//                // Generate a new access token
+//                String accessToken = jwtServiceImpl.generateToken(userDetails);
+//                // Find the user entity
+//                UserEntity user = this.userRepository.findByUserEmail(userEmail)
+//                        .orElseThrow(); // Throw an exception if the user doesn't exist
+//                // Revoke all the user's tokens
+//                revokeAllUserTokens(user);
+//                // Save the new access token
+//                saveUserToken(user, accessToken);
+//                // Create a new authentication response with the new access token and the refresh token
+//                AuthenticationResponse authResponse = new AuthenticationResponse();
+//                authResponse.setUserAccessToken(accessToken);
+//                authResponse.setUserRefreshToken(refreshToken);
+//                // Return the authentication response
+//                return authResponse;
+//            }
+//        }
+//        // If the userEmail is null or the token is not valid, return null
 //        return null;
 //    }
 //
 //
+//    //new beta Version
+//    public UserDetails toUserDetails(UserEntity userEntity) {
+//        return new UserSecurityEntity(userEntity);
+//    }
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        UserEntity userEntity = userRepository.findByUserEmail(username)
+//                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+//        return new UserSecurityEntity(userEntity);
+//    }
 //
-//
-//
-//    //-------------------------
+//    //old
+////    public UserDetails toUserDetails(UserEntity userEntity) {
+////        return User.withUsername(userEntity.getUserEmail())
+////                .password(userEntity.getUserPassword())
+////                .authorities(userEntity.getAuthorities().stream()
+////                        .map(authorityEntity -> new SimpleGrantedAuthority(authorityEntity.getAuthority()))
+////                        .collect(Collectors.toList()))
+////                .build();
+////    }
 ////    @Override
-////    @Transactional
-////    public UserServiceModel findByUsername(String loggedUser) {
-////        User user = this.userRepository.findByUsername(loggedUser);
-////        UserServiceModel userServiceModel = this.modelMapper.map(user, UserServiceModel.class);
-////        return userServiceModel;
+////    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+////        UserEntity userEntity = userRepository.findByUserEmail(username)
+////                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+////        return toUserDetails(userEntity);
 ////    }
 //
 //    @Override
@@ -97,35 +209,9 @@
 //        return userRepository.findAll();
 //    }
 //
-//
 //    @Override
-//    public UserDetails loadUserByUsername(String userEmail) {
-//        UserEntity user = this.userRepository.findByUserEmail(userEmail);
-//        if (user == null) {
-//            throw new UsernameNotFoundException(userEmail);
-//        }
-//        return new UserSecurityEntity(user);
+//    public boolean emailExists(String userEmail) {
+//        return userRepository.findUserByUserEmail(userEmail) != null;
 //    }
 //
-//
-//    @Override
-//    public UserEntity loginUser(UserRegisterBindingModel userRegisterBindingModel) {
-//        UserEntity user = this.userRepository.findByUserEmail(userRegisterBindingModel.getUserEmail());
-//        if (user == null || !passwordEncoder.matches(userRegisterBindingModel.getUserPassword(), user.getUserPassword())) {
-//            throw new BadCredentialsException("Invalid email/password provided");
-//        }
-//        return user;
-//    }
-//
-////    public String loginUser(@ModelAttribute("user") UserRegisterBindingModel user) {
-////        UserDetails userDetails = userService.loadUserByUsername(user.getUserEmail());
-////        if (userDetails != null && passwordEncoder.matches(user.getUserPassword(), userDetails.getPassword())) {
-////            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-////                    userDetails.getPassword(),
-////                    userDetails.getAuthorities());
-////            SecurityContextHolder.getContext().setAuthentication(token);
-////            return "redirect:/"; //userService
-////        }
-////        return "redirect:/users/login?error=true"; //add error
-////    }
 //}
