@@ -79,6 +79,9 @@
       <li class="nav-item">
         <a class="nav-link" href="/animals/showAll">View Animals</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/users">Users</a>
+      </li>
     </ul>
     <ul class="navbar-nav">
       <div th:if="${#authorization.expression('isAuthenticated()')}">
@@ -88,8 +91,8 @@
             <span th:text="${#authentication.principal.attributes.name}"></span>
           </a>
           <div class="dropdown-menu" aria-labelledby="userDropdown">
-            <a class="dropdown-item" href="/profile">Profile</a>
-            <a class="dropdown-item" href="/logout">Logout</a>
+            <a class="dropdown-item" th:href="@{/profile/data}">Profile</a>
+            <a class="dropdown-item" th:href="@{/logout}">Logout</a>
           </div>
         </li>
       </div>
