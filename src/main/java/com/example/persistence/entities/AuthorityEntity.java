@@ -25,4 +25,9 @@ public class AuthorityEntity implements GrantedAuthority {
 
     public AuthorityEntity() {
     }
+
+    @Override
+    public String toString() {
+        return authority != null ? authority.name() : "";
+    }
 }

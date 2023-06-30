@@ -2,6 +2,7 @@ package com.example.controllers;
 
 import com.example.persistence.binding.UserAddBindingModel;
 import com.example.persistence.entities.UserEntity;
+import com.example.persistence.enums.RoleEnum;
 import com.example.persistence.view.UserViewModel;
 import com.example.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/users")
@@ -34,11 +36,10 @@ public class UserController {
         return "user-edit";
     }
 
-    @PostMapping("/{id}/edit")
-    public String updateUser(@PathVariable("id") long id,
-                             @ModelAttribute("user") UserAddBindingModel userAddBindingModel){
-        userService.updateUser(id, userAddBindingModel);
-        return"redirect:/users";
+    @PostMapping("/users/{id}/roles")
+    public String updateUserRoles(@PathVariable long id, @RequestParam Set<RoleEnum> newRoles) {
+        userService.updateUserRoles(id, newRoles);
+        return "redirect:/users/" + id;  // Redirect to the user details page
     }
 
 

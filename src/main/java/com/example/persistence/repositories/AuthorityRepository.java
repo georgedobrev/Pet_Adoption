@@ -13,6 +13,4 @@ public interface AuthorityRepository extends JpaRepository<AuthorityEntity, Long
 
     //for future change role
     AuthorityEntity findByAuthority(RoleEnum roleEnum);
-
-
 }

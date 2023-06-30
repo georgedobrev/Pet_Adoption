@@ -16,4 +16,5 @@ public class UserViewModel {
     private String userLastName;
     private String userEmail;
     private String userPhone;
+    private Set<AuthorityEntity> authorities;
 }

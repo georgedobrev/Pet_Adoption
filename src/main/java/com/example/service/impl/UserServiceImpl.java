@@ -3,6 +3,8 @@ package com.example.service.impl;
 import com.example.persistence.binding.UserAddBindingModel;
 import com.example.persistence.entities.AuthorityEntity;
 import com.example.persistence.entities.UserEntity;
+import com.example.persistence.enums.RoleEnum;
+import com.example.persistence.repositories.AuthorityRepository;
 import com.example.persistence.repositories.UserRepository;
 import com.example.persistence.view.UserViewModel;
 import com.example.service.UserService;
@@ -10,13 +12,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final AuthorityRepository authorityRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, AuthorityRepository authorityRepository) {
         this.userRepository = userRepository;
+        this.authorityRepository = authorityRepository;
     }
 
     @Override
@@ -33,6 +38,7 @@ public class UserServiceImpl implements UserService {
         userViewModel.setUserLastName(existingUser.getUserLastName());
         userViewModel.setUserEmail(existingUser.getUserEmail());
         userViewModel.setUserPhone(existingUser.getUserPhone());
+        userViewModel.setAuthorities(existingUser.getAuthorities());
         return userViewModel;
     }
 
@@ -44,6 +50,19 @@ public class UserServiceImpl implements UserService {
         existingUser.setUserLastName(userAddBindingModel.getUserLastName());
         existingUser.setUserPhone(userAddBindingModel.getUserPhone());
         existingUser.setUserEmail(userAddBindingModel.getUserEmail());
+        userRepository.save(existingUser);
+    }
+
+    @Override
+    public void updateUserRoles(long id, Set<RoleEnum> newRoles) {
+        UserEntity existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("No user found with id " + id));
+        if (newRoles != null) {
+            Set<AuthorityEntity> authorities = newRoles.stream()
+                    .map(roleEnum -> authorityRepository.findByAuthority(roleEnum))
+                    .collect(Collectors.toSet());
+            existingUser.setAuthorities(authorities);
+        }
         userRepository.save(existingUser);
     }
 }

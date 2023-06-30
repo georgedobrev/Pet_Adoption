@@ -111,6 +111,9 @@
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email</th>
+            <th>Phone</th>
+            <th>Roles</th>
+            <th>Action</th>
         </tr>
         </thead>
         <tbody>
@@ -119,7 +122,10 @@
             <td th:text="${user.userLastName}"></td>
             <td th:text="${user.userEmail}"></td>
             <td th:text="${user.userPhone}"></td>
-            <td><a th:href="@{'/users/' + ${user.userID} + '/edit'}" class="edit-link">Edit</a></td>
+            <td th:text="${user.authorities}"></td>
+            <td>
+                <a th:href="@{'/users/' + ${user.userID} + '/edit'}" class="edit-link">Edit Roles</a>
+            </td>
         </tr>
         </tbody>
     </table>
