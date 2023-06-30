@@ -3,12 +3,14 @@ package com.example.service.impl;
 import com.example.configuration.auth.AuthenticationResponse;
 import com.example.persistence.binding.UserLoginBindingModel;
 import com.example.persistence.binding.UserRegisterBindingModel;
+import com.example.persistence.entities.LoginProviderEntity;
 import com.example.persistence.entities.TokenEntity;
 import com.example.persistence.entities.UserEntity;
 import com.example.persistence.entities.UserSecurityEntity;
 import com.example.persistence.enums.RoleEnum;
 import com.example.persistence.enums.TokenTypeEnum;
 import com.example.persistence.repositories.AuthorityRepository;
+import com.example.persistence.repositories.LoginProviderRepository;
 import com.example.persistence.repositories.TokenRepository;
 import com.example.persistence.repositories.UserRepository;
 import com.example.service.UserAuthenticationService;
@@ -39,6 +41,7 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
     private final AuthenticationManager authenticationManager;
     private final TokenRepository tokenRepository;
     private final AuthorityServiceImpl authorityServiceImpl;
+    private final LoginProviderRepository loginProviderRepository;
     //double check!
     @Transactional
     public AuthenticationResponse register(UserRegisterBindingModel request) {
@@ -48,6 +51,18 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
         newUser.setUserLastName(request.getUserLastName());
         newUser.setUserEmail(request.getUserEmail());
         newUser.setUserPhone(request.getUserPhone());
+
+        // Save the User object first
+        newUser = userRepository.save(newUser);
+
+        //Georges stuff
+        LoginProviderEntity newLoginProvider = new LoginProviderEntity();
+        newLoginProvider.setUserId(newUser);
+        newLoginProvider.setProviderName("Local");
+        newLoginProvider.setAccessToken("JWTToken!?"); //implement jwt token
+        loginProviderRepository.save(newLoginProvider);
+
+
         //add default picture
         //newUser.setUserPhotoURL("https://cdn.vox-cdn.com/thumbor/qds1ovjTYIqLY6Cr2jW1YfeDJ-s=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/21730397/avatar_airbender.jpg");
         if (userRepository.count() == 0) {
@@ -162,6 +177,7 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
     }
 
 
+    //new beta Version
     public UserDetails toUserDetails(UserEntity userEntity) {
         return new UserSecurityEntity(userEntity);
     }

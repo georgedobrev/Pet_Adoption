@@ -40,11 +40,17 @@ public class JWTServiceImpl {
 
 
     public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+        UserSecurityEntity userSecurityEntity = (UserSecurityEntity) userDetails; //new
+        return generateToken(new HashMap<>(), userSecurityEntity); //userDetails
     }
 
-    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails){
-        return buildToken(extraClaims, userDetails, jwtExpiration);
+    public String generateToken(Map<String, Object> extraClaims, UserSecurityEntity userSecurityEntity){ //UserDetails userDetails
+        return buildToken(extraClaims, userSecurityEntity, jwtExpiration);
+    }
+
+    public String generateRefreshToken(UserDetails userDetails) {
+        UserSecurityEntity userSecurityEntity = (UserSecurityEntity) userDetails; //new
+        return buildToken(new HashMap<>(), userSecurityEntity, refreshExpiration); //userDetails
     }
 
     private String buildToken(Map<String, Object> claims, UserDetails userDetails, long expiration){
@@ -57,9 +63,7 @@ public class JWTServiceImpl {
                 .compact();
     }
 
-    public String generateRefreshToken(UserDetails userDetails) {
-        return buildToken(new HashMap<>(), userDetails, refreshExpiration);
-    }
+
 
 
     public boolean isTokenValid(String token, UserDetails userDetails) {

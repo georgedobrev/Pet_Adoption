@@ -1,6 +1,7 @@
 package com.example.configuration;
 
 import com.example.persistence.repositories.UserRepository;
+import com.example.service.UserAuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,12 +20,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class AppBeanConfig {
 
     private final UserRepository userRepository;
+    //private final UserAuthenticationService userAuthenticationService;
 
     @Bean
     public UserDetailsService userDetailsService(){
         return username -> (UserDetails) userRepository.findByUserEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
     }
+
+//    @Bean
+//    public UserDetailsService userDetailsService(UserAuthenticationService userAuthenticationService) {
+//        return userAuthenticationService::loadUserByUsername;
+//    }
+
     @Bean
     public PasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();

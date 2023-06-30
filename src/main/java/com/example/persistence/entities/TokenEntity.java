@@ -33,6 +33,4 @@ public class TokenEntity {
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 
-    //0225 radko karta
-
 }

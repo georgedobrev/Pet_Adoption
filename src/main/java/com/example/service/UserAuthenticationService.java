@@ -30,6 +30,4 @@ public interface UserAuthenticationService extends UserDetailsService {
 
     boolean emailExists(String email);
 
-
-
     }
