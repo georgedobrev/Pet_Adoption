@@ -22,7 +22,7 @@ public class MapperUtil {
     }
 
     @MapPhoneList
-    public List<String> mapPhonesToStringg(List<ShelterPhoneEntity> phones) {
+    public List<String> mapPhonesToString(List<ShelterPhoneEntity> phones) {
    return phones.stream().map(ShelterPhoneEntity::getShelterPhones)
            .collect(Collectors.toList());
     }
@@ -34,7 +34,7 @@ public class MapperUtil {
     }
 
     @MapPhoneEntity
-    public List<ShelterPhoneEntity> mapToShelterPhoneEntitiess(List<String> phones) {
+    public List<ShelterPhoneEntity> mapToShelterPhoneEntities(List<String> phones) {
         return phones.stream().map(ShelterPhoneEntity::new)
                 .collect(Collectors.toList());
     }

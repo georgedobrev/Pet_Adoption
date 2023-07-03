@@ -23,7 +23,7 @@ public class MapperUtilAnimal {
     }
 
     @MapPhotoList
-    public List<String> photoList(List<AnimalPhotoEntity> photos) {
+    public List<String> photoListt(List<AnimalPhotoEntity> photos) {
         return photos.stream().map(AnimalPhotoEntity::getAnimalPhotoURL)
                 .collect(Collectors.toList());
     }
@@ -35,7 +35,7 @@ public class MapperUtilAnimal {
     }
 
     @MapPhotoListt
-    public List<AnimalPhotoEntity> animalPhotoEntities(List<String> photos) {
+    public List<AnimalPhotoEntity> animalPhotoEntitiess(List<String> photos) {
         return photos.stream().map(AnimalPhotoEntity::new)
                 .collect(Collectors.toList());
     }

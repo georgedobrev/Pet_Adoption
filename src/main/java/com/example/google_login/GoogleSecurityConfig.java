@@ -2,6 +2,8 @@ package com.example.google_login;
 
 import com.example.persistence.entities.LoginProviderEntity;
 import com.example.persistence.entities.UserEntity;
+import com.example.persistence.enums.RoleEnum;
+import com.example.persistence.repositories.GoogleAuthorityRepository;
 import com.example.persistence.repositories.LoginProviderRepository;
 import com.example.persistence.repositories.UserRepository;
 import org.springframework.context.annotation.Bean;
@@ -51,7 +53,7 @@ public class GoogleSecurityConfig {
     }
 
     @Bean
-    public OAuth2UserService<OAuth2UserRequest, OAuth2User> customOAuth2UserService() {
+    public OAuth2UserService<OAuth2UserRequest, OAuth2User> customOAuth2UserService(GoogleAuthorityRepository googleAuthorityRepository) {
         final DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();
         return userRequest -> {
             OAuth2User user = delegate.loadUser(userRequest);
@@ -69,6 +71,8 @@ public class GoogleSecurityConfig {
                 newUser.setUserLastName(lastName);
                 newUser.setUserAccessToken(accessToken);
                 newUser.setUserPhotoURL(photoURL);
+                userRepository.save(newUser);
+                newUser.setAuthorities(new HashSet<>(googleAuthorityRepository.findAllByAuthority(RoleEnum.USER)));
                 userRepository.save(newUser);
                 LoginProviderEntity newLoginProvider = new LoginProviderEntity();
                 newLoginProvider.setUserId(newUser);
