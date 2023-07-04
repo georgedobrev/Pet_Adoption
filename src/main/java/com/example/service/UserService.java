@@ -1,24 +1,31 @@
 package com.example.service;
 
-import com.example.exceptions.UserNotFoundException;
 import com.example.persistence.binding.UserRegisterBindingModel;
 import com.example.persistence.entities.UserEntity;
-import jakarta.mail.MessagingException;
+import com.example.persistence.enums.RoleEnum;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-public interface UserService {
-    UserEntity register(UserRegisterBindingModel userRegisterBindingModel);
+public interface UserService extends UserDetailsService {
 
-    boolean emailExists(String email);
+    AuthenticationResponse register(UserRegisterBindingModel request);
 
-    UserEntity findByEmail(String email);
+    AuthenticationResponse authenticate(UserLoginBindingModel request);
+
+    void saveUserToken(UserEntity userEntityToken, String jwtToken, String refreshToken);
+
+    void revokeAllUserTokens(UserEntity userEntity);
+
+    AuthenticationResponse refreshToken(String refreshToken) throws IOException ;
+
+    UserDetails toUserDetails(UserEntity userEntity);
+
+    UserDetails loadUserByUsername(String username);
 
     List<UserEntity> getAllUsers();
 
-    UserDetails loadUserByUsername(String userEmail);
+    boolean emailExists(String email);
 
     UserEntity loginUser(UserRegisterBindingModel userRegisterBindingModel);
 

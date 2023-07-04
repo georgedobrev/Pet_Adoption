@@ -2,12 +2,15 @@ package com.example.mapper;
 
 import com.example.persistence.binding.UserRegisterBindingModel;
 import com.example.persistence.entities.UserEntity;
+import com.example.persistence.service.UserServiceModel;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
 public interface UserRegisterMapper {
+
 
     @Mapping(target = "userFirstName", source = "userRegisterBindingModel.userFirstName")
     @Mapping(target = "userLastName", source = "userRegisterBindingModel.userLastName")

@@ -9,7 +9,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
-    UserEntity findByUserEmail(String email);
+    UserEntity findUserByUserEmail(String email);
     //Optional<UserEntity> findByEmail(String userEmail);
 
     @Query("SELECT u FROM UserEntity u WHERE u.userEmail = ?1")
@@ -19,5 +19,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     public UserEntity findByVerificationCode(String code);
 
     public UserEntity findByUserResetPasswordToken(String reset_password_token);
+    Optional<UserEntity> findByUserEmail(String userEmail);
 }
 

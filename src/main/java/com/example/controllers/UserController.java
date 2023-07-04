@@ -1,76 +1,41 @@
 package com.example.controllers;
 
+import com.example.configuration.auth.AuthenticationResponse;
+import com.example.persistence.binding.UserLoginBindingModel;
 import com.example.persistence.binding.UserRegisterBindingModel;
 import com.example.persistence.entities.UserEntity;
-import com.example.persistence.enums.RoleEnum;
 import com.example.service.UserService;
-import jakarta.mail.MessagingException;
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.data.repository.query.Param;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import com.example.mapper.UserRegisterMapper;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.UnsupportedEncodingException;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
-@RequestMapping("/users")
+@RequestMapping("/users")  //@RequestMapping("/Authentication")
+@RequiredArgsConstructor
 public class UserController {
+
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService,  PasswordEncoder passwordEncoder) {
-        this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
-    }
-
-    @GetMapping("/login")
-    public String login(Model model) {
-        model.addAttribute("user", new UserRegisterBindingModel());
-        return "login";
-    }
-
-//    @PostMapping("/login")
-//    public String loginConfirm(@ModelAttribute("user") UserRegisterBindingModel user, HttpServletRequest request) {
-//        UserDetails userDetails = userService.loadUserByUsername(user.getUserEmail());
-//        if (userDetails != null && passwordEncoder.matches(user.getUserPassword(), userDetails.getPassword())) {
-//            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-//                    userDetails.getPassword(),
-//                    userDetails.getAuthorities());
-//            SecurityContextHolder.getContext().setAuthentication(token);
-//            return "redirect:/"; //userService
-//        }
-//        return "redirect:/users/login?error=true"; //add error
-//    }
-
-    @PostMapping("/login")
-    public String loginConfirm(@ModelAttribute("user") UserRegisterBindingModel user) {
-        try {
-            userService.loginUser(user);
-            return "redirect:/";
-        } catch (BadCredentialsException ex) {
-            return "redirect:/users/login?error=true";
-        }
-    }
+    // Display the form to the user
     @GetMapping("/register")
-    public String register(Model model) {
-        model.addAttribute("user", new UserRegisterBindingModel());
-        return "register";
+    public String showRegisterForm(Model model) {
+        model.addAttribute("user", new UserRegisterBindingModel()); /*RegisterRequest in video*/
+        return "register"; // this is the name of the view (e.g., a Thymeleaf template) to display
     }
 
+    // Handle the form submission
     @PostMapping("/register")
-    public String registerConfirm(@ModelAttribute("user") UserRegisterBindingModel user) {
-        userService.register(user);
-        return "redirect:/users/login";
+    public String register(@ModelAttribute("user") UserRegisterBindingModel request, Model model) /*UserRegisterBindingModel*/ {
+        AuthenticationResponse response = userService.register(request);
+        model.addAttribute("user", response);
+        return "redirect:/users/register"; // successful reg
     }
-
 
     @GetMapping("/user-list")
     public String userList(Model model) {
@@ -79,28 +44,37 @@ public class UserController {
         return "user-list";
     }
 
-    @PostMapping("/process_register")
-    public String processRegister(UserEntity user, HttpServletRequest request) throws UnsupportedEncodingException, MessagingException {
-        userService.register(user, getSiteURL(request));
-        return "register-success";
+
+    @GetMapping("/login")
+    public String showLoginForm(Model model) {
+        model.addAttribute("users", new UserLoginBindingModel());
+        return "login";
     }
 
-    private String getSiteURL(HttpServletRequest request) {
-        String siteURL = request.getRequestURL().toString();
-        return siteURL.replace(request.getServletPath(), "");
+    //should i use cookies (JWTAuthenticationFiler/DoFilterInternal)
+//    @PostMapping("/authenticate")
+//    public String authenticate(@ModelAttribute("request") UserLoginBindingModel request, Model model) {
+//        AuthenticationResponse response = userService.authenticate(request);
+//        model.addAttribute("response", response);
+//        return "redirect:/";
+//    }
+
+    //@PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/login")
+    public String authenticate(@ModelAttribute("users") UserLoginBindingModel request, Model model, HttpServletResponse response) {
+        AuthenticationResponse authResponse = userService.authenticate(request);
+        Cookie jwtCookie = new Cookie("jwt", authResponse.getUserAccessToken());
+        jwtCookie.setHttpOnly(true);
+        response.addCookie(jwtCookie);
+        model.addAttribute("users", authResponse);
+        return "redirect:/";
     }
 
-    @GetMapping("/verify")
-    public String verifyUser(@Param("code") String code) {
-        if (userService.verify(code)) {
-            return "verify-success";
-        } else {
-            return "verify-fail";
-        }
+
+    @PostMapping("/refresh-token")
+    @ResponseBody
+    public AuthenticationResponse refreshToken(@RequestParam String refreshToken) throws IOException {
+        return userService.refreshToken(refreshToken);
     }
 
-    @GetMapping("/about-schedule-a-meeting")
-    public String aboutScheduleMeeting() {
-        return "about-schedule-a-meeting";
-    }
 }
