@@ -51,14 +51,6 @@ public class UserController {
         return "login";
     }
 
-    //should i use cookies (JWTAuthenticationFiler/DoFilterInternal)
-//    @PostMapping("/authenticate")
-//    public String authenticate(@ModelAttribute("request") UserLoginBindingModel request, Model model) {
-//        AuthenticationResponse response = userService.authenticate(request);
-//        model.addAttribute("response", response);
-//        return "redirect:/";
-//    }
-
     //@PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/login")
     public String authenticate(@ModelAttribute("users") UserLoginBindingModel request, Model model, HttpServletResponse response) {

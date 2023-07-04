@@ -6,6 +6,17 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
+  mail:
+        host: smtp.gmail.com
+        username: pawfinder.team@gmail.com
+        password: Paw Finder
+        port: 587
+        properties:
+          mail:
+            smtp:
+              auth: true
+              starttls:
+                enable: true
 #  security:
 #    user:
 #      name: test

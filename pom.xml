@@ -118,7 +118,6 @@
 			<artifactId>byte-buddy</artifactId>
 		</dependency>
 
-
 	</dependencies>
 	<build>
 		<plugins>

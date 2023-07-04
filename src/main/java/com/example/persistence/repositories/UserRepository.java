@@ -10,7 +10,6 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     UserEntity findUserByUserEmail(String email);
-    //Optional<UserEntity> findByEmail(String userEmail);
 
     @Query("SELECT u FROM UserEntity u WHERE u.userEmail = ?1")
     public UserEntity findByEmail(String email);
