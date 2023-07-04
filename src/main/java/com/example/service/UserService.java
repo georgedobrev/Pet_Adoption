@@ -14,5 +14,5 @@ public interface UserService {
     List<UserEntity> getAllUsers();
     UserViewModel getUserById(long userId);
     void updateUser(long id, UserAddBindingModel userAddBindingModel);
-    void updateUserRoles(long id, Set<RoleEnum> newRoles);
+    void updateUserRoles(long id, Set<AuthorityEntity> authorities);
 }

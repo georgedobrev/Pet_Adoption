@@ -36,6 +36,7 @@ public class SecurityConfig {
         this.loginProviderRepository = loginProviderRepository;
     }
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http

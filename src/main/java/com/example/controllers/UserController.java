@@ -1,8 +1,9 @@
 package com.example.controllers;
 
-import com.example.persistence.binding.UserAddBindingModel;
+import com.example.persistence.entities.AuthorityEntity;
 import com.example.persistence.entities.UserEntity;
 import com.example.persistence.enums.RoleEnum;
+import com.example.persistence.repositories.AuthorityRepository;
 import com.example.persistence.view.UserViewModel;
 import com.example.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -16,9 +17,11 @@ import java.util.Set;
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
+    private final AuthorityRepository authorityRepository;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, AuthorityRepository authorityRepository) {
         this.userService = userService;
+        this.authorityRepository = authorityRepository;
     }
 
     @GetMapping
@@ -33,14 +36,18 @@ public class UserController {
         UserViewModel existingUser = userService.getUserById(id);
         model.addAttribute("user", existingUser);
         model.addAttribute("userId", id);
+        //model.addAttribute("allRoles", RoleEnum.values()); // Add this line to populate allRoles
+        List<AuthorityEntity> roles = authorityRepository.findAll();
+        model.addAttribute("allRoles", roles);
         return "user-edit";
     }
 
-    @PostMapping("/users/{id}/roles")
-    public String updateUserRoles(@PathVariable long id, @RequestParam Set<RoleEnum> newRoles) {
-        userService.updateUserRoles(id, newRoles);
-        return "redirect:/users/" + id;  // Redirect to the user details page
+    @PostMapping("/{id}/roles")
+    public String updateUserRoles(@PathVariable long id, @ModelAttribute("user") UserViewModel user) {
+        userService.updateUserRoles(id, user.getAuthorities());
+        return "redirect:/users";
     }
+
 
 
 }

@@ -54,7 +54,7 @@
 <body>
 <div class="container">
   <h1>Edit User Roles</h1>
-  <form th:object="${user}" th:action="@{/users/{id}/edit(id=${id})}" method="post">
+  <form th:object="${user}" th:action="@{/users/{id}/roles(id=${id})}" method="post">
     <div>
       <label for="userFirstName">First Name:</label>
       <p id="userFirstName" th:text="${user.userFirstName}"></p>
@@ -74,7 +74,9 @@
     <div>
       <label for="roles">Roles:</label>
       <select id="roles" th:field="*{authorities}" multiple="multiple">
-        <option th:each="role : ${allRoles}" th:value="${role.id}" th:text="${role.name}"></option>
+        <option th:each="roleEntity : ${allRoles}"
+                th:value="${roleEntity.roleID}"
+                th:text="${roleEntity.getAuthority()}"></option>
       </select>
     </div>
     <button type="submit">Save</button>

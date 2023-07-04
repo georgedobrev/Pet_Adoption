@@ -54,15 +54,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserRoles(long id, Set<RoleEnum> newRoles) {
+    public void updateUserRoles(long id, Set<AuthorityEntity> newAuthorities) {
         UserEntity existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("No user found with id " + id));
-        if (newRoles != null) {
-            Set<AuthorityEntity> authorities = newRoles.stream()
-                    .map(roleEnum -> authorityRepository.findByAuthority(roleEnum))
-                    .collect(Collectors.toSet());
-            existingUser.setAuthorities(authorities);
+        if (newAuthorities != null) {
+            existingUser.setAuthorities(newAuthorities);
         }
         userRepository.save(existingUser);
     }
+
 }
