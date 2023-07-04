@@ -16,7 +16,7 @@ public interface UserService extends UserDetailsService {
 
     AuthenticationResponse authenticate(UserLoginBindingModel request);
 
-    void saveUserToken(UserEntity userEntityToken, String jwtToken);
+    void saveUserToken(UserEntity userEntityToken, String jwtToken, String refreshToken);
 
     void revokeAllUserTokens(UserEntity userEntity);
 

@@ -1,5 +1,7 @@
     package com.example.persistence.entities;
 
+    import jakarta.persistence.Entity;
+    import lombok.NoArgsConstructor;
     import org.springframework.security.core.GrantedAuthority;
     import org.springframework.security.core.authority.SimpleGrantedAuthority;
     import org.springframework.security.core.userdetails.UserDetails;

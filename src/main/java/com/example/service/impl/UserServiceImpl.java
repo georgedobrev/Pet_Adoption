@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
         var jwtToken = jwtServiceImpl.generateToken(userDetails);
         var refreshToken = jwtServiceImpl.generateRefreshToken(userDetails);
         // Save newUser token
-        saveUserToken(savedUser, jwtToken);
+        saveUserToken(savedUser, jwtToken, refreshToken);
         // Create AuthenticationResponse and set properties
         AuthenticationResponse response = new AuthenticationResponse();
         response.setUserAccessToken(jwtToken);
@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
         String refreshToken = jwtServiceImpl.generateRefreshToken(userDetails);
 
         revokeAllUserTokens(userEntity);
-        saveUserToken(userEntity, jwtToken);
+        saveUserToken(userEntity, jwtToken, refreshToken);
 
         //instead of build pattern
         AuthenticationResponse response = new AuthenticationResponse();
@@ -112,13 +112,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public void saveUserToken(UserEntity userEntityToken, String jwtToken) {
+    public void saveUserToken(UserEntity userEntityToken, String jwtToken, String refreshToken) {
         // Create a new TokenEntity object
         TokenEntity token = new TokenEntity();
         // Set the properties of the token
         token.setUserEntity(userEntityToken);
         token.setToken(jwtToken);
         token.setToken_type(TokenTypeEnum.BEARER);
+        token.setRefreshToken(refreshToken);
         token.setExpired(false);
         token.setRevoked(false);
         // Save the token
@@ -160,7 +161,7 @@ public class UserServiceImpl implements UserService {
                 // Revoke all the user's tokens
                 revokeAllUserTokens(user);
                 // Save the new access token
-                saveUserToken(user, accessToken);
+                saveUserToken(user, accessToken, refreshToken);
                 // Create a new authentication response with the new access token and the refresh token
                 AuthenticationResponse authResponse = new AuthenticationResponse();
                 authResponse.setUserAccessToken(accessToken);

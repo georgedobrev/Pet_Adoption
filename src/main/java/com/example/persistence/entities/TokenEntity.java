@@ -33,4 +33,7 @@ public class TokenEntity {
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 
+    @Column(name = "refresh_token")
+    private String refreshToken;
+
 }

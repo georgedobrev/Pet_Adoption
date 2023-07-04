@@ -2,6 +2,7 @@ package com.example.service.impl;
 
 import com.example.persistence.entities.UserEntity;
 import com.example.persistence.entities.UserSecurityEntity;
+import com.example.service.JWTService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -21,7 +22,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 @Service
-public class JWTServiceImpl {
+public class JWTServiceImpl implements JWTService{
 
     @Value("${application.security.jwt.secret-key}")
     private String secretKey;
