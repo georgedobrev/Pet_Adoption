@@ -47,6 +47,7 @@ public class UserEntity{
 
     @OneToMany(mappedBy = "userEntity")
     private List<TokenEntity> tokens;
+
     @Column(name = "user_reset_password_token")
     private String userResetPasswordToken;
 

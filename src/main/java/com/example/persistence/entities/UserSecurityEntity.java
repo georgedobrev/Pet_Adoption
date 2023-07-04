@@ -53,6 +53,6 @@
 
         @Override
         public boolean isEnabled() {
-            return true;
+            return userEntity.isEnabled();
         }
     }

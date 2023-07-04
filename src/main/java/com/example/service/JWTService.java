@@ -2,6 +2,7 @@ package com.example.service;
 
 import com.example.persistence.entities.UserSecurityEntity;
 
+import io.jsonwebtoken.Claims;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.security.Key;

@@ -31,6 +31,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -216,7 +217,7 @@ public class UserServiceImpl implements UserService {
 
         @Override
         public void updateResetPasswordToken (String token, String email) throws UserNotFoundException {
-            UserEntity user = userRepository.findUserByUserEmail(email);
+            UserEntity user = userRepository.findByEmail(email);
             if (user != null) {
                 user.setUserResetPasswordToken(token);
                 userRepository.save(user);
@@ -232,6 +233,7 @@ public class UserServiceImpl implements UserService {
 
         @Override
         public void updatePassword (UserEntity user, String newPassword){
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             String encodedPassword = passwordEncoder.encode(newPassword);
             user.setUserPassword(encodedPassword);
 
