@@ -34,7 +34,7 @@ public class UserController {
     public String register(@ModelAttribute("user") UserRegisterBindingModel request, Model model) /*UserRegisterBindingModel*/ {
         AuthenticationResponse response = userService.register(request);
         model.addAttribute("user", response);
-        return "redirect:/users/register"; // successful reg
+        return "redirect:/"; // successful reg
     }
 
     @GetMapping("/user-list")

@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
         //Georges stuff
         LoginProviderEntity newLoginProvider = new LoginProviderEntity();
         newLoginProvider.setUserId(newUser);
-        newLoginProvider.setProviderName("Local");
+        newLoginProvider.setProviderName("local");
         newLoginProvider.setAccessToken("JWTToken!?"); //implement jwt token
         loginProviderRepository.save(newLoginProvider);
 
@@ -136,11 +136,6 @@ public class UserServiceImpl implements UserService {
             token.setRevoked(true);
             tokenRepository.save(token);
         });
-//        validUserTokens.forEach(token -> {
-//            token.setExpired(true);
-//            token.setRevoked(true);
-//        });
-//        tokenRepository.saveAll(validUserTokens);
     }
 
     @Transactional
@@ -166,7 +161,6 @@ public class UserServiceImpl implements UserService {
                 AuthenticationResponse authResponse = new AuthenticationResponse();
                 authResponse.setUserAccessToken(accessToken);
                 authResponse.setUserRefreshToken(refreshToken);
-                // Return the authentication response
                 return authResponse;
             }
         }
@@ -183,7 +177,7 @@ public class UserServiceImpl implements UserService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity userEntity = userRepository.findByUserEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        return new UserSecurityEntity(userEntity);
+        return toUserDetails(userEntity);
     }
 
     //old
