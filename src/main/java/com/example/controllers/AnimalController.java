@@ -5,22 +5,29 @@ import com.example.persistence.binding.UpdateAnimalBindingModel;
 import com.example.persistence.entities.AnimalsEntity;
 import com.example.persistence.view.AnimalViewModel;
 import com.example.service.AnimalService;
+import com.example.service.CloudinaryService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 @RequestMapping("/animals")
 public class AnimalController {
     private final AnimalService animalService;
+    private final CloudinaryService cloudinaryService;
 
 
-    public AnimalController(AnimalService animalService) {
+    public AnimalController(AnimalService animalService, CloudinaryService cloudinaryService) {
         this.animalService = animalService;
 
+        this.cloudinaryService = cloudinaryService;
     }
 
     @GetMapping("/showAll")
@@ -37,10 +44,17 @@ public class AnimalController {
     }
 
     @PostMapping("/add")
-    public String addAnimal(@ModelAttribute("animal") AnimalAddBindingModel animalAddBindingModel) {
+    public String addAnimal(@ModelAttribute("animal") AnimalAddBindingModel animalAddBindingModel, @RequestParam("image") List<MultipartFile> images) throws IOException {
+        List<String> imageUrls = new ArrayList<>();
+        for (MultipartFile image : images) {
+            String url = cloudinaryService.uploadImage(image);
+            imageUrls.add(url);
+        }
+        animalAddBindingModel.setAnimalPhoto(imageUrls);
         animalService.addAnimal(animalAddBindingModel);
         return "redirect:/animals/showAll";
     }
+
 
     @GetMapping("/{id}/edit")
     public String showUpdateAnimalForm(@PathVariable("id") long id, Model model) {
