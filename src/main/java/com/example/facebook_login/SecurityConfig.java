@@ -86,8 +86,6 @@ public class SecurityConfig {
                 newLoginProvider.setProviderName(userRequest.getClientRegistration().getRegistrationId());
                 newLoginProvider.setAccessToken(accessToken);
                 loginProviderRepository.save(newLoginProvider);
-            } else {
-                newUser = userRepository.findByUserEmail(email);
             }
             return user;
         };
