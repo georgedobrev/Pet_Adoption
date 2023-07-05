@@ -1,7 +1,6 @@
 package com.example.persistence.binding;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.websocket.OnMessage;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
