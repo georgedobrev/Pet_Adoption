@@ -43,17 +43,11 @@ public class AnimalController {
         return "add-animal";
     }
 
-    @PostMapping("/add")
-    public String addAnimal(@ModelAttribute("animal") AnimalAddBindingModel animalAddBindingModel, @RequestParam("image") List<MultipartFile> images) throws IOException {
-        List<String> imageUrls = new ArrayList<>();
-        for (MultipartFile image : images) {
-            String url = cloudinaryService.uploadImage(image);
-            imageUrls.add(url);
-        }
-        animalAddBindingModel.setAnimalPhoto(imageUrls);
-        animalService.addAnimal(animalAddBindingModel);
-        return "redirect:/animals/showAll";
-    }
+  @PostMapping("/add")
+  public String addAnimal(@ModelAttribute("animal") AnimalAddBindingModel animalAddBindingModel) throws IOException {
+      animalService.addAnimal(animalAddBindingModel);
+      return "redirect:/animals/showAll";
+  }
 
 
     @GetMapping("/{id}/edit")

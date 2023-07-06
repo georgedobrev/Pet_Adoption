@@ -13,9 +13,12 @@ import com.example.mapper.AnimalMapper;
 import com.example.persistence.repositories.SizeCategoryRepository;
 import com.example.persistence.view.AnimalViewModel;
 import com.example.service.AnimalService;
+import com.example.service.CloudinaryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,17 +31,19 @@ public class AnimalServiceImpl implements AnimalService {
     private final AnimalMapper animalMapper;
     private final SizeCategoryRepository sizeCategoryRepository;
     private final AnimalPhotoRepository animalPhotosRepository;
+    private final CloudinaryService cloudinaryService;
 
 
     @Override
-    public void addAnimal(AnimalAddBindingModel animalAddBindingModel) {
+    public void addAnimal(AnimalAddBindingModel animalAddBindingModel) throws IOException {
         SizeCategoryEntity size = sizeCategoryRepository.findByCategory(animalAddBindingModel.getAnimalSize());
         SheltersEntity shelter = shelterRepository.findByShelterName(animalAddBindingModel.getShelterName()).orElseThrow(
                 () -> new RuntimeException("No shelter found with this name: " + animalAddBindingModel.getShelterName()));
         AnimalsEntity animal = animalMapper.toAnimalEntity(animalAddBindingModel, size, shelter);
 
         List<AnimalPhotoEntity> animalPhotoEntities = new ArrayList<>();
-        for (String photoUrl : animalAddBindingModel.getAnimalPhoto()) {
+        for (MultipartFile photo : animalAddBindingModel.getAnimalPhoto()) {
+            String photoUrl = cloudinaryService.uploadImage(photo);
             AnimalPhotoEntity animalPhotoEntity = new AnimalPhotoEntity(photoUrl);
             animalPhotoEntity.setAnimal(animal);
             animalPhotoEntities.add(animalPhotoEntity);
@@ -48,6 +53,7 @@ public class AnimalServiceImpl implements AnimalService {
         animalRepository.save(animal);
         animalPhotosRepository.saveAll(animalPhotoEntities);
     }
+
 
 
     @Override

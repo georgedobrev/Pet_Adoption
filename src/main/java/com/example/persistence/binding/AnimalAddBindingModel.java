@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 public class AnimalAddBindingModel {
      @NotBlank(message = "Please upload at least one photo")
-     private List<String> animalPhoto;
+     private List<MultipartFile> animalPhoto;
     @NotBlank(message = "Cannot be empty")
     @Length(min = 3, max = 20)
     private String animalName;
