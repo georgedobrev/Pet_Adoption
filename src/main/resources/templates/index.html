@@ -146,6 +146,8 @@ border-radius: 25% 10%;
     background-color: #ffc107;
 }
 
+
+
     </style>
 </head>
 
@@ -212,12 +214,13 @@ border-radius: 25% 10%;
     <div class="carousel-inner">
         <div class="carousel-item active">
             <img class="d-block w-100" src="/img/slide1.png" alt="First slide">
-            <div class="carousel-caption d-none d-md-block text-center" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <div class="carousel-caption d-none d-md-block text-center"
+                 style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
                 <div style="position: relative;">
                     <h5>Welcome to Paw Finder!</h5>
                     <p>Meet the perfect pet for</p>
                     <p><span>your lifestyle</span></p>
-                    <a href="/users/about-schedule-a-meeting" class="btn btn-custom btn-lg">Schedule a meeting</a>
+                    <a href="/about-schedule-a-meeting" class="btn btn-custom btn-lg">Schedule a meeting</a>
                 </div>
             </div>
 
@@ -266,13 +269,10 @@ border-radius: 25% 10%;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
-<!-- Added JavaScript to generate profile picture -->
 <script>
-        // Get the user's initials
-        const username = "John Doe"; // Replace with the actual username
+        const username = "John Doe";
         const initials = getInitials(username);
 
-        // Function to get initials from a name
         function getInitials(name) {
             const names = name.split(" ");
             let initials = "";
@@ -282,10 +282,11 @@ border-radius: 25% 10%;
             return initials.toUpperCase();
         }
 
-        // Set the profile picture initials
         const profilePicture = document.getElementById("profilePicture");
         profilePicture.innerText = initials;
-    </script>
+
+
+</script>
 
 </body>
 

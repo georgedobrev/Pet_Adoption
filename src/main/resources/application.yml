@@ -7,9 +7,9 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
   mail:
-        host: smtp.sendgrid.net
-        username: apikey
-        password: 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
+        host: smtp-relay.brevo.com
+        username: pawfinder.team@gmail.com
+        password: ASK ALEX FOR API
         port: 587
         properties:
           mail:

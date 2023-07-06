@@ -89,14 +89,13 @@
 <div class="container mt-5">
   <h1 class="text-center mb-4">Animals in the Shelter</h1>
   <div class="row">
-    <!-- Iterate over the animals and display their details -->
     <div class="col-md-4" th:each="animal : ${animals}">
       <div class="card mb-4">
         <div class="card-body">
           <h2 class="card-title" th:text="${animal.animalName}"></h2>
           <p>Species: <span th:text="${animal.animalSpecies}"></span></p>
           <p>Sex: <span th:text="${animal.gender}"></span></p>
-          <!-- Display other animal details as needed -->
+          <a th:href="@{/schedule-a-meeting}" class="btn btn-primary">Schedule a meeting</a>
         </div>
       </div>
     </div>

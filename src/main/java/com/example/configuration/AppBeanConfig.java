@@ -4,6 +4,8 @@ import com.example.persistence.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -51,4 +53,14 @@ public class AppBeanConfig {
         return authProvider;
     }
 
+    @Bean
+    public JavaMailSender javaMailSender() {
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setHost("smtp-relay.brevo.com");
+        mailSender.setPort(587);
+        mailSender.setUsername("pawfinder.team@gmail.com");
+        mailSender.setPassword("ASK ALEX FOR API");
+
+        return mailSender;
+    }
 }

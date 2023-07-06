@@ -129,7 +129,7 @@
 <div class="form-container">
     <img class="logo" src="/img/Logo.png" alt="Logo">
     <h2>Registration</h2>
-    <form th:action="@{/users/register}" th:object="${user}" method="post">
+    <form th:action="@{/users/process_register}" th:object="${user}" method="post">
         <!-- Form fields -->
         <div class="form-group">
             <label for="userFirstName">First Name</label>

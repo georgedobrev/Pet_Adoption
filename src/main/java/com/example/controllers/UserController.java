@@ -5,15 +5,21 @@ import com.example.persistence.binding.UserLoginBindingModel;
 import com.example.persistence.binding.UserRegisterBindingModel;
 import com.example.persistence.entities.UserEntity;
 import com.example.service.UserService;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
+
+import static com.example.util.Utility.getSiteURL;
 
 @Controller
 @RequestMapping("/users")  //@RequestMapping("/Authentication")
@@ -69,4 +75,20 @@ public class UserController {
         return userService.refreshToken(refreshToken);
     }
 
+    @PostMapping("/process_register")
+    public String processRegister(UserEntity user, HttpServletRequest request)
+            throws UnsupportedEncodingException, MessagingException {
+        userService.registerEmailSender(user, getSiteURL(request));
+        return "register-success";
+    }
+
+
+    @GetMapping("/verify")
+    public String verifyUser(@Param("code") String code) {
+        if (userService.verify(code)) {
+            return "verify-success";
+        } else {
+            return "register-fail";
+        }
+    }
 }
