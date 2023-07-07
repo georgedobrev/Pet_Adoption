@@ -6,6 +6,8 @@ import com.example.persistence.repositories.AuthorityRepository;
 import com.example.service.AuthorityService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AuthorityServiceImpl implements AuthorityService {
     private final AuthorityRepository authorityRepository;
@@ -23,4 +25,5 @@ public class AuthorityServiceImpl implements AuthorityService {
         authorityRepository.save(admin);
         authorityRepository.save(user);
     }
+
 }

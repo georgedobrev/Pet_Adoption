@@ -9,7 +9,6 @@ import java.util.Set;
 
 @Repository
 public interface AuthorityRepository extends JpaRepository<AuthorityEntity, Long> {
-
     Set<AuthorityEntity> findAllByAuthority(RoleEnum user_role);
 
     //for future change role

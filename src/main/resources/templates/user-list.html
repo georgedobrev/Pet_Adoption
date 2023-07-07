@@ -1,35 +1,98 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="ISO-8859-1">
-    <title>Paw Finder - User List</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paw Finder - Shelter List</title>
 
-    <link rel="stylesheet"
-          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
     <style>
     body {
-      padding: 1em;
+      background-color: #E3DAC9;
     }
 
-    </style>
+    .navbar {
+      background-color: #FAFAD2;
+    }
+
+    .navbar-brand {
+      color: #343a40;
+    }
+
+    .navbar-brand img {
+      height: 30px;
+      width: 30px;
+      margin-right: 5px;
+    }
+
+    .navbar-nav .nav-link {
+      color: #343a40;
+    }
+
+    .header-img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 20px;
+      margin-bottom: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background-color: #fff;
+    }
+
+    th,
+    td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+      transition: background-color 0.3s;
+    }
+
+    th {
+      background-color: #f5f5f5;
+    }
+
+    tr:hover {
+      background-color: #f9f9f9;
+    }
+
+    tr:hover td {
+      background-color: #ffe6b8;
+    }
+
+    a.edit-link {
+      color: #007bff;
+      text-decoration: none;
+    }
+  </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Paw Finder</a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">
+        <img src="/img/Logo2.png" alt="Logo" class="mr-2">
+        Paw Finder
+    </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
             aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" th:href="@{/}">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/animals/showAll}">Animals</a>
+                <a class="nav-link" th:href="@{/shelters/list}">Pet Adoption</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Lost and Found</a>
@@ -38,50 +101,37 @@
                 <a class="nav-link" href="#">Veterinary Clinics</a>
             </li>
         </ul>
-        <ul class="navbar-nav">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="user.jpg" alt="User Photo" class="header-img">
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#">Profile</a>
-                    <a class="dropdown-item" href="#">Edit Profile</a>
-                </div>
-            </li>
-        </ul>
     </div>
 </nav>
-
-<div class="container my-2">
-    <h1 class="text-center text-primary mb-4">User List</h1>
-
-    <table class="table table-bordered table-hover">
-        <thead class="thead-dark">
+<div class="container">
+    <h1>Users List</h1>
+    <table class="table">
+        <thead class="thead-light">
         <tr>
-            <th>ID</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email</th>
             <th>Phone</th>
-            <th>Role</th>
-            <th>Actions</th>
+            <th>Roles</th>
+            <th>Action</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="user : ${users}">
-            <td th:text="${user.userID}"></td>
             <td th:text="${user.userFirstName}"></td>
             <td th:text="${user.userLastName}"></td>
             <td th:text="${user.userEmail}"></td>
             <td th:text="${user.userPhone}"></td>
-            <td th:text="${user.roles}"></td>
+            <td th:text="${user.authorities}"></td>
             <td>
-                <a th:href="@{/users/{id}/edit(id=${user.userID})}" class="btn btn-primary">Edit</a>
+                <a th:href="@{'/users/' + ${user.userID} + '/edit'}" class="edit-link">Edit Roles</a>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
