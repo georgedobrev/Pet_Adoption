@@ -1,4 +1,4 @@
-package com.example.google_login;
+package com.example.service.impl;
 
 import com.example.persistence.entities.LoginProviderEntity;
 import com.example.persistence.entities.UserEntity;
@@ -6,9 +6,7 @@ import com.example.persistence.enums.RoleEnum;
 import com.example.persistence.repositories.GoogleAuthorityRepository;
 import com.example.persistence.repositories.LoginProviderRepository;
 import com.example.persistence.repositories.UserRepository;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import com.example.service.GoogleService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -17,42 +15,25 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@Configuration
-public class GoogleSecurityConfig {
+@Service
+public class GoogleServiceImpl implements GoogleService {
+
     private final UserRepository userRepository;
     private final LoginProviderRepository loginProviderRepository;
 
-    public GoogleSecurityConfig(UserRepository userRepository, LoginProviderRepository loginProviderRepository) {
+    public GoogleServiceImpl(UserRepository userRepository, LoginProviderRepository loginProviderRepository) {
         this.userRepository = userRepository;
         this.loginProviderRepository = loginProviderRepository;
     }
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .oauth2Login((oauth2Login) -> oauth2Login
-                        .defaultSuccessUrl("/", true)
-                        .userInfoEndpoint((userInfo) -> userInfo
-                                .userAuthoritiesMapper(grantedAuthoritiesMapper())
-                        )
-                )
-                .logout((logout) -> logout
-                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                        .logoutSuccessUrl("/")
-                );
-
-        return http.build();
-    }
-
-    @Bean
+    @Override
     public OAuth2UserService<OAuth2UserRequest, OAuth2User> customOAuth2UserService(GoogleAuthorityRepository googleAuthorityRepository) {
         final DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();
         return userRequest -> {
@@ -80,20 +61,14 @@ public class GoogleSecurityConfig {
                 newLoginProvider.setAccessToken(accessToken);
                 loginProviderRepository.save(newLoginProvider);
             } else {
-                newUser = userRepository.findByUserEmail(email);
+                newUser = userRepository.findUserByUserEmail(email);
             }
             return user;
         };
     }
 
-    @Bean
-    public LogoutSuccessHandler logoutSuccessHandler() {
-        SimpleUrlLogoutSuccessHandler logoutSuccessHandler = new SimpleUrlLogoutSuccessHandler();
-        logoutSuccessHandler.setUseReferer(true);
-        return logoutSuccessHandler;
-    }
-
-    private GrantedAuthoritiesMapper grantedAuthoritiesMapper() {
+    @Override
+    public GrantedAuthoritiesMapper grantedAuthoritiesMapper() {
         return (authorities) -> {
             Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
             authorities.forEach((authority) -> {
@@ -113,5 +88,12 @@ public class GoogleSecurityConfig {
             });
             return mappedAuthorities;
         };
+    }
+
+    @Override
+    public LogoutSuccessHandler logoutSuccessHandler() {
+        SimpleUrlLogoutSuccessHandler logoutSuccessHandler = new SimpleUrlLogoutSuccessHandler();
+        logoutSuccessHandler.setUseReferer(true);
+        return logoutSuccessHandler;
     }
 }

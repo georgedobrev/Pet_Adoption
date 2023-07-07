@@ -31,16 +31,16 @@ public class UserController {
     // Display the form to the user
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
-        model.addAttribute("user", new UserRegisterBindingModel()); /*RegisterRequest in video*/
-        return "register"; // this is the name of the view (e.g., a Thymeleaf template) to display
+        model.addAttribute("user", new UserRegisterBindingModel());
+        return "register";
     }
 
     // Handle the form submission
     @PostMapping("/register")
-    public String register(@ModelAttribute("user") UserRegisterBindingModel request, Model model) /*UserRegisterBindingModel*/ {
+    public String register(@ModelAttribute("user") UserRegisterBindingModel request, Model model) {
         AuthenticationResponse response = userService.register(request);
         model.addAttribute("user", response);
-        return "redirect:/users/register"; // successful reg
+        return "redirect:/users/register";
     }
 
     @GetMapping("/user-list")
@@ -57,7 +57,6 @@ public class UserController {
         return "login";
     }
 
-    //@PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/login")
     public String authenticate(@ModelAttribute("users") UserLoginBindingModel request, Model model, HttpServletResponse response) {
         AuthenticationResponse authResponse = userService.authenticate(request);

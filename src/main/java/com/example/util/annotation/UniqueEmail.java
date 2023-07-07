@@ -1,6 +1,6 @@
 package com.example.util.annotation;
 
-import com.example.util.validatior.UniqueEmailValidator;
+import com.example.util.validator.UniqueEmailValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

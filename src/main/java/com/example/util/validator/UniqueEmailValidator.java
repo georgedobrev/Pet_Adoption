@@ -1,4 +1,4 @@
-package com.example.util.validatior;
+package com.example.util.validator;
 
 import com.example.service.UserService;
 import com.example.util.annotation.UniqueEmail;

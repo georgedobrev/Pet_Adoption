@@ -3,9 +3,9 @@ package com.example.service.impl;
 import com.example.persistence.binding.ShelterAddBindingModel;
 import com.example.persistence.entities.ShelterPhoneEntity;
 import com.example.persistence.entities.SheltersEntity;
+import com.example.persistence.repositories.ShelterPhonesRepository;
 import com.example.persistence.repositories.ShelterRepository;
 import com.example.persistence.view.AddShelterViewModel;
-import com.example.repositories.ShelterPhonesRepository;
 
 import com.example.service.ShelterService;
 import com.example.mapper.ShelterMapper;
