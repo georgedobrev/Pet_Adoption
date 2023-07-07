@@ -5,11 +5,12 @@ import com.example.persistence.binding.UpdateAnimalBindingModel;
 import com.example.persistence.entities.AnimalsEntity;
 import com.example.persistence.view.AnimalViewModel;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface AnimalService {
 
-    void addAnimal(AnimalAddBindingModel animalAddBindingModel);
+    void addAnimal(AnimalAddBindingModel animalAddBindingModel) throws IOException;
 
     AnimalsEntity updateAnimal(long id, UpdateAnimalBindingModel updateAnimalBindingModel);
 

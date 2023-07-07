@@ -1,19 +1,16 @@
 package com.example.persistence.binding;
 
-import com.example.persistence.entities.SizeCategoryEntity;
+
 import com.example.persistence.enums.AnimalSexEnum;
 import com.example.persistence.enums.AnimalSpeciesEnum;
 import com.example.persistence.enums.SizeCategoryEnum;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.aspectj.bridge.Message;
-import org.hibernate.validator.constraints.CodePointLength;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -21,8 +18,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class AnimalAddBindingModel {
- //   @NotBlank(message = "Please upload at least one photo")
- //   private List<String> animalPhoto;
+     @NotBlank(message = "Please upload at least one photo")
+     private List<MultipartFile> animalPhoto;
     @NotBlank(message = "Cannot be empty")
     @Length(min = 3, max = 20)
     private String animalName;

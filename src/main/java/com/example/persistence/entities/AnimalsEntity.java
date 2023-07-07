@@ -25,9 +25,6 @@ public class AnimalsEntity {
     @ManyToOne
     private SheltersEntity shelter;
 
-    @OneToMany
-    @JoinColumn(name = "animal_photo_id")
-    private List<AnimalPhotoEntity> animalPhotos;
 
     @Column(name = "animal_name", nullable = false)
     private String animalName;
@@ -53,6 +50,8 @@ public class AnimalsEntity {
 
     @Column(name = "is_adopted")
     private boolean adopted;
+    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL)
+    private List<AnimalPhotoEntity> animalPhotos;
 
     public AnimalsEntity() {
     }
