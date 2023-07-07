@@ -9,14 +9,10 @@ import java.util.List;
 public interface ShelterService {
 
     String addShelter(ShelterAddBindingModel shelterViewModel);
+
     List<SheltersEntity> getAllShelters();
+
     AddShelterViewModel getShelterById(long shelterId);
+
     String updateShelter(long id, ShelterAddBindingModel shelterAddBindingModel);
-
-
-
-
-    //  AddShelterViewModel getAddShelterViewModel();
-    //  AddShelterViewModel getShelterForEditing(long id);
-    //  String updateShelter(long id, ShelterAddBindingModel shelterViewModel);
 }

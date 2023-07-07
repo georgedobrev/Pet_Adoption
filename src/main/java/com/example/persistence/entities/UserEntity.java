@@ -12,8 +12,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name = "users")
-public class UserEntity{
-// implements UserDetails
+public class UserEntity {
     @Column(name = "user_id", nullable = false)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,6 +61,7 @@ public class UserEntity{
 
     @Column(name = "enabled")
     private boolean enabled;
+
     public UserEntity() {
     }
 

@@ -18,8 +18,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class AnimalAddBindingModel {
-     @NotBlank(message = "Please upload at least one photo")
-     private List<MultipartFile> animalPhoto;
+    @NotBlank(message = "Please upload at least one photo")
+    private List<MultipartFile> animalPhoto;
     @NotBlank(message = "Cannot be empty")
     @Length(min = 3, max = 20)
     private String animalName;

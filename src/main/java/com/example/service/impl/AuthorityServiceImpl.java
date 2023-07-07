@@ -6,7 +6,6 @@ import com.example.persistence.repositories.AuthorityRepository;
 import com.example.service.AuthorityService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class AuthorityServiceImpl implements AuthorityService {

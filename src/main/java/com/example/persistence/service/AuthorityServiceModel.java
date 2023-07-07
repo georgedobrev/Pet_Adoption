@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class AuthorityServiceModel{
+public class AuthorityServiceModel {
 
     private RoleEnum authority;
 

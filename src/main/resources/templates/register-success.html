@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-  <style>
+    <meta charset="UTF-8">
+    <title>Register Success</title>
+    <style>
         body {
           background: linear-gradient(to bottom, #dcb05e, #e8dca2);
           font-family: Arial, sans-serif;
@@ -46,17 +46,18 @@
         .message-container a {
           color: blue;
         }
+
     </style>
 </head>
 <body>
 <div class="container">
-  <img class="logo" src="/img/Logo.png" alt="Logo">
-  <h2>Registration</h2>
-  <div class="message-container">
-    <h3>You have signed up successfully!</h3>
-    <p>Please check your email to verify your account.</p>
-    <h4><a th:href="@{/users/login}">Click here to Login</a></h4>
-  </div>
+    <img class="logo" src="/img/Logo.png" alt="Logo">
+    <h2>Registration</h2>
+    <div class="message-container">
+        <h3>You have signed up successfully!</h3>
+        <p>Please check your email to verify your account.</p>
+        <h4><a th:href="@{/users/login}">Click here to Login</a></h4>
+    </div>
 </div>
 </body>
 </html>

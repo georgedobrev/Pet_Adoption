@@ -3,7 +3,10 @@ package com.example.controllers;
 import com.example.configuration.auth.AuthenticationResponse;
 import com.example.persistence.binding.UserLoginBindingModel;
 import com.example.persistence.binding.UserRegisterBindingModel;
+import com.example.persistence.entities.AuthorityEntity;
 import com.example.persistence.entities.UserEntity;
+import com.example.persistence.repositories.AuthorityRepository;
+import com.example.persistence.view.UserViewModel;
 import com.example.service.UserService;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.Cookie;
@@ -22,20 +25,19 @@ import java.util.List;
 import static com.example.util.Utility.getSiteURL;
 
 @Controller
-@RequestMapping("/users")  //@RequestMapping("/Authentication")
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
+    private final AuthorityRepository authorityRepository;
 
-    // Display the form to the user
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
         model.addAttribute("user", new UserRegisterBindingModel());
         return "register";
     }
 
-    // Handle the form submission
     @PostMapping("/register")
     public String register(@ModelAttribute("user") UserRegisterBindingModel request, Model model) {
         AuthenticationResponse response = userService.register(request);
@@ -43,8 +45,8 @@ public class UserController {
         return "redirect:/users/register";
     }
 
-    @GetMapping("/user-list")
-    public String userList(Model model) {
+    @GetMapping
+    public String showUserList(Model model) {
         List<UserEntity> users = userService.getAllUsers();
         model.addAttribute("users", users);
         return "user-list";
@@ -65,6 +67,22 @@ public class UserController {
         response.addCookie(jwtCookie);
         model.addAttribute("users", authResponse);
         return "redirect:/";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String showUpdateUserForm(@PathVariable("id") long id, Model model){
+        UserViewModel existingUser = userService.getUserById(id);
+        model.addAttribute("user", existingUser);
+        model.addAttribute("userId", id);
+        //model.addAttribute("allRoles", RoleEnum.values()); // Add this line to populate allRoles
+        List<AuthorityEntity> roles = authorityRepository.findAll();
+        model.addAttribute("allRoles", roles);
+        return "user-edit";
+    }
+    @PostMapping("/{id}/roles")
+    public String updateUserRoles(@PathVariable long id, @ModelAttribute("user") UserViewModel user) {
+        userService.updateUserRoles(id, user.getAuthorities());
+        return "redirect:/users";
     }
 
 

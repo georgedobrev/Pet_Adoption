@@ -8,12 +8,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class UserGoogleLoginModel {
-   private String userFirstName;
-   private String userLastName;
-   private String userEmail;
-   private String userPassword;
-   private String userPhotoURL;
-   private String userAccessToken;
-   private String userRefreshToken;
+    private String userFirstName;
+    private String userLastName;
+    private String userEmail;
+    private String userPassword;
+    private String userPhotoURL;
+    private String userAccessToken;
+    private String userRefreshToken;
 
 }

@@ -1,6 +1,6 @@
 package com.example.persistence.view;
 
-import com.example.persistence.service.AuthorityServiceModel;
+import com.example.persistence.entities.AuthorityEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,10 +17,9 @@ public class UserViewModel {
     private String email;
     private String profilePicture;
     private AddressViewModel address;
-    private Integer phone;
+    private String phone;
     private String password;
     private String confirmPassword;
-    private Set<AuthorityServiceModel> authorities;
-
+    private Set<AuthorityEntity> authorities;
 
 }

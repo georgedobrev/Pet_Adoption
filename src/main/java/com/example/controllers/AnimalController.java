@@ -9,13 +9,9 @@ import com.example.service.CloudinaryService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 @Controller
 @RequestMapping("/animals")
@@ -43,11 +39,11 @@ public class AnimalController {
         return "add-animal";
     }
 
-  @PostMapping("/add")
-  public String addAnimal(@ModelAttribute("animal") AnimalAddBindingModel animalAddBindingModel) throws IOException {
-      animalService.addAnimal(animalAddBindingModel);
-      return "redirect:/animals/showAll";
-  }
+    @PostMapping("/add")
+    public String addAnimal(@ModelAttribute("animal") AnimalAddBindingModel animalAddBindingModel) throws IOException {
+        animalService.addAnimal(animalAddBindingModel);
+        return "redirect:/animals/showAll";
+    }
 
 
     @GetMapping("/{id}/edit")

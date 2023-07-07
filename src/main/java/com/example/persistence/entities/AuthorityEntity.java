@@ -1,4 +1,5 @@
 package com.example.persistence.entities;
+
 import com.example.persistence.enums.RoleEnum;
 import jakarta.persistence.*;
 import lombok.Getter;

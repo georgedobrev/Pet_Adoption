@@ -13,7 +13,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -38,7 +37,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         Cookie[] cookies = request.getCookies();
         Cookie jwtCookie = null;
 
-        if(cookies != null) {
+        if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("jwt")) {
                     jwtCookie = cookie;
@@ -46,17 +45,17 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
         }
-        if (jwtCookie == null){
+        if (jwtCookie == null) {
             filterChain.doFilter(request, response);
             return;
         }
         jwt = jwtCookie.getValue();
         userEmail = jwtServiceImpl.extractUsername(jwt);
 
-        if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null){
+        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
 
-            if(jwtServiceImpl.isTokenValid(jwt, userDetails)){
+            if (jwtServiceImpl.isTokenValid(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
@@ -97,7 +96,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 //        }
 //        filterChain.doFilter(request, response);
 //    }
-
 
 
 }

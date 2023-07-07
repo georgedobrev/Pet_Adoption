@@ -55,7 +55,6 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
 
-
     @Override
     public AnimalsEntity updateAnimal(long id, UpdateAnimalBindingModel updateAnimalBindingModel) {
         AnimalsEntity existingAnimal = animalRepository.findById(id)

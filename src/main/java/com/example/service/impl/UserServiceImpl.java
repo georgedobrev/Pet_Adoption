@@ -2,21 +2,18 @@ package com.example.service.impl;
 
 import com.example.exceptions.UserNotFoundException;
 import com.example.configuration.auth.AuthenticationResponse;
+import com.example.persistence.binding.UserAddBindingModel;
 import com.example.persistence.binding.UserLoginBindingModel;
 import com.example.persistence.binding.UserRegisterBindingModel;
-import com.example.persistence.entities.LoginProviderEntity;
-import com.example.persistence.entities.TokenEntity;
-import com.example.persistence.entities.UserEntity;
-import com.example.persistence.entities.UserSecurityEntity;
+import com.example.persistence.entities.*;
 import com.example.persistence.enums.RoleEnum;
 import com.example.persistence.enums.TokenTypeEnum;
 import com.example.persistence.repositories.AuthorityRepository;
 import com.example.persistence.repositories.LoginProviderRepository;
 import com.example.persistence.repositories.TokenRepository;
 import com.example.persistence.repositories.UserRepository;
+import com.example.persistence.view.UserViewModel;
 import com.example.service.UserService;
-import com.example.mapper.UserRegisterMapper;
-import com.example.persistence.binding.UserRegisterBindingModel;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
@@ -25,11 +22,8 @@ import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -37,10 +31,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Collections;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -58,6 +52,7 @@ public class UserServiceImpl implements UserService {
     private final TokenRepository tokenRepository;
     private final AuthorityServiceImpl authorityServiceImpl;
     private final LoginProviderRepository loginProviderRepository;
+
     //double check!
     @Transactional
     public AuthenticationResponse register(UserRegisterBindingModel request) {
@@ -131,9 +126,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public void saveUserToken(UserEntity userEntityToken, String jwtToken, String refreshToken) {
-        // Create a new TokenEntity object
         TokenEntity token = new TokenEntity();
-        // Set the properties of the token
         token.setUserEntity(userEntityToken);
         token.setToken(jwtToken);
         token.setToken_type(TokenTypeEnum.BEARER);
@@ -191,6 +184,7 @@ public class UserServiceImpl implements UserService {
     public UserDetails toUserDetails(UserEntity userEntity) {
         return new UserSecurityEntity(userEntity);
     }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity userEntity = userRepository.findByUserEmail(username)
@@ -208,101 +202,132 @@ public class UserServiceImpl implements UserService {
 //    }
 
     @Override
+    public UserViewModel getUserById(long userId) {
+        UserEntity existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("No user found with id " + userId));
+        UserViewModel userViewModel = new UserViewModel();
+        userViewModel.setFirstName(existingUser.getUserFirstName());
+        userViewModel.setLastName(existingUser.getUserLastName());
+        userViewModel.setEmail(existingUser.getUserEmail());
+        userViewModel.setPhone(existingUser.getUserPhone());
+        userViewModel.setAuthorities(existingUser.getAuthorities());
+        return userViewModel;
+    }
+    @Override
+    public void updateUser(long id, UserAddBindingModel userAddBindingModel) {
+        UserEntity existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("No user found with id " + id));
+        existingUser.setUserFirstName(userAddBindingModel.getUserFirstName());
+        existingUser.setUserLastName(userAddBindingModel.getUserLastName());
+        existingUser.setUserPhone(userAddBindingModel.getUserPhone());
+        existingUser.setUserEmail(userAddBindingModel.getUserEmail());
+        userRepository.save(existingUser);
+    }
+    @Override
+    public void updateUserRoles(long id, Set<AuthorityEntity> newAuthorities) {
+        UserEntity existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("No user found with id " + id));
+        if (newAuthorities != null) {
+            existingUser.setAuthorities(newAuthorities);
+        }
+        userRepository.save(existingUser);
+    }
+
+    @Override
     public List<UserEntity> getAllUsers() {
         return userRepository.findAll();
     }
 
 
+    public boolean emailExists(String userEmail) {
+        return userRepository.findUserByUserEmail(userEmail) != null;
+    }
 
-        public boolean emailExists(String userEmail){
-            return userRepository.findUserByUserEmail(userEmail) != null;
-        }
 
-
-        @Override
-        public void updateResetPasswordToken (String token, String email) throws UserNotFoundException {
-            UserEntity user = userRepository.findByEmail(email);
-            if (user != null) {
-                user.setUserResetPasswordToken(token);
-                userRepository.save(user);
-            } else {
-                throw new UserNotFoundException("Could not find any user with the email " + email);
-            }
-        }
-
-        @Override
-        public UserEntity getByResetPasswordToken (String token){
-            return userRepository.findByUserResetPasswordToken(token);
-        }
-
-        @Override
-        public void updatePassword (UserEntity user, String newPassword){
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            String encodedPassword = passwordEncoder.encode(newPassword);
-            user.setUserPassword(encodedPassword);
-
-            user.setUserResetPasswordToken(null);
+    @Override
+    public void updateResetPasswordToken(String token, String email) throws UserNotFoundException {
+        UserEntity user = userRepository.findByEmail(email);
+        if (user != null) {
+            user.setUserResetPasswordToken(token);
             userRepository.save(user);
-        }
-
-        @Override
-        public void registerEmailSender (UserEntity user, String siteURL) throws UnsupportedEncodingException, MessagingException {
-            String encodedPassword = passwordEncoder.encode(user.getUserPassword());
-            user.setUserPassword(encodedPassword);
-
-            String randomCode = RandomString.make(64);
-            user.setVerificationCode(randomCode);
-            user.setEnabled(false);
-
-            userRepository.save(user);
-
-            sendVerificationEmail(user, siteURL);
-        }
-
-        @Override
-        public void sendVerificationEmail (UserEntity user, String siteURL) throws
-        MessagingException, UnsupportedEncodingException {
-            String toAddress = user.getUserEmail();
-            String fromAddress = "pawfinder.team@gmail.com";
-            String senderName = "Paw Finder";
-            String subject = "Please verify your registration";
-            String content = "Dear [[name]],<br>"
-                    + "Please click the link below to verify your registration:<br>"
-                    + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
-                    + "Thank you,<br>"
-                    + "Paw Finder";
-
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message);
-
-            helper.setFrom(fromAddress, senderName);
-            helper.setTo(toAddress);
-            helper.setSubject(subject);
-
-            String fullName = user.getUserFirstName() + " " + user.getUserLastName();
-            content = content.replace("[[name]]", fullName);
-            String verifyURL = siteURL + "/verify?code=" + user.getVerificationCode();
-
-            content = content.replace("[[URL]]", verifyURL);
-
-            helper.setText(content, true);
-
-            mailSender.send(message);
-        }
-
-        @Override
-        public boolean verify (String verificationCode){
-            UserEntity user = userRepository.findByVerificationCode(verificationCode);
-
-            if (user == null || user.isEnabled()) {
-                return false;
-            } else {
-                user.setVerificationCode(null);
-                user.setEnabled(true);
-                userRepository.save(user);
-
-                return true;
-            }
-
+        } else {
+            throw new UserNotFoundException("Could not find any user with the email " + email);
         }
     }
+
+    @Override
+    public UserEntity getByResetPasswordToken(String token) {
+        return userRepository.findByUserResetPasswordToken(token);
+    }
+
+    @Override
+    public void updatePassword(UserEntity user, String newPassword) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        user.setUserPassword(encodedPassword);
+
+        user.setUserResetPasswordToken(null);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void registerEmailSender(UserEntity user, String siteURL) throws UnsupportedEncodingException, MessagingException {
+        String encodedPassword = passwordEncoder.encode(user.getUserPassword());
+        user.setUserPassword(encodedPassword);
+
+        String randomCode = RandomString.make(64);
+        user.setVerificationCode(randomCode);
+        user.setEnabled(false);
+
+        userRepository.save(user);
+
+        sendVerificationEmail(user, siteURL);
+    }
+
+    @Override
+    public void sendVerificationEmail(UserEntity user, String siteURL) throws
+            MessagingException, UnsupportedEncodingException {
+        String toAddress = user.getUserEmail();
+        String fromAddress = "pawfinder.team@gmail.com";
+        String senderName = "Paw Finder";
+        String subject = "Please verify your registration";
+        String content = "Dear [[name]],<br>"
+                + "Please click the link below to verify your registration:<br>"
+                + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
+                + "Thank you,<br>"
+                + "Paw Finder";
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+
+        helper.setFrom(fromAddress, senderName);
+        helper.setTo(toAddress);
+        helper.setSubject(subject);
+
+        String fullName = user.getUserFirstName() + " " + user.getUserLastName();
+        content = content.replace("[[name]]", fullName);
+        String verifyURL = siteURL + "/verify?code=" + user.getVerificationCode();
+
+        content = content.replace("[[URL]]", verifyURL);
+
+        helper.setText(content, true);
+
+        mailSender.send(message);
+    }
+
+    @Override
+    public boolean verify(String verificationCode) {
+        UserEntity user = userRepository.findByVerificationCode(verificationCode);
+
+        if (user == null || user.isEnabled()) {
+            return false;
+        } else {
+            user.setVerificationCode(null);
+            user.setEnabled(true);
+            userRepository.save(user);
+
+            return true;
+        }
+
+    }
+}

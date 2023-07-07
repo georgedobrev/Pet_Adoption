@@ -1,4 +1,5 @@
 package com.example.configuration;
+
 import com.example.configuration.auth.JWTAuthenticationFilter;
 import com.example.persistence.entities.LoginProviderEntity;
 import com.example.persistence.entities.UserEntity;
@@ -34,14 +35,9 @@ import java.util.Set;
 @EnableWebSecurity
 
 public class SecurityConfig {
-//extends SecurityConfigureAdapter
     private final JWTAuthenticationFilter jwtAuthFilter;
-    private  final UserRepository userRepository;
+    private final UserRepository userRepository;
     private final LoginProviderRepository loginProviderRepository;
-    private final GoogleService googleService;
-    //private final UserService userDetailsService;
-    //private final PasswordEncoder passwordEncoder;
-    //private final AuthenticationProvider authenticationProvider;
 
     //old one
     @Bean
@@ -51,8 +47,6 @@ public class SecurityConfig {
                 .authorizeRequests(auth -> auth
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers("/", "/users/register", "/home", "/users/login").permitAll()
-                        //.requestMatchers("/user/**").hasRole("USER")
-                        //.requestMatchers("/index/update-user").hasRole("ADMIN")
                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
@@ -66,7 +60,7 @@ public class SecurityConfig {
                 .oauth2Login((oauth2Login) -> oauth2Login
                         .defaultSuccessUrl("/", true)
                         .userInfoEndpoint((userInfo) -> userInfo
-                                .userAuthoritiesMapper(googleService.grantedAuthoritiesMapper())
+                                .userAuthoritiesMapper(grantedAuthoritiesMapper())
                         )
                 )
                 .logout(l -> l
@@ -79,5 +73,26 @@ public class SecurityConfig {
                 .build();
     }
 
+    private GrantedAuthoritiesMapper grantedAuthoritiesMapper() {
+        return (authorities) -> {
+            Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
+            authorities.forEach((authority) -> {
+                GrantedAuthority mappedAuthority;
+                if (authority instanceof OidcUserAuthority) {
+                    OidcUserAuthority userAuthority = (OidcUserAuthority) authority;
+                    mappedAuthority = new OidcUserAuthority(
+                            "ROLE_USER", userAuthority.getIdToken(), userAuthority.getUserInfo());
+                } else if (authority instanceof OAuth2UserAuthority) {
+                    OAuth2UserAuthority userAuthority = (OAuth2UserAuthority) authority;
+                    mappedAuthority = new OAuth2UserAuthority(
+                            "ROLE_USER", userAuthority.getAttributes());
+                } else {
+                    mappedAuthority = authority;
+                }
+                mappedAuthorities.add(mappedAuthority);
+            });
+            return mappedAuthorities;
+        };
+    }
 
 }
