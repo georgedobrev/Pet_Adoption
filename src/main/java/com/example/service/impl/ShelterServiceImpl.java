@@ -78,6 +78,4 @@ public class ShelterServiceImpl implements ShelterService {
         shelterRepository.save(updatedShelter);
         return "redirect:/shelters";
     }
-
-
 }

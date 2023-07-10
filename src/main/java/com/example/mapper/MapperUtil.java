@@ -23,8 +23,8 @@ public class MapperUtil {
 
     @MapPhoneList
     public List<String> mapPhonesToString(List<ShelterPhoneEntity> phones) {
-   return phones.stream().map(ShelterPhoneEntity::getShelterPhones)
-           .collect(Collectors.toList());
+        return phones.stream().map(ShelterPhoneEntity::getShelterPhones)
+                .collect(Collectors.toList());
     }
 
     @Qualifier

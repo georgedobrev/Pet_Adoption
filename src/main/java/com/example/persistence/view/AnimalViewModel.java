@@ -11,7 +11,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class AnimalViewModel {
-    //  private List<String> animalPhoto;
     private String animalName;
     private AnimalSpeciesEnum animalSpecies;
     private AnimalSexEnum animalGender;

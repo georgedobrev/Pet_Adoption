@@ -22,6 +22,7 @@ public class ShelterController {
         this.shelterService = shelterService;
         this.animalService = animalService;
     }
+
     @GetMapping
     public String showShelterList(Model model) {
         List<SheltersEntity> shelters = shelterService.getAllShelters();
@@ -44,7 +45,7 @@ public class ShelterController {
     public String showUpdateShelterForm(@PathVariable("id") long id, Model model) {
         AddShelterViewModel existingShelter = shelterService.getShelterById(id);
         model.addAttribute("shelter", existingShelter);
-        model.addAttribute("shelterId" , id);
+        model.addAttribute("shelterId", id);
         return "shelter-edit";
     }
 

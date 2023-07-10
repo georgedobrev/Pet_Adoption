@@ -49,6 +49,7 @@
         button[type="submit"]:hover {
             background-color: #45a049;
         }
+
     </style>
 </head>
 <body>
@@ -73,7 +74,8 @@
         </div>
         <div th:each="phone, stat : *{shelterPhones}">
             <label th:for="${'shelterPhones['+stat.index+']'}">Phone:</label>
-            <input type="text" th:id="${'shelterPhones['+stat.index+']'}" th:field="*{shelterPhones[__${stat.index}__]}" required>
+            <input type="text" th:id="${'shelterPhones['+stat.index+']'}" th:field="*{shelterPhones[__${stat.index}__]}"
+                   required>
         </div>
         <button type="submit">Save</button>
     </form>
