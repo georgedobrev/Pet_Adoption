@@ -24,6 +24,7 @@ import java.util.function.Function;
 @Service
 public class JWTServiceImpl implements JWTService{
 
+    //appProp
     @Value("${application.security.jwt.secret-key}")
     private String secretKey;
     @Value("${application.security.jwt.expiration}")
@@ -32,11 +33,6 @@ public class JWTServiceImpl implements JWTService{
     private long refreshExpiration;
     public String extractUsername(String token){
         return extractClaim(token, Claims::getSubject);
-    }
-
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver){
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
     }
 
 
@@ -71,6 +67,13 @@ public class JWTServiceImpl implements JWTService{
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
+
+
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver){
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
+
 
     private Claims extractAllClaims(String token){
         return Jwts

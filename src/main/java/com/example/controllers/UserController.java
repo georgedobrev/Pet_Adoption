@@ -4,6 +4,7 @@ import com.example.configuration.auth.AuthenticationResponse;
 import com.example.persistence.binding.UserLoginBindingModel;
 import com.example.persistence.binding.UserRegisterBindingModel;
 import com.example.persistence.entities.UserEntity;
+import com.example.service.AuthenticationService;
 import com.example.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,6 +22,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final AuthenticationService authenticationServiceService;
 
     // Display the form to the user
     @GetMapping("/register")
@@ -32,7 +34,7 @@ public class UserController {
     // Handle the form submission
     @PostMapping("/register")
     public String register(@ModelAttribute("user") UserRegisterBindingModel request, Model model) /*UserRegisterBindingModel*/ {
-        AuthenticationResponse response = userService.register(request);
+        AuthenticationResponse response = authenticationServiceService.register(request);
         model.addAttribute("user", response);
         return "redirect:/"; // successful reg
     }
@@ -62,7 +64,7 @@ public class UserController {
     //@PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/login")
     public String authenticate(@ModelAttribute("users") UserLoginBindingModel request, Model model, HttpServletResponse response) {
-        AuthenticationResponse authResponse = userService.authenticate(request);
+        AuthenticationResponse authResponse = authenticationServiceService.authenticate(request);
         Cookie jwtCookie = new Cookie("jwt", authResponse.getUserAccessToken());
         jwtCookie.setHttpOnly(true);
         response.addCookie(jwtCookie);
@@ -74,7 +76,7 @@ public class UserController {
     @PostMapping("/refresh-token")
     @ResponseBody
     public AuthenticationResponse refreshToken(@RequestParam String refreshToken) throws IOException {
-        return userService.refreshToken(refreshToken);
+        return authenticationServiceService.refreshToken(refreshToken);
     }
 
 }

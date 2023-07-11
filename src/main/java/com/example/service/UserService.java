@@ -12,16 +12,6 @@ import java.util.List;
 
 public interface UserService extends UserDetailsService {
 
-    AuthenticationResponse register(UserRegisterBindingModel request);
-
-    AuthenticationResponse authenticate(UserLoginBindingModel request);
-
-    void saveUserToken(UserEntity userEntityToken, String jwtToken, String refreshToken);
-
-    void revokeAllUserTokens(UserEntity userEntity);
-
-    AuthenticationResponse refreshToken(String refreshToken) throws IOException ;
-
     UserDetails toUserDetails(UserEntity userEntity);
 
     UserDetails loadUserByUsername(String username);
