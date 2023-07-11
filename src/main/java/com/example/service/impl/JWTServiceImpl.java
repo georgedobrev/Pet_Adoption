@@ -70,7 +70,7 @@ public class JWTServiceImpl implements JWTService{
 
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver){
-        final Claims claims = extractAllClaims(token);
+        final Claims claims = extractAllClaims(token); //here
         return claimsResolver.apply(claims);
     }
 
