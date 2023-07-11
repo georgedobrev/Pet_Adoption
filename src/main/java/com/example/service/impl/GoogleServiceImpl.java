@@ -35,7 +35,7 @@ public class GoogleServiceImpl implements GoogleService {
     }
 
     @Override
-    public OAuth2UserService<OAuth2UserRequest, OAuth2User> customOAuth2UserService(GoogleAuthorityRepository googleAuthorityRepository) {
+    public OAuth2UserService<OAuth2UserRequest, OAuth2User> customOAuth2UserServiceGoogle(GoogleAuthorityRepository googleAuthorityRepository) {
         final DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();
         return userRequest -> {
             OAuth2User user = delegate.loadUser(userRequest);
@@ -69,7 +69,7 @@ public class GoogleServiceImpl implements GoogleService {
     }
 
     @Override
-    public OAuth2UserService<OAuth2UserRequest, OAuth2User> customOAuth2UserServiceFaceboook(AuthorityRepository authorityRepository) {
+    public OAuth2UserService<OAuth2UserRequest, OAuth2User> customOAuth2UserServiceFacebook(AuthorityRepository authorityRepository) {
         final DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();
 
         return userRequest -> {
@@ -103,30 +103,6 @@ public class GoogleServiceImpl implements GoogleService {
             return user;
         };
     }
-
-    @Override
-    public GrantedAuthoritiesMapper grantedAuthoritiesMapper() {
-        return (authorities) -> {
-            Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
-            authorities.forEach((authority) -> {
-                GrantedAuthority mappedAuthority;
-                if (authority instanceof OidcUserAuthority) {
-                    OidcUserAuthority userAuthority = (OidcUserAuthority) authority;
-                    mappedAuthority = new OidcUserAuthority(
-                            "ROLE_USER", userAuthority.getIdToken(), userAuthority.getUserInfo());
-                } else if (authority instanceof OAuth2UserAuthority) {
-                    OAuth2UserAuthority userAuthority = (OAuth2UserAuthority) authority;
-                    mappedAuthority = new OAuth2UserAuthority(
-                            "ROLE_USER", userAuthority.getAttributes());
-                } else {
-                    mappedAuthority = authority;
-                }
-                mappedAuthorities.add(mappedAuthority);
-            });
-            return mappedAuthorities;
-        };
-    }
-
     @Override
     public LogoutSuccessHandler logoutSuccessHandler() {
         SimpleUrlLogoutSuccessHandler logoutSuccessHandler = new SimpleUrlLogoutSuccessHandler();
