@@ -44,22 +44,6 @@ public class UserServiceImpl implements UserService {
         return toUserDetails(userEntity);
     }
 
-    //old
-//    public UserDetails toUserDetails(UserEntity userEntity) {
-//        return User.withUsername(userEntity.getUserEmail())
-//                .password(userEntity.getUserPassword())
-//                .authorities(userEntity.getAuthorities().stream()
-//                        .map(authorityEntity -> new SimpleGrantedAuthority(authorityEntity.getAuthority()))
-//                        .collect(Collectors.toList()))
-//                .build();
-//    }
-//    @Override
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        UserEntity userEntity = userRepository.findByUserEmail(username)
-//                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-//        return toUserDetails(userEntity);
-//    }
-
     @Override
     public List<UserEntity> getAllUsers() {
         return userRepository.findAll();

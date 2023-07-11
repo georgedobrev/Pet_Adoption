@@ -46,29 +46,22 @@ public class UserController {
         return "user-list";
     }
 
-
     @GetMapping("/login")
     public String showLoginForm(Model model) {
-        model.addAttribute("users", new UserLoginBindingModel());
+        model.addAttribute("user", new UserLoginBindingModel());
         return "login";
     }
 
-    //should i use cookies (JWTAuthenticationFiler/DoFilterInternal)
-//    @PostMapping("/authenticate")
-//    public String authenticate(@ModelAttribute("request") UserLoginBindingModel request, Model model) {
-//        AuthenticationResponse response = userService.authenticate(request);
-//        model.addAttribute("response", response);
-//        return "redirect:/";
-//    }
-
     //@PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/login")
-    public String authenticate(@ModelAttribute("users") UserLoginBindingModel request, Model model, HttpServletResponse response) {
+    public String authenticate(@ModelAttribute("user") UserLoginBindingModel request, Model model, HttpServletResponse response) {
         AuthenticationResponse authResponse = authenticationServiceService.authenticate(request);
         Cookie jwtCookie = new Cookie("jwt", authResponse.getUserAccessToken());
         jwtCookie.setHttpOnly(true);
+        jwtCookie.setSecure(true); // This makes the cookie only be sent over HTTPS. Use it if your site is served over HTTPS.
+        jwtCookie.setMaxAge(24 * 60 * 60); // Set
         response.addCookie(jwtCookie);
-        model.addAttribute("users", authResponse);
+        model.addAttribute("user", request);
         return "redirect:/";
     }
 
