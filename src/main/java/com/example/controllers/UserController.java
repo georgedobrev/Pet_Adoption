@@ -12,6 +12,7 @@ import jakarta.mail.MessagingException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
@@ -59,22 +60,11 @@ public class UserController {
         return "login";
     }
 
-    @PostMapping("/login")
-    public String authenticate(@ModelAttribute("users") UserLoginBindingModel request, Model model, HttpServletResponse response) {
-        AuthenticationResponse authResponse = userService.authenticate(request);
-        Cookie jwtCookie = new Cookie("jwt", authResponse.getUserAccessToken());
-        jwtCookie.setHttpOnly(true);
-        response.addCookie(jwtCookie);
-        model.addAttribute("users", authResponse);
-        return "redirect:/";
-    }
-
     @GetMapping("/{id}/edit")
     public String showUpdateUserForm(@PathVariable("id") long id, Model model){
         UserViewModel existingUser = userService.getUserById(id);
         model.addAttribute("user", existingUser);
         model.addAttribute("userId", id);
-        //model.addAttribute("allRoles", RoleEnum.values()); // Add this line to populate allRoles
         List<AuthorityEntity> roles = authorityRepository.findAll();
         model.addAttribute("allRoles", roles);
         return "user-edit";

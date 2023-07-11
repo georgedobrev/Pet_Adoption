@@ -59,7 +59,7 @@ public class UserEntity {
     @Column(name = "verification_code", length = 64)
     private String verificationCode;
 
-    @Column(name = "enabled")
+    @Column(name = "enabled" ,nullable = false, columnDefinition = "boolean default true")
     private boolean enabled;
 
     public UserEntity() {
