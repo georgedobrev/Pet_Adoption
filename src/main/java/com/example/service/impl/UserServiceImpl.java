@@ -1,30 +1,15 @@
 package com.example.service.impl;
 
-import com.example.configuration.auth.AuthenticationResponse;
-import com.example.persistence.binding.UserLoginBindingModel;
-import com.example.persistence.binding.UserRegisterBindingModel;
-import com.example.persistence.entities.LoginProviderEntity;
-import com.example.persistence.entities.TokenEntity;
 import com.example.persistence.entities.UserEntity;
 import com.example.persistence.entities.UserSecurityEntity;
-import com.example.persistence.enums.RoleEnum;
-import com.example.persistence.enums.TokenTypeEnum;
-import com.example.persistence.repositories.AuthorityRepository;
-import com.example.persistence.repositories.LoginProviderRepository;
-import com.example.persistence.repositories.TokenRepository;
 import com.example.persistence.repositories.UserRepository;
 import com.example.service.UserService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -37,6 +22,7 @@ public class UserServiceImpl implements UserService {
     public UserDetails toUserDetails(UserEntity userEntity) {
         return new UserSecurityEntity(userEntity);
     }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity userEntity = userRepository.findByUserEmail(username)
@@ -51,7 +37,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean emailExists(String userEmail) {
-            return userRepository.findUserByUserEmail(userEmail) != null;
+        return userRepository.findUserByUserEmail(userEmail) != null;
+    }
+
+    @Override
+    public UserDetailsService userDetailsService() {
+        return username -> userRepository.findByUserEmail(username)
+                .map(this::toUserDetails)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
 }

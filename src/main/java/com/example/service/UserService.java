@@ -1,13 +1,9 @@
 package com.example.service;
 
-import com.example.configuration.auth.AuthenticationResponse;
-import com.example.persistence.binding.UserLoginBindingModel;
-import com.example.persistence.binding.UserRegisterBindingModel;
 import com.example.persistence.entities.UserEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface UserService extends UserDetailsService {
@@ -20,4 +16,8 @@ public interface UserService extends UserDetailsService {
 
     boolean emailExists(String email);
 
-    }
+
+    UserDetailsService userDetailsService();
+
+
+}
