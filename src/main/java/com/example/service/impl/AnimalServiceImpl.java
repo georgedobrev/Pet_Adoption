@@ -51,7 +51,7 @@ public class AnimalServiceImpl implements AnimalService {
 
         animal.setAnimalPhotos(animalPhotoEntities);
         animalRepository.save(animal);
-        animalPhotosRepository.saveAll(animalPhotoEntities);
+
     }
 
 

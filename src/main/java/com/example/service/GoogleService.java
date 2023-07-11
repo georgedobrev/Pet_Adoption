@@ -12,11 +12,9 @@ public interface GoogleService {
 
     OAuth2UserService<OAuth2UserRequest, OAuth2User> customOAuth2UserService(GoogleAuthorityRepository googleAuthorityRepository);
 
-    GrantedAuthoritiesMapper grantedAuthoritiesMapper();
 
-    LogoutSuccessHandler logoutSuccessHandler();
 
-    OAuth2UserService<OAuth2UserRequest, OAuth2User> customOAuth2UserServiceFaceboook(AuthorityRepository authorityRepository);
+   OAuth2UserService<OAuth2UserRequest, OAuth2User> customOAuth2UserServiceFaceboook(AuthorityRepository authorityRepository);
 
 
 }

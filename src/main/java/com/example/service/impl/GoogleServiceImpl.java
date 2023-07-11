@@ -53,6 +53,7 @@ public class GoogleServiceImpl implements GoogleService {
                 newUser.setUserLastName(lastName);
                 newUser.setUserAccessToken(accessToken);
                 newUser.setUserPhotoURL(photoURL);
+                System.out.println(newUser);
                 userRepository.save(newUser);
                 newUser.setAuthorities(new HashSet<>(googleAuthorityRepository.findAllByAuthority(RoleEnum.USER)));
                 userRepository.save(newUser);
@@ -68,69 +69,41 @@ public class GoogleServiceImpl implements GoogleService {
         };
     }
 
-    @Override
-    public OAuth2UserService<OAuth2UserRequest, OAuth2User> customOAuth2UserServiceFaceboook(AuthorityRepository authorityRepository) {
-        final DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();
+  @Override
+  public OAuth2UserService<OAuth2UserRequest, OAuth2User> customOAuth2UserServiceFaceboook(AuthorityRepository authorityRepository) {
+      final DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();
 
-        return userRequest -> {
-            OAuth2User user = delegate.loadUser(userRequest);
+      return userRequest -> {
+          OAuth2User user = delegate.loadUser(userRequest);
 
-            String fullName = user.getAttribute("name");
-            String email = user.getAttribute("email");
-            String accessToken = userRequest.getAccessToken().getTokenValue();
-            System.out.println(user.getAttributes());
-            //System.out.println(accessToken);
-            String[] names = fullName.split(" ", 2);
-            String firstName = names[0];
-            String lastName = names.length > 1 ? names[1] : ""; //handle case where there is no last name
+          String fullName = user.getAttribute("name");
+          String email = user.getAttribute("email");
+          String accessToken = userRequest.getAccessToken().getTokenValue();
+          System.out.println(user.getAttributes());
+          //System.out.println(accessToken);
+          String[] names = fullName.split(" ", 2);
+          String firstName = names[0];
+          String lastName = names.length > 1 ? names[1] : ""; //handle case where there is no last name
 
-            UserEntity newUser = null;
-            if (!userRepository.existsByUserEmail(email)) {
-                newUser = new UserEntity();
-                newUser.setUserEmail(email);
-                newUser.setUserFirstName(firstName);
-                newUser.setUserLastName(lastName);
-                newUser.setUserAccessToken(accessToken);
-                newUser = userRepository.save(newUser);
-                newUser.setAuthorities(new HashSet<>(authorityRepository.findAllByAuthority(RoleEnum.USER)));
-                userRepository.save(newUser);
-                LoginProviderEntity newLoginProvider = new LoginProviderEntity();
-                newLoginProvider.setUserId(newUser);
-                newLoginProvider.setProviderName(userRequest.getClientRegistration().getRegistrationId());
-                newLoginProvider.setAccessToken(accessToken);
-                loginProviderRepository.save(newLoginProvider);
-            }
-            return user;
-        };
-    }
+          UserEntity newUser = null;
+          if (!userRepository.existsByUserEmail(email)) {
+              newUser = new UserEntity();
+              newUser.setUserEmail(email);
+              newUser.setUserFirstName(firstName);
+              newUser.setUserLastName(lastName);
+              newUser.setUserAccessToken(accessToken);
+              newUser = userRepository.save(newUser);
+              newUser.setAuthorities(new HashSet<>(authorityRepository.findAllByAuthority(RoleEnum.USER)));
+              userRepository.save(newUser);
+              LoginProviderEntity newLoginProvider = new LoginProviderEntity();
+              newLoginProvider.setUserId(newUser);
+              newLoginProvider.setProviderName(userRequest.getClientRegistration().getRegistrationId());
+              newLoginProvider.setAccessToken(accessToken);
+              loginProviderRepository.save(newLoginProvider);
+          }
+          return user;
+      };
+  }
 
-    @Override
-    public GrantedAuthoritiesMapper grantedAuthoritiesMapper() {
-        return (authorities) -> {
-            Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
-            authorities.forEach((authority) -> {
-                GrantedAuthority mappedAuthority;
-                if (authority instanceof OidcUserAuthority) {
-                    OidcUserAuthority userAuthority = (OidcUserAuthority) authority;
-                    mappedAuthority = new OidcUserAuthority(
-                            "ROLE_USER", userAuthority.getIdToken(), userAuthority.getUserInfo());
-                } else if (authority instanceof OAuth2UserAuthority) {
-                    OAuth2UserAuthority userAuthority = (OAuth2UserAuthority) authority;
-                    mappedAuthority = new OAuth2UserAuthority(
-                            "ROLE_USER", userAuthority.getAttributes());
-                } else {
-                    mappedAuthority = authority;
-                }
-                mappedAuthorities.add(mappedAuthority);
-            });
-            return mappedAuthorities;
-        };
-    }
 
-    @Override
-    public LogoutSuccessHandler logoutSuccessHandler() {
-        SimpleUrlLogoutSuccessHandler logoutSuccessHandler = new SimpleUrlLogoutSuccessHandler();
-        logoutSuccessHandler.setUseReferer(true);
-        return logoutSuccessHandler;
-    }
 }
