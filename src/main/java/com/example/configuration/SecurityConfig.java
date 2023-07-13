@@ -1,13 +1,8 @@
 package com.example.configuration;
 
 import com.example.configuration.auth.JWTAuthenticationFilter;
-import com.example.persistence.entities.LoginProviderEntity;
-import com.example.persistence.entities.UserEntity;
-import com.example.persistence.enums.RoleEnum;
-import com.example.persistence.repositories.GoogleAuthorityRepository;
 import com.example.persistence.repositories.LoginProviderRepository;
 import com.example.persistence.repositories.UserRepository;
-import com.example.service.GoogleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -17,14 +12,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
-import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.HashSet;
@@ -93,6 +86,11 @@ public class SecurityConfig {
             });
             return mappedAuthorities;
         };
+    }
+    public LogoutSuccessHandler logoutSuccessHandler() {
+        SimpleUrlLogoutSuccessHandler logoutSuccessHandler = new SimpleUrlLogoutSuccessHandler();
+        logoutSuccessHandler.setUseReferer(true);
+        return logoutSuccessHandler;
     }
 
 }
