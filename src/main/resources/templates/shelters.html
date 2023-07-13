@@ -8,6 +8,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <style>
     body {
+
       background: linear-gradient(to bottom, #dbb263 0%, #f4edde 100%);
       font-family: 'Roboto', sans-serif;
       height: 100vh;
@@ -56,16 +57,19 @@
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Paw Finder</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
-            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="height: 60px;">
+    <a class="navbar-brand" href="#">
+        <img src="/img/Logo2.png" alt="Logo" height="30" width="30" class="mr-2">
+        <span style="font-size: 20px;">Paw Finder</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" th:href="@{/}">Home</a>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Home</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/shelters/list}">Pet Adoption</a>
@@ -74,26 +78,39 @@
                 <a class="nav-link" href="#">Lost and Found</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Veterinary Clinics</a>
+                <a class="nav-link" th:href="@{/showMap}">Veterinary Clinics</a>
             </li>
             <li class="nav-item">
-                <a th:href="@{/shelters}" class="btn btn-primary">Shelters</a>
+                <a class="nav-link" href="/shelters">Shelters</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/animals/showAll">View Animals</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/users">Users</a>
             </li>
         </ul>
-        <ul class="navbar-nav">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+        <ul class="navbar-nav navbar-nav-buttons">
+            <li class="nav-item">
+                <a class="nav-link" href="/users/register">Register</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/users/login">Login</a>
+            </li>
+            <li class="nav-item dropdown show">
+                <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="user.jpg" alt="User Photo" class="header-img">
+                    <div id="profilePicture" class="profile-picture"></div>
                 </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#">Profile</a>
-                    <a class="dropdown-item" href="#">Edit Profile</a>
+                <div class="dropdown-menu" aria-labelledby="profileDropdown">
+                    <a class="dropdown-item" href="#">Edit profile</a>
+                    <a class="dropdown-item" href="#">Logout</a>
                 </div>
             </li>
         </ul>
     </div>
 </nav>
+
 <div class="container mt-5">
     <h1 class="text-center mb-4">List of Shelters</h1>
     <div class="row">
