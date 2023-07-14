@@ -3,19 +3,17 @@ package com.example.service.impl;
 import com.example.persistence.binding.ShelterAddBindingModel;
 import com.example.persistence.entities.ShelterPhoneEntity;
 import com.example.persistence.entities.SheltersEntity;
+import com.example.persistence.repositories.ShelterPhonesRepository;
 import com.example.persistence.repositories.ShelterRepository;
 import com.example.persistence.view.AddShelterViewModel;
-import com.example.repositories.ShelterPhonesRepository;
 
 import com.example.service.ShelterService;
 import com.example.mapper.ShelterMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ShelterServiceImpl implements ShelterService {
@@ -30,7 +28,6 @@ public class ShelterServiceImpl implements ShelterService {
         this.shelterPhonesRepository = shelterPhonesRepository;
         this.shelterMapper = shelterMapper;
     }
-
 
 
     @Override

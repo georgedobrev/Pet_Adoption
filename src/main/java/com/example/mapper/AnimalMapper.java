@@ -22,6 +22,7 @@ public interface AnimalMapper {
     @Mapping(target = "sizeCategory", source = "sizeCategory")
     @Mapping(target = "animalCharacteristics", source = "model.animalCharacteristics")
     @Mapping(target = "shelter", source = "shelters")
+    @Mapping(target = "animalPhotos", ignore = true)
     AnimalsEntity toAnimalEntity(AnimalAddBindingModel model, SizeCategoryEntity sizeCategory, SheltersEntity shelters);
 
     @Mapping(target = "animalName", source = "updateModel.animalName")

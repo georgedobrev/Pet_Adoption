@@ -1,5 +1,6 @@
 package com.example.persistence.entities;
 
+import com.example.persistence.enums.RoleEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,8 +13,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name = "users")
-public class UserEntity{
-// implements UserDetails
+public class UserEntity {
     @Column(name = "user_id", nullable = false)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,12 +48,20 @@ public class UserEntity{
     @OneToMany(mappedBy = "userEntity")
     private List<TokenEntity> tokens;
 
+    @Column(name = "user_reset_password_token")
+    private String userResetPasswordToken;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"))
     private Set<AuthorityEntity> authorities = new HashSet<>();
 
+    @Column(name = "verification_code", length = 64)
+    private String verificationCode;
+
+    @Column(name = "enabled" ,nullable = false, columnDefinition = "boolean default true")
+    private boolean enabled;
 
     public UserEntity() {
     }

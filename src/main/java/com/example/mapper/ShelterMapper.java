@@ -35,7 +35,7 @@ public interface ShelterMapper {
     @Mapping(target = "shelterAddress", source = "bindingModel.shelterAddress")
     @Mapping(target = "shelterEmail", source = "bindingModel.shelterEmail")
     @Mapping(target = "shelterPhones", ignore = true)
-    //@Mapping(target = "shelterPhones", source = "bindingModel.shelterPhones", qualifiedBy = MapperUtil.MapPhoneEntity.class)
+        //@Mapping(target = "shelterPhones", source = "bindingModel.shelterPhones", qualifiedBy = MapperUtil.MapPhoneEntity.class)
     SheltersEntity updateEntity(ShelterAddBindingModel bindingModel,
                                 SheltersEntity existingShelter);
 
