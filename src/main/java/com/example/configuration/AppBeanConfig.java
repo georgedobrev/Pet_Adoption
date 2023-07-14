@@ -59,7 +59,7 @@ public class AppBeanConfig {
         mailSender.setHost("smtp-relay.brevo.com");
         mailSender.setPort(587);
         mailSender.setUsername("pawfinder.team@gmail.com");
-        mailSender.setPassword("h5TrPGDwQJF4a2Mj");
+        mailSender.setPassword("ASK ALEX FOR API");
 
         return mailSender;
     }
