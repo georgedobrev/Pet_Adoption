@@ -150,6 +150,7 @@ body .calendar .fc-header .fc-header-left .fc-button.fc-button-next, body .calen
           href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css">
 </head>
 <body>
+
 <div class="container">
     <div class="row">
         <div id="overview" class="col-sm-4 col-md-3 animated bounceInUp">
@@ -218,6 +219,7 @@ body .calendar .fc-header .fc-header-left .fc-button.fc-button-next, body .calen
                                     <div class="ui-resizable-handle ui-resizable-e"></div>
                                 </div>
                             </div>
+                            <h5>Select an available time slot:</h5>
                             <table class="fc-border-separate" style="width:100%" cellspacing="0">
                                 <thead>
                                 <tr class="fc-first fc-last">
@@ -226,77 +228,38 @@ body .calendar .fc-header .fc-header-left .fc-button.fc-button-next, body .calen
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr class="fc-week fc-first">
-                                    <td class="fc-day fc-sat fc-widget-content fc-other-month fc-first"
-                                        data-date="2013-12-28">
-                                        <div style="min-height: 80px;">
-                                            <div class="modal fade" id="unlockModalSat" tabindex="-1" role="dialog"
-                                                 aria-labelledby="myModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <button type="button" class="close" data-dismiss="modal"
-                                                                    aria-hidden="true">×
-                                                            </button>
-                                                        </div>
-                                                        <!-- Add buttons for each day here -->
-                                                        <div class="modal-body">
-                                                            <h5>Select an available time slot:</h5>
-                                                            <ul class="time-slots">
-                                                                <li>
-                                                                    <button class="time-slot-button">10:00-10:30
-                                                                    </button>
-                                                                </li>
-                                                                <li>
-                                                                    <button class="time-slot-button">11:00-11:30
-                                                                    </button>
-                                                                </li>
-                                                                <li>
-                                                                    <button class="time-slot-button">12:00-12:30
-                                                                    </button>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                        <!-- End of buttons for each day -->
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                <tr>
+                                    <td>
+                                        <ul class="time-slots">
+                                            <li>
+                                                <button class="time-slot-button">10:00-10:30
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button class="time-slot-button">11:00-11:30
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button class="time-slot-button">12:00-12:30
+                                                </button>
+                                            </li>
+                                        </ul>
                                     </td>
-                                    <td class="fc-day fc-sun fc-widget-content fc-other-month fc-first"
-                                        data-date="2013-12-29">
-                                        <div style="min-height: 80px;">
-                                            <div class="modal fade" id="unlockModalSun" tabindex="-1" role="dialog"
-                                                 aria-labelledby="myModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <button type="button" class="close" data-dismiss="modal"
-                                                                    aria-hidden="true">×
-                                                            </button>
-                                                        </div>
-                                                        <!-- Add buttons for each day here -->
-                                                        <div class="modal-body">
-                                                            <h5>Select an available time slot:</h5>
-                                                            <ul class="time-slots">
-                                                                <li>
-                                                                    <button class="time-slot-button">10:00-10:30
-                                                                    </button>
-                                                                </li>
-                                                                <li>
-                                                                    <button class="time-slot-button">11:00-11:30
-                                                                    </button>
-                                                                </li>
-                                                                <li>
-                                                                    <button class="time-slot-button">12:00-12:30
-                                                                    </button>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <td>
+                                        <ul class="time-slots">
+                                            <li>
+                                                <button class="time-slot-button">10:00-10:30
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button class="time-slot-button">11:00-11:30
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button class="time-slot-button">12:00-12:30
+                                                </button>
+                                            </li>
+                                        </ul>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -308,6 +271,8 @@ body .calendar .fc-header .fc-header-left .fc-button.fc-button-next, body .calen
         </div>
     </div>
 </div>
+
+
 <script>
     $(document).ready(function() {
       $('.time-slot-button').click(function() {

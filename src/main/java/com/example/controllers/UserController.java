@@ -43,7 +43,7 @@ public class UserController {
     public String register(@ModelAttribute("user") UserRegisterBindingModel request, Model model) {
         AuthenticationResponse response = userService.register(request);
         model.addAttribute("user", response);
-        return "redirect:/users/register";
+        return "redirect:/";
     }
 
     @GetMapping
