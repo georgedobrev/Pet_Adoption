@@ -68,8 +68,7 @@ public class SecurityConfig {
                 )
                 .oauth2Login((oauth2Login) -> oauth2Login
                         .defaultSuccessUrl("/", true)
-                        .userInfoEndpoint((userInfo) -> userInfo
-                                .userAuthoritiesMapper(grantedAuthoritiesMapper())
+                        .userInfoEndpoint((userInfo) -> userInfo.userAuthoritiesMapper(grantedAuthoritiesMapper())
                         )
                 )
                 .logout(l -> l
