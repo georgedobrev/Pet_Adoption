@@ -182,15 +182,11 @@ public class UserServiceImpl implements UserService {
 
 
     //new beta Version
-    public UserDetails toUserDetails(UserEntity userEntity) {
-        return new UserSecurityEntity(userEntity);
-    }
+
 
     @Override
-    public UserDetailsService userDetailsService() {
-        return username -> userRepository.findByUserEmail(username)
-                .map(this::toUserDetails)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    public UserDetails toUserDetails(UserEntity userEntity) {
+        return new UserSecurityEntity(userEntity);
     }
 
     @Override
@@ -199,7 +195,12 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return toUserDetails(userEntity);
     }
-
+    @Override
+    public UserDetailsService userDetailsService() {
+        return username -> userRepository.findByUserEmail(username)
+                .map(this::toUserDetails)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
 
 
 
