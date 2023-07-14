@@ -5,7 +5,10 @@ import com.example.persistence.enums.AnimalSpeciesEnum;
 import com.example.persistence.enums.SizeCategoryEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,9 +25,6 @@ public class AnimalsEntity {
     @ManyToOne
     private SheltersEntity shelter;
 
-    @ManyToOne
-    @JoinColumn(name = "animal_photo_id")
-    private AnimalPhotoEntity animalPhoto;
 
     @Column(name = "animal_name", nullable = false)
     private String animalName;
@@ -40,18 +40,19 @@ public class AnimalsEntity {
     @Column(name = "animal_age")
     private int animalAge;
 
-    @Column(name = "size_category_id", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private SizeCategoryEnum sizeCategory;
+    @ManyToOne
+    @JoinColumn(name = "size_category_id")
+    private SizeCategoryEntity sizeCategory;
 
 
     @Column(name = "animal_characteristics")
     private String animalCharacteristics;
 
     @Column(name = "is_adopted")
-    private boolean is_adopted;
+    private boolean adopted;
+    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL)
+    private List<AnimalPhotoEntity> animalPhotos;
 
     public AnimalsEntity() {
     }
-
 }
