@@ -81,8 +81,8 @@ public class UserController {
         UserViewModel existingUser = userService.getUserById(id);
         model.addAttribute("user", existingUser);
         model.addAttribute("userId", id);
-        List<AuthorityEntity> roles = authorityRepository.findAll();
-        model.addAttribute("allRoles", roles);
+        //List<AuthorityEntity> roles = AuthorityRepository.findByAuthority();
+        //model.addAttribute("allRoles", roles);
         return "user-edit";
     }
     @PostMapping("/{id}/roles")
@@ -98,12 +98,12 @@ public class UserController {
         return userService.refreshToken(refreshToken);
     }
 
-    @PostMapping("/process_register")
-    public String processRegister(UserEntity user, HttpServletRequest request)
-            throws UnsupportedEncodingException, MessagingException {
-        userService.registerEmailSender(user, getSiteURL(request));
-        return "register-success";
-    }
+//    @PostMapping("/process_register")
+//    public String processRegister(UserEntity user, HttpServletRequest request)
+//            throws UnsupportedEncodingException, MessagingException {
+//        userService.registerEmailSender(user, getSiteURL(request));
+//        return "register-success";
+//    }
 
 
     @GetMapping("/verify")
