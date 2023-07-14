@@ -187,11 +187,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDetailsService userDetailsService() {
+        return username -> userRepository.findByUserEmail(username)
+                .map(this::toUserDetails)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity userEntity = userRepository.findByUserEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return toUserDetails(userEntity);
     }
+
+
+
+
     //doubleCheck
 //    @Override
 //    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -244,12 +255,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findUserByUserEmail(userEmail) != null;
     }
 
-    @Override
-    public UserDetailsService userDetailsService() {
-        return username -> userRepository.findByUserEmail(username)
-                .map(this::toUserDetails)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-    }
+
 
 
     @Override
